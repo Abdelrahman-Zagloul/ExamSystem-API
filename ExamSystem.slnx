@@ -1,1 +1,8 @@
-<Solution />
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ExamSystem.API/ExamSystem.API.csproj" />
+    <Project Path="src/ExamSystem.Application/ExamSystem.Application.csproj" Id="6d8c3de7-aab5-4813-8c31-8135de25a3e7" />
+    <Project Path="src/ExamSystem.Domain/ExamSystem.Domain.csproj" />
+    <Project Path="src/ExamSystem.Infrastructure/ExamSystem.Infrastructure.csproj" Id="f757604c-f624-41d3-8496-05e6f69a5229" />
+  </Folder>
+</Solution>
