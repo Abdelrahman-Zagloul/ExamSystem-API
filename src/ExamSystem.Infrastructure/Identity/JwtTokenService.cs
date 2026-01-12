@@ -22,7 +22,7 @@ namespace ExamSystem.Infrastructure.Identity
             _jwt = jwt.Value;
         }
 
-        public async Task<JwtTokenDto> GenerateTokenAsync(ApplicationUser user)
+        public async Task<AuthDto> GenerateTokenAsync(ApplicationUser user)
         {
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new List<Claim>
@@ -46,7 +46,7 @@ namespace ExamSystem.Infrastructure.Identity
 
 
             var token = new JwtSecurityTokenHandler().WriteToken(JwtToken);
-            return new JwtTokenDto(token, JwtToken.ValidTo);
+            return new AuthDto(token, roles.FirstOrDefault() ?? "", user.Id, JwtToken.ValidTo);
         }
     }
 }

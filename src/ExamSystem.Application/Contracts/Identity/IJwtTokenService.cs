@@ -5,6 +5,6 @@ namespace ExamSystem.Application.Contracts.Identity
 {
     public interface IJwtTokenService
     {
-        Task<JwtTokenDto> GenerateTokenAsync(ApplicationUser user);
+        Task<AuthDto> GenerateTokenAsync(ApplicationUser user);
     }
 }
