@@ -7,7 +7,7 @@ namespace ExamSystem.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +18,7 @@ namespace ExamSystem.API
             var app = builder.Build();
 
 
+            await app.InitializeAsync();
             app.MapOpenApi();
             app.UseHttpsRedirection();
             app.UseAuthorization();
@@ -26,5 +27,7 @@ namespace ExamSystem.API
 
             app.Run();
         }
+
+
     }
 }
