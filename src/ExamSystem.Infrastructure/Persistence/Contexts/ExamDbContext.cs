@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExamSystem.Infrastructure.Persistence.Contexts
 {
-    internal class ExamDbContext : IdentityDbContext
+    public class ExamDbContext : IdentityDbContext
     {
         public ExamDbContext(DbContextOptions<ExamDbContext> options) : base(options) { }
 

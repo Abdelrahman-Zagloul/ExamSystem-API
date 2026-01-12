@@ -1,5 +1,7 @@
 ﻿using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Interfaces;
 using ExamSystem.Infrastructure.Persistence.Contexts;
+using ExamSystem.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +15,7 @@ namespace ExamSystem.Infrastructure.Extensions
             public IServiceCollection AddInfrastructureServices(IConfiguration configuration)
             {
                 ConfigureDbContextAndIdentity(services, configuration);
+                RegisterDependencies(services);
                 return services;
             }
         }
@@ -32,6 +35,10 @@ namespace ExamSystem.Infrastructure.Extensions
             })
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ExamDbContext>();
+        }
+        private static void RegisterDependencies(IServiceCollection services)
+        {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 
