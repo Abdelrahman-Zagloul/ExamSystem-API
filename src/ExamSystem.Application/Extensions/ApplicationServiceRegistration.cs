@@ -17,6 +17,7 @@ namespace ExamSystem.Application.Extensions
         private static void RegisterDependencies(IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<DefaultUsersSettings>(configuration.GetSection(nameof(DefaultUsersSettings)));
+            services.Configure<JWTSettings>(configuration.GetSection(nameof(JWTSettings)));
         }
     }
 }
