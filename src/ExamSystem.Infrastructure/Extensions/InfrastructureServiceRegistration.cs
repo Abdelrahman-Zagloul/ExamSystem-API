@@ -1,6 +1,8 @@
-﻿using ExamSystem.Application.Settings;
+﻿using ExamSystem.Application.Contracts.Identity;
+using ExamSystem.Application.Settings;
 using ExamSystem.Domain.Entities;
 using ExamSystem.Domain.Interfaces;
+using ExamSystem.Infrastructure.Identity;
 using ExamSystem.Infrastructure.Persistence.Contexts;
 using ExamSystem.Infrastructure.Persistence.Repositories;
 using ExamSystem.Infrastructure.Persistence.SeedData;
@@ -46,6 +48,7 @@ namespace ExamSystem.Infrastructure.Extensions
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDbInitializer, DbInitializer>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
         }
         private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)
         {
