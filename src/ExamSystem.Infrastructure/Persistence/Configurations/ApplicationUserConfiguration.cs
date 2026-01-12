@@ -9,7 +9,6 @@ namespace ExamSystem.Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
             builder.ToTable("AspNetUsers");
-            builder.HasKey(t => t.Id);
 
             builder.Property(u => u.FullName)
                 .HasColumnType("NVARCHAR")

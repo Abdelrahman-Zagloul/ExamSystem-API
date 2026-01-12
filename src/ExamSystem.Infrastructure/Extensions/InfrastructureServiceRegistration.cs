@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ExamSystem.Domain.Entities;
+using ExamSystem.Infrastructure.Persistence.Contexts;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 namespace ExamSystem.Infrastructure.Extensions
 {
@@ -8,9 +12,27 @@ namespace ExamSystem.Infrastructure.Extensions
         {
             public IServiceCollection AddInfrastructureServices(IConfiguration configuration)
             {
-
+                ConfigureDbContextAndIdentity(services, configuration);
                 return services;
             }
         }
+
+        private static void ConfigureDbContextAndIdentity(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<ExamDbContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentityCore<ApplicationUser>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+            })
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<ExamDbContext>();
+        }
     }
+
 }

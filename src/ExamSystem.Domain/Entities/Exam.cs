@@ -11,7 +11,6 @@
 
         public string DoctorId { get; set; } = null!;
         public Doctor Doctor { get; set; } = null!;
-        public ICollection<Student> Students { get; set; } = [];
         public ICollection<Question> Questions { get; set; } = [];
         public ICollection<ExamResult> ExamResults { get; set; } = [];
         public ICollection<StudentAnswer> StudentAnswers { get; set; } = [];
