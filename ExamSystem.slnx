@@ -5,4 +5,7 @@
     <Project Path="src/ExamSystem.Domain/ExamSystem.Domain.csproj" />
     <Project Path="src/ExamSystem.Infrastructure/ExamSystem.Infrastructure.csproj" Id="f757604c-f624-41d3-8496-05e6f69a5229" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ExamSystem.Application.Tests/ExamSystem.Application.Tests.csproj" Id="8daa5de5-3230-42dc-b10d-5d133f9d8391" />
+  </Folder>
 </Solution>
