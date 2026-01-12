@@ -7,5 +7,7 @@
 
         public int QuestionId { get; set; }
         public Question Question { get; set; } = null!;
+        public Question? QuestionAsCorrectOption { get; set; }
+        public ICollection<StudentAnswer> StudentAnswers { get; set; } = [];
     }
 }

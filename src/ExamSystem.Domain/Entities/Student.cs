@@ -3,6 +3,6 @@
     public class Student : ApplicationUser
     {
         public ICollection<ExamResult> ExamResults { get; set; } = [];
-        public ICollection<StudentAnswer> Answers { get; set; } = [];
+        public ICollection<StudentAnswer> StudentAnswers { get; set; } = [];
     }
 }

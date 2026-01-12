@@ -15,5 +15,6 @@ namespace ExamSystem.Domain.Entities
         public int CorrectOptionId { get; set; }
         public Option CorrectOption { get; set; } = null!;
         public ICollection<Option> Options { get; set; } = [];
+        public ICollection<StudentAnswer> StudentAnswers { get; set; } = [];
     }
 }
