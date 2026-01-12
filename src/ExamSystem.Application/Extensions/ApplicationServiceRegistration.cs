@@ -1,6 +1,8 @@
-﻿using ExamSystem.Application.Settings;
+﻿using ExamSystem.Application.Common.Behaviors;
+using ExamSystem.Application.Settings;
 using ExamSystem.Domain;
 using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +27,8 @@ namespace ExamSystem.Application.Extensions
         {
             services.Configure<DefaultUsersSettings>(configuration.GetSection(nameof(DefaultUsersSettings)));
             services.Configure<JWTSettings>(configuration.GetSection(nameof(JWTSettings)));
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
         private static void ConfigureFluentValidation(IServiceCollection services)
         {
