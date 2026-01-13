@@ -4,8 +4,8 @@ using MediatR;
 
 namespace ExamSystem.Application.Common.Behaviors
 {
-    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, Result<TResponse>>
-        where TRequest : IRequest<Result<TResponse>>
+    public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+     where TRequest : IRequest<TResponse>
 
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
@@ -14,7 +14,7 @@ namespace ExamSystem.Application.Common.Behaviors
         {
             _validators = validators;
         }
-        public async Task<Result<TResponse>> Handle(TRequest request, RequestHandlerDelegate<Result<TResponse>> next, CancellationToken cancellationToken)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             if (!_validators.Any())
                 return await next();
@@ -27,12 +27,19 @@ namespace ExamSystem.Application.Common.Behaviors
             if (failures.Any())
             {
                 var errors = failures
-                    .Select(f => Error.Validation(f.ErrorCode ?? "ValidationError", f.ErrorMessage))
+                    .Select(f => Error.Validation("Validation Error", f.ErrorMessage))
                     .ToList();
 
-                return Result<TResponse>.Fail(errors);
+                // Create a fail result of type TResponse
+                var resultType = typeof(TResponse).GenericTypeArguments[0];
+                var failResult = typeof(Result<>).MakeGenericType(resultType).GetMethod("Fail", [typeof(List<Error>)])!
+                    .Invoke(null, [errors]);
+
+                return (TResponse)failResult!;
             }
+
             return await next();
         }
     }
 }
+
