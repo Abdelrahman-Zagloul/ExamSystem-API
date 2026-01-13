@@ -4,7 +4,9 @@ using ExamSystem.Application.Contracts.Services;
 using ExamSystem.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace ExamSystem.Application.Features.Authentication.Commands.Register
 {
@@ -44,7 +46,8 @@ namespace ExamSystem.Application.Features.Authentication.Commands.Register
 
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            _backgroundJobService.Enqueue(() => _appEmailService.SendEmailForConfirmEmailAsync(user, token));
+            var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+            _backgroundJobService.Enqueue(() => _appEmailService.SendEmailForConfirmEmailAsync(user, encodedToken));
             return Result<string>.Ok("Registration successful. Please confirm your email & login.");
         }
     }

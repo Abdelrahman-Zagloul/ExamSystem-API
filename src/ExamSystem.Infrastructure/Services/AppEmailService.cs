@@ -27,20 +27,20 @@ namespace ExamSystem.Infrastructure.Services
             var path = Path.Combine(_webHostEnvironment.WebRootPath, "EmailTemplates", "WelcomeEmail.html");
             var templateContent = await File.ReadAllTextAsync(path);
             var emailBody = templateContent
-                .Replace("{firstName}", user.FullName);
+                .Replace("{FullName}", user.FullName);
 
             await _mailService.SendEmailAsync(user.Email!, "Welcome to Exam System", emailBody, null);
         }
-        public async Task SendEmailForConfirmEmailAsync(ApplicationUser user, string token)
+        public async Task SendEmailForConfirmEmailAsync(ApplicationUser user, string encodedToken)
         {
-            var confirmationLink = $"{_uRLsSettings.ConfirmEmailPath}?email={user.Email}&token={Uri.EscapeDataString(token)}";
+            var confirmationLink = $"{_uRLsSettings.ConfirmEmailPath}?email={user.Email}&token={encodedToken}";
             var path = Path.Combine(_webHostEnvironment.WebRootPath, "EmailTemplates", "ConfirmEmail.html");
             var templateContent = await File.ReadAllTextAsync(path);
 
             var emailBody = templateContent
                 .Replace("{FullName}", user.FullName)
                 .Replace("{confirmationLink}", confirmationLink)
-                .Replace("{token}", token);
+                .Replace("{token}", encodedToken);
 
             await _mailService.SendEmailAsync(user.Email!, "Confirm Email", emailBody, null);
         }
