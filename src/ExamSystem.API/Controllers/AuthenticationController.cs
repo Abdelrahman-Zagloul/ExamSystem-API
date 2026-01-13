@@ -2,6 +2,7 @@
 using ExamSystem.Application.Features.Authentication.Commands.ForgetPassword;
 using ExamSystem.Application.Features.Authentication.Commands.Login;
 using ExamSystem.Application.Features.Authentication.Commands.Register;
+using ExamSystem.Application.Features.Authentication.Commands.ResetPassword;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,9 +38,16 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpGet("forget-password")]
-        public async Task<IActionResult> ForgetEmail(string email)
+        public async Task<IActionResult> ForgetPassword(string email)
         {
             var result = await _mediator.Send(new ForgetPasswordCommand(email));
+            return HandleResult(result);
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
+        {
+            var result = await _mediator.Send(command);
             return HandleResult(result);
         }
     }
