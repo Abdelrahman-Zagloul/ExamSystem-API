@@ -1,4 +1,6 @@
-﻿namespace ExamSystem.API.Extensions
+﻿using System.Text.Json.Serialization;
+
+namespace ExamSystem.API.Extensions
 {
     public static class APIServiceRegistration
     {
@@ -6,7 +8,11 @@
         {
             public IServiceCollection AddApiServices(IConfiguration configuration)
             {
-                services.AddControllers();
+                services.AddControllers()
+                    .AddJsonOptions(cfg =>
+                    {
+                        cfg.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                    });
                 services.AddOpenApi();
 
                 return services;
