@@ -1,9 +1,12 @@
-﻿using ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail;
+﻿using ExamSystem.Application.Features.Authentication.Commands.ChangePassword;
+using ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail;
 using ExamSystem.Application.Features.Authentication.Commands.ForgetPassword;
 using ExamSystem.Application.Features.Authentication.Commands.Login;
 using ExamSystem.Application.Features.Authentication.Commands.Register;
 using ExamSystem.Application.Features.Authentication.Commands.ResetPassword;
+using ExamSystem.Application.Features.Authentication.DTOs;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExamSystem.API.Controllers
@@ -48,6 +51,14 @@ namespace ExamSystem.API.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordCommand command)
         {
             var result = await _mediator.Send(command);
+            return HandleResult(result);
+        }
+
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
+        {
+            var result = await _mediator.Send(new ChangePasswordCommand(GetUserId() ?? "", dto.CurrentPassword, dto.NewPassword));
             return HandleResult(result);
         }
     }
