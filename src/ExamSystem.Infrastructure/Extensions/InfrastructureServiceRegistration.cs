@@ -50,7 +50,8 @@ namespace ExamSystem.Infrastructure.Extensions
                 options.Password.RequiredLength = 8;
             })
             .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<ExamDbContext>();
+            .AddEntityFrameworkStores<ExamDbContext>()
+            .AddDefaultTokenProviders();
         }
         private static void RegisterDependencies(IServiceCollection services)
         {
@@ -59,6 +60,7 @@ namespace ExamSystem.Infrastructure.Extensions
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IAppEmailService, AppEmailService>();
+            services.AddScoped<IBackgroundJobService, HangfireBackgroundJobService>();
 
         }
         private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)
