@@ -22,12 +22,11 @@ namespace ExamSystem.API
             await app.InitializeAsync();
             app.UseHangfireDashboard("/hangfire");
 
-
+            app.UseStaticFiles();
             app.MapOpenApi();
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
-
 
             app.Run();
         }

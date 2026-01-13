@@ -1,5 +1,6 @@
 ﻿using ExamSystem.Application.Contracts.ExternalServices;
 using ExamSystem.Application.Contracts.Identity;
+using ExamSystem.Application.Contracts.Services;
 using ExamSystem.Application.Settings;
 using ExamSystem.Domain.Entities;
 using ExamSystem.Domain.Interfaces;
@@ -8,6 +9,7 @@ using ExamSystem.Infrastructure.Identity;
 using ExamSystem.Infrastructure.Persistence.Contexts;
 using ExamSystem.Infrastructure.Persistence.Repositories;
 using ExamSystem.Infrastructure.Persistence.SeedData;
+using ExamSystem.Infrastructure.Services;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -56,6 +58,7 @@ namespace ExamSystem.Infrastructure.Extensions
             services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IAppEmailService, AppEmailService>();
 
         }
         private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)
