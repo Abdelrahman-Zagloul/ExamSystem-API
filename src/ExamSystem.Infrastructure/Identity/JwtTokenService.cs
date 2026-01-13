@@ -34,7 +34,7 @@ namespace ExamSystem.Infrastructure.Identity
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.SecertKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.SecretKey));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.Aes128CbcHmacSha256);
 
             var JwtToken = new JwtSecurityToken(

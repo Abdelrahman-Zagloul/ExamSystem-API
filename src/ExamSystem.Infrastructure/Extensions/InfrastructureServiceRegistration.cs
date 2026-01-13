@@ -1,7 +1,9 @@
-﻿using ExamSystem.Application.Contracts.Identity;
+﻿using ExamSystem.Application.Contracts.ExternalServices;
+using ExamSystem.Application.Contracts.Identity;
 using ExamSystem.Application.Settings;
 using ExamSystem.Domain.Entities;
 using ExamSystem.Domain.Interfaces;
+using ExamSystem.Infrastructure.ExternalServices;
 using ExamSystem.Infrastructure.Identity;
 using ExamSystem.Infrastructure.Persistence.Contexts;
 using ExamSystem.Infrastructure.Persistence.Repositories;
@@ -49,6 +51,8 @@ namespace ExamSystem.Infrastructure.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IMailService, MailService>();
+
         }
         private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)
         {
@@ -70,7 +74,7 @@ namespace ExamSystem.Infrastructure.Extensions
                     ClockSkew = TimeSpan.Zero,
                     ValidIssuer = jwtSettings.Issuer,
                     ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecertKey))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
                 };
             });
         }

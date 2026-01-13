@@ -27,6 +27,7 @@ namespace ExamSystem.Application.Extensions
         {
             services.Configure<DefaultUsersSettings>(configuration.GetSection(nameof(DefaultUsersSettings)));
             services.Configure<JWTSettings>(configuration.GetSection(nameof(JWTSettings)));
+            services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
