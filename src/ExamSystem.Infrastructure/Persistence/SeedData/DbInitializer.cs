@@ -73,13 +73,24 @@ namespace ExamSystem.Infrastructure.Persistence.SeedData
         }
         private async Task CreateUserAsync(string fullName, string email, string password, string role)
         {
-            var user = new ApplicationUser
-            {
-                FullName = fullName,
-                UserName = Guid.NewGuid().ToString(),
-                Email = email,
-                EmailConfirmed = true
-            };
+            ApplicationUser user;
+            if (role == Role.Doctor)
+                user = new Doctor
+                {
+                    FullName = fullName,
+                    UserName = Guid.NewGuid().ToString(),
+                    Email = email,
+                    EmailConfirmed = true
+                };
+            else
+                user = new ApplicationUser
+                {
+                    FullName = fullName,
+                    UserName = Guid.NewGuid().ToString(),
+                    Email = email,
+                    EmailConfirmed = true
+                };
+
             var result = await _userManager.CreateAsync(user, password);
             if (result.Succeeded)
                 await _userManager.AddToRoleAsync(user, role);
