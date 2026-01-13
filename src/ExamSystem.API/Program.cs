@@ -2,6 +2,7 @@
 using ExamSystem.API.Extensions;
 using ExamSystem.Application.Extensions;
 using ExamSystem.Infrastructure.Extensions;
+using Hangfire;
 
 namespace ExamSystem.API
 {
@@ -19,6 +20,9 @@ namespace ExamSystem.API
 
 
             await app.InitializeAsync();
+            app.UseHangfireDashboard("/hangfire");
+
+
             app.MapOpenApi();
             app.UseHttpsRedirection();
             app.UseAuthorization();

@@ -8,6 +8,8 @@ using ExamSystem.Infrastructure.Identity;
 using ExamSystem.Infrastructure.Persistence.Contexts;
 using ExamSystem.Infrastructure.Persistence.Repositories;
 using ExamSystem.Infrastructure.Persistence.SeedData;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +28,8 @@ namespace ExamSystem.Infrastructure.Extensions
                 ConfigureDbContextAndIdentity(services, configuration);
                 RegisterDependencies(services);
                 ConfigureJwtAuthentication(services, configuration);
+                ConfigureHangfire(services, configuration);
+
                 return services;
             }
         }
@@ -77,6 +81,25 @@ namespace ExamSystem.Infrastructure.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
                 };
             });
+        }
+        private static void ConfigureHangfire(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHangfire(options =>
+            {
+                options.SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+                       .UseSimpleAssemblyNameTypeSerializer()
+                       .UseRecommendedSerializerSettings()
+                       .UseSqlServerStorage(configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
+                       {
+                           CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                           SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                           QueuePollInterval = TimeSpan.Zero,
+                           UseRecommendedIsolationLevel = true,
+                           DisableGlobalLocks = true
+                       });
+            });
+
+            services.AddHangfireServer();
         }
     }
 
