@@ -3,6 +3,7 @@ using ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail;
 using ExamSystem.Application.Features.Authentication.Commands.ForgetPassword;
 using ExamSystem.Application.Features.Authentication.Commands.Login;
 using ExamSystem.Application.Features.Authentication.Commands.Register;
+using ExamSystem.Application.Features.Authentication.Commands.ResendConfirmEmail;
 using ExamSystem.Application.Features.Authentication.Commands.ResetPassword;
 using ExamSystem.Application.Features.Authentication.DTOs;
 using MediatR;
@@ -59,6 +60,13 @@ namespace ExamSystem.API.Controllers
         public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
         {
             var result = await _mediator.Send(new ChangePasswordCommand(GetUserId() ?? "", dto.CurrentPassword, dto.NewPassword));
+            return HandleResult(result);
+        }
+
+        [HttpGet("resend-confirm-email")]
+        public async Task<IActionResult> ChangePassword(string email)
+        {
+            var result = await _mediator.Send(new ResendConfirmEmailCommand(email));
             return HandleResult(result);
         }
     }
