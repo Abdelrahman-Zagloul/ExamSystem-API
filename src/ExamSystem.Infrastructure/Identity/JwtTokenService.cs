@@ -29,18 +29,19 @@ namespace ExamSystem.Infrastructure.Identity
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.SecretKey));
-            var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.Aes128CbcHmacSha256);
+            var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var JwtToken = new JwtSecurityToken(
                 issuer: _jwt.Issuer,
                 audience: _jwt.Audience,
-                claims: null,
+                claims: claims,
                 expires: DateTime.UtcNow.AddMinutes(_jwt.DurationInMinutes),
                 signingCredentials: signingCredentials);
 
