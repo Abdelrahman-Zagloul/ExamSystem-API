@@ -54,17 +54,17 @@ namespace ExamSystem.Infrastructure.Services
             await _mailService.SendEmailAsync(user.Email!, "Password Changed Successfully", emailBody, null);
         }
 
-        public async Task SendEmailForResetPasswordAsync(ApplicationUser user, string token)
+        public async Task SendEmailForResetPasswordAsync(ApplicationUser user, string EncodedToken)
         {
             var path = Path.Combine(_webHostEnvironment.WebRootPath, "EmailTemplates", "ResetPassword.html");
 
-            var resetLink = $"{_uRLsSettings.ResetPasswordPath}?email={user.Email}&token={Uri.EscapeDataString(token)}";
+            var resetLink = $"{_uRLsSettings.ResetPasswordPath}?email={user.Email}&token={EncodedToken}";
 
             var templateContent = await File.ReadAllTextAsync(path);
             var emailBody = templateContent
                 .Replace("{FullName}", user.FullName)
                 .Replace("{ResetLink}", resetLink)
-                .Replace("{Token}", token);
+                .Replace("{Token}", EncodedToken);
 
             await _mailService.SendEmailAsync(user.Email!, "Reset Password", emailBody, null);
         }
