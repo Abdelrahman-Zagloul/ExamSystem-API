@@ -12,7 +12,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
         [InlineData("invalid-email", "12345678")]               // Invalid email
         [InlineData("test@test.com", "")]                       // Empty password
         [InlineData("test@test.com", "123")]                    // Too short password
-        public void LoginCommandValidator_ShouldHaveError_WhenInvalidInputs(string email, string password)
+        public void Validate_ShouldHaveError_ForInvalidInputs(string email, string password)
         {
             // Arrange
             var command = new LoginCommand(email, password);
@@ -25,7 +25,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
         }
 
         [Fact]
-        public void LoginCommandValidator_ShouldPass_WhenInputIsValid()
+        public void Validate_ShouldPass_When_CommandIsValid()
         {
             // Arrange
             var command = new LoginCommand("test@test.com", "12345678");

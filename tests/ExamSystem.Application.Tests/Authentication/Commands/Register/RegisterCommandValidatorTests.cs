@@ -10,14 +10,14 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Register
 
         [Theory]
         [InlineData("", "test@example.com", "Password1", "Password1", RoleDto.Student)]             // Empty FullName
-        [InlineData("test", "", "Password1", "Password1", RoleDto.Student)]                         // Empty Email
-        [InlineData("test", "invalid-email", "Password1", "Password1", RoleDto.Student)]            // Invalid Email format
-        [InlineData("test", "test@example.com", "", "", RoleDto.Student)]                           // Empty Password & Confirm
-        [InlineData("test", "test@example.com", "short", "short", RoleDto.Student)]                 // Password too short
-        [InlineData("test", "test@example.com", "password", "password", RoleDto.Student)]           // Password missing number
-        [InlineData("test", "test@example.com", "PASSWORD1", "PASSWORD1", RoleDto.Student)]         // Password missing lowercase
-        [InlineData("test", "test@example.com", "Password1", "Mismatch1", RoleDto.Student)]         // ConfirmPassword mismatch
-        public void RegisterCommandValidator_ShouldHaveError_WhenInvalidInputs
+        [InlineData("test", "", "Password1", "Password1", RoleDto.Student)]                     // Empty Email
+        [InlineData("test", "invalid-email", "Password1", "Password1", RoleDto.Student)]         // Invalid Email format
+        [InlineData("test", "test@example.com", "", "", RoleDto.Student)]                       // Empty Password & Confirm
+        [InlineData("test", "test@example.com", "short", "short", RoleDto.Student)]             // Password too short
+        [InlineData("test", "test@example.com", "password", "password", RoleDto.Student)]       // Password missing number
+        [InlineData("test", "test@example.com", "PASSWORD1", "PASSWORD1", RoleDto.Student)]     // Password missing lowercase
+        [InlineData("test", "test@example.com", "Password1", "Mismatch1", RoleDto.Student)]     // ConfirmPassword mismatch
+        public void Validate_ShouldHaveError_ForInvalidInputs
             (string fullName, string email, string password, string confirmPassword, RoleDto role)
         {
             // Arrange
@@ -30,7 +30,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Register
         }
 
         [Fact]
-        public void RegisterCommandValidator_ShouldPass_WhenInputIsValid()
+        public void Validate_ShouldPass_When_CommandIsValid()
         {
             // Arrange
             var command = new RegisterCommand("test", "test@example.com", "Password1", "Password1", RoleDto.Student);

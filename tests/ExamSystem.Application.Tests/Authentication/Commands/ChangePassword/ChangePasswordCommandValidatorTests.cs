@@ -13,7 +13,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ChangePassword
         [InlineData("123", "1234567")]      // Too short
         [InlineData("ValidPass123", "")]    // New password missing
         [InlineData("", "ValidPass123")]    // Old password missing
-        public void ChangePasswordValidator_ShouldHaveError_WhenInvalidInputs(string currentPassword, string newPassword)
+        public void Validate_ShouldHaveError_WhenInvalidInputs(string currentPassword, string newPassword)
         {
             // Arrange
             var command = new ChangePasswordCommand("user-id", currentPassword, newPassword);
@@ -26,7 +26,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ChangePassword
         }
 
         [Fact]
-        public void ChangePasswordValidator_ShouldPass_WhenInputIsValid()
+        public void Validate_ShouldPass_WhenInputIsValid()
         {
             // Arrange
             var command = new ChangePasswordCommand("user-id", "currentPassword", "newPassword");

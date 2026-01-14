@@ -2,9 +2,9 @@
 
 namespace ExamSystem.Application.Features.Authentication.Commands.ResendConfirmEmail
 {
-    public class ResendConfirmEmailValidator : AbstractValidator<ResendConfirmEmailCommand>
+    public class ResendConfirmEmailCommandValidator : AbstractValidator<ResendConfirmEmailCommand>
     {
-        public ResendConfirmEmailValidator()
+        public ResendConfirmEmailCommandValidator()
         {
             RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required.")

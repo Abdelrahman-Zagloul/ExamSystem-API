@@ -26,7 +26,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ChangePassword
         }
 
         [Fact]
-        public async Task ChangePasswordCommandHandler_ShouldReturnNotFound_WhenUserDoesNotExist()
+        public async Task Handle_ShouldReturnFailure_WhenUserNotFound()
         {
             // Arrange
             var command = new ChangePasswordCommand("invalid-id", "OldPass123!", "NewPass123!");
@@ -41,7 +41,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ChangePassword
         }
 
         [Fact]
-        public async Task ChangePasswordCommandHandler_ShouldReturnValidationError_WhenChangePasswordFails()
+        public async Task Handle_ShouldReturnFailure_WhenCurrentPasswordIsIncorrect()
         {
             // Arrange
             var user = new ApplicationUser { Id = "user-1", Email = "test@test.com" };
@@ -60,7 +60,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ChangePassword
         }
 
         [Fact]
-        public async Task ChangePasswordCommandHandler_ShouldReturnSuccess_WhenPasswordIsChanged()
+        public async Task Handle_ShouldReturnFailure_WhenPasswordChangeFails()
         {
             // Arrange
             var user = new ApplicationUser { Id = "user-1", Email = "test@test.com" };
