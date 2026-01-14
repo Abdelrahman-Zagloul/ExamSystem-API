@@ -13,7 +13,9 @@ namespace ExamSystem.API.Extensions
                     {
                         cfg.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                     });
-                services.AddOpenApi();
+
+
+                services.AddSwaggerDocumentation();
 
                 return services;
             }

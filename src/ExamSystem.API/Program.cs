@@ -3,6 +3,7 @@ using ExamSystem.API.Extensions;
 using ExamSystem.Application.Extensions;
 using ExamSystem.Infrastructure.Extensions;
 using Hangfire;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace ExamSystem.API
 {
@@ -18,13 +19,20 @@ namespace ExamSystem.API
 
             var app = builder.Build();
 
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.DisplayRequestDuration();
+                options.EnableFilter();
+                options.DocExpansion(DocExpansion.None);
+            });
 
             await app.InitializeAsync();
             app.UseHangfireDashboard("/hangfire");
 
             app.UseStaticFiles();
-            app.MapOpenApi();
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
 
