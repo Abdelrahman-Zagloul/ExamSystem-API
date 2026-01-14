@@ -1,6 +1,7 @@
 ﻿using ExamSystem.Application.Contracts.Identity;
 using ExamSystem.Application.Features.Authentication.Commands.Login;
 using ExamSystem.Application.Features.Authentication.DTOs;
+using ExamSystem.Application.Tests.Helpers;
 using ExamSystem.Domain.Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
@@ -16,13 +17,13 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
 
         public LoginCommandHandlerTests()
         {
-            _userManagerMock = CreateUserManagerMock();
+            _userManagerMock = MockHelper.CreateUserManagerMock<ApplicationUser>();
             _jwtTokenServiceMock = new Mock<IJwtTokenService>();
             _handler = new LoginCommandHandler(_userManagerMock.Object, _jwtTokenServiceMock.Object);
         }
 
         [Fact]
-        public async Task Handle_ShouldReturnSuccess_When_CredentialsAreValid()
+        public async Task LoginCommandHandler_ShouldReturnSuccess_When_CredentialsAreValid()
         {
             // Arrange
             var user = new ApplicationUser
@@ -46,7 +47,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
         }
 
         [Fact]
-        public async Task Handle_ShouldReturnFailure_When_CredentialsAreInvalid()
+        public async Task LoginCommandHandler_ShouldReturnFailure_When_CredentialsAreInvalid()
         {
             // Arrange
             var user = new ApplicationUser
@@ -67,7 +68,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
         }
 
         [Fact]
-        public async Task Handle_ShouldReturnFailure_When_EmailIsNotConfirmed()
+        public async Task LoginCommandHandler_ShouldReturnFailure_When_EmailIsNotConfirmed()
         {
             // Arrange
             var user = new ApplicationUser
@@ -79,20 +80,13 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _userManagerMock.Setup(x => x.CheckPasswordAsync(user, command.Password)).ReturnsAsync(true);
+            _userManagerMock.Setup(x => x.IsEmailConfirmedAsync(user)).ReturnsAsync(false);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             result.IsSuccess.Should().BeFalse();
-        }
-
-        private static Mock<UserManager<ApplicationUser>> CreateUserManagerMock()
-        {
-            var store = new Mock<IUserStore<ApplicationUser>>();
-            return new Mock<UserManager<ApplicationUser>>(
-                store.Object,
-                null, null, null, null, null, null, null, null);
         }
     }
 }
