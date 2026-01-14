@@ -35,7 +35,7 @@ namespace ExamSystem.Infrastructure.Persistence.Configurations
             builder.HasOne(e => e.CorrectOption)
                 .WithOne(e => e.QuestionAsCorrectOption)
                 .HasForeignKey<Question>(e => e.CorrectOptionId)
-                .IsRequired()
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }
