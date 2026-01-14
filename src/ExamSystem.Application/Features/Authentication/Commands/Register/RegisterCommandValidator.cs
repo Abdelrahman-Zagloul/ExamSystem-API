@@ -2,9 +2,9 @@
 
 namespace ExamSystem.Application.Features.Authentication.Commands.Register
 {
-    public class RegisterCommandValidation : AbstractValidator<RegisterCommand>
+    public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     {
-        public RegisterCommandValidation()
+        public RegisterCommandValidator()
         {
             RuleFor(x => x.FullName)
                 .NotEmpty().WithMessage("FullName is required.")
