@@ -48,7 +48,6 @@ ScaffoldingReadMe.txt
 # Rider IDE
 .idea/
 
-*.json
 
 
 # Generated files
@@ -92,8 +91,6 @@ coverage*.json
 coverage*.xml
 coverage*.info
 
-# Entity Framework
-Migrations/
 
 # Cache
 *.cache
