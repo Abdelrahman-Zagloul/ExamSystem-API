@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ExamSystem.Application.Features.Authentication.Commands.ChangePassword
 {
-    internal class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Result<string>>
+    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Result<string>>
     {
         private readonly IAppEmailService _appEmailService;
         private readonly IBackgroundJobService _backgroundJobService;

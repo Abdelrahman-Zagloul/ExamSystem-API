@@ -23,7 +23,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
         }
 
         [Fact]
-        public async Task LoginCommandHandler_ShouldReturnSuccess_When_CredentialsAreValid()
+        public async Task LoginCommandHandler_ShouldReturnSuccess_WhenCredentialsAreValid()
         {
             // Arrange
             var user = new ApplicationUser
@@ -47,7 +47,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
         }
 
         [Fact]
-        public async Task LoginCommandHandler_ShouldReturnFailure_When_CredentialsAreInvalid()
+        public async Task LoginCommandHandler_ShouldReturnFailure_WhenCredentialsAreInvalid()
         {
             // Arrange
             var user = new ApplicationUser
@@ -68,7 +68,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
         }
 
         [Fact]
-        public async Task LoginCommandHandler_ShouldReturnFailure_When_EmailIsNotConfirmed()
+        public async Task LoginCommandHandler_ShouldReturnFailure_WhenEmailIsNotConfirmed()
         {
             // Arrange
             var user = new ApplicationUser

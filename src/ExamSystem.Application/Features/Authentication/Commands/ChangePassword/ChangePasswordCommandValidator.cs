@@ -2,9 +2,9 @@
 
 namespace ExamSystem.Application.Features.Authentication.Commands.ChangePassword
 {
-    public class ChangePasswordValidator : AbstractValidator<ChangePasswordCommand>
+    public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
     {
-        public ChangePasswordValidator()
+        public ChangePasswordCommandValidator()
         {
             RuleFor(x => x.CurrentPassword)
                 .NotEmpty().WithMessage("Old password is required.")
