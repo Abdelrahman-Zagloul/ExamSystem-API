@@ -7,6 +7,8 @@ namespace ExamSystem.Infrastructure.Persistence.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ExamDbContext _context;
+        private readonly Dictionary<Type, object> _repositories = new();
+
         public UnitOfWork(ExamDbContext context)
         {
             _context = context;
@@ -19,5 +21,15 @@ namespace ExamSystem.Infrastructure.Persistence.Repositories
             GC.SuppressFinalize(this);
         }
 
+        public IIGenericRepository<TEntity> Repository<TEntity>() where TEntity : class
+        {
+            var entityType = typeof(TEntity);
+            if (_repositories.TryGetValue(entityType, out var repo))
+                return (IIGenericRepository<TEntity>)repo;
+
+            var newRepo = new GenericRepository<TEntity>(_context);
+            _repositories[entityType] = newRepo;
+            return newRepo;
+        }
     }
 }
