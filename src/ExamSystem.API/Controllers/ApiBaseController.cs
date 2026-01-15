@@ -10,43 +10,50 @@ namespace ExamSystem.API.Controllers
     [Route("api/[controller]")]
     public class ApiBaseController : ControllerBase
     {
+        protected string? GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
         protected ActionResult HandleResult(Result result)
         {
             if (result.IsSuccess)
-                return NoContent();
+                return Ok(result);
             else
-                return HandleProblem(result.Errors);
+                return HandleResultErrors(result);
         }
         protected ActionResult HandleResult<TValue>(Result<TValue> result)
         {
             if (result.IsSuccess)
-                return Ok(result.Value);
+                return Ok(result);
             else
-                return HandleProblem(result.Errors);
+                return HandleResultErrors(result);
         }
-        protected string? GetUserId() =>
-             User.FindFirstValue(ClaimTypes.NameIdentifier);
 
 
-        private ActionResult HandleProblem(IReadOnlyList<Error> errors)
+        private ActionResult HandleResultErrors(Result result)
         {
-            if (errors.All(x => x.ErrorType == ErrorType.Validation))
-                return HandleValidationProblem(errors);
-            return HandleSigleProblem(errors[0]);
+            if (result.Errors.All(x => x.ErrorType == ErrorType.Validation))
+                return HandleValidationErrors(result);
+
+            var statusCode = GetStatusCodeFromErrorType(result.Errors[0].ErrorType);
+            return StatusCode(statusCode, new
+            {
+                isSuccess = false,
+                message = result.Message,
+                errors = result.Errors[0]
+            });
         }
-        private ActionResult HandleSigleProblem(Error error)
-        {
-            return Problem(
-                title: error.Title,
-                detail: error.Description,
-                statusCode: GetStatusCodeFromErrorType(error.ErrorType));
-        }
-        private ActionResult HandleValidationProblem(IReadOnlyList<Error> errors)
+        private ActionResult HandleValidationErrors(Result result)
         {
             var modelState = new ModelStateDictionary();
-            foreach (var error in errors)
+            foreach (var error in result.Errors)
                 modelState.AddModelError(error.Title, error.Description);
-            return ValidationProblem(modelState);
+
+
+            return BadRequest(new
+            {
+                isSuccess = false,
+                message = "One or more validation fail",
+                errors = result.Errors.GroupBy(e => e.Title)
+                        .ToDictionary(g => g.Key, g => g.Select(x => x.Description).ToList())
+            });
         }
         private int GetStatusCodeFromErrorType(ErrorType errorType)
         {

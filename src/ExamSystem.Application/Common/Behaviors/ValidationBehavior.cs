@@ -27,7 +27,7 @@ namespace ExamSystem.Application.Common.Behaviors
             if (failures.Any())
             {
                 var errors = failures
-                    .Select(f => Error.Validation("Validation Error", f.ErrorMessage))
+                    .Select(f => Error.Validation(f.PropertyName, f.ErrorMessage))
                     .ToList();
 
                 // Create a fail result of type TResponse

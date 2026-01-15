@@ -6,9 +6,12 @@
 
         public IReadOnlyList<Error> Errors => _errors.AsReadOnly();
         public bool IsSuccess => !_errors.Any();
-        public bool IsFailure => _errors.Any();
-
+        public string? Message { get; set; }
         protected Result() { }
+        protected Result(string message)
+        {
+            Message = message;
+        }
         protected Result(Error error)
         {
             _errors.Add(error);
@@ -20,6 +23,7 @@
 
 
         public static Result Ok() => new Result();
+        public static Result Ok(string message) => new Result(message);
         public static Result Fail(Error error) => new Result(error);
         public static Result Fail(List<Error> errors) => new Result(errors);
     }

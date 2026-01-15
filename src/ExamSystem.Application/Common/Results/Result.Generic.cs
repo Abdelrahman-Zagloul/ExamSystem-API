@@ -5,7 +5,12 @@
         private readonly TValue _value;
         public TValue Value => IsSuccess ? _value : throw new InvalidOperationException("The value of a failure result can not be accessed.");
 
+
         private Result(TValue value) : base()
+        {
+            _value = value;
+        }
+        private Result(TValue value, string message) : base(message)
         {
             _value = value;
         }
@@ -18,7 +23,9 @@
             _value = default!;
         }
 
+
         public static Result<TValue> Ok(TValue value) => new Result<TValue>(value);
+        public static Result<TValue> Ok(TValue value, string message) => new Result<TValue>(value, message);
         public new static Result<TValue> Fail(Error error) => new Result<TValue>(error);
         public new static Result<TValue> Fail(List<Error> errors) => new Result<TValue>(errors);
 
