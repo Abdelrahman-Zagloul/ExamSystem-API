@@ -1,5 +1,6 @@
 ﻿using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
 using ExamSystem.Application.Features.Questions.Commands.DeleteQuestion;
+using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,12 +16,20 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateQuestion(CreateQuestionCommand command)
+        public async Task<IActionResult> CreateQuestion(int examId, CreateQuestionCommand command)
         {
+            command = command with { ExamId = examId };
             var result = await _mediator.Send(command);
             return HandleResult(result);
         }
 
+        [HttpPut("{questionId}")]
+        public async Task<IActionResult> UpdateQuestion(int examId, int questionId, UpdateQuestionCommand command)
+        {
+            command = command with { ExamId = examId, QuestionId = questionId };
+            var result = await _mediator.Send(command);
+            return HandleResult(result);
+        }
         [HttpDelete("{questionId}")]
         public async Task<IActionResult> DeleteQuestion(int examId, int questionId)
         {

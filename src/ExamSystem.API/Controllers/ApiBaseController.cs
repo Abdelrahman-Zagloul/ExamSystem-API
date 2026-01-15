@@ -37,7 +37,11 @@ namespace ExamSystem.API.Controllers
             {
                 isSuccess = false,
                 message = result.Message,
-                errors = result.Errors[0]
+                errors = new
+                {
+                    result.Errors[0].Title,
+                    result.Errors[0].Description,
+                }
             });
         }
         private ActionResult HandleValidationErrors(Result result)
