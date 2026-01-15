@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ExamSystem.Application.Features.Authentication.Commands.ForgetPassword
 {
-    public class ForgetPasswordCommandHandler : IRequestHandler<ForgetPasswordCommand, Result<string>>
+    public class ForgetPasswordCommandHandler : IRequestHandler<ForgetPasswordCommand, Result>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAppEmailService _emailService;
@@ -23,7 +23,7 @@ namespace ExamSystem.Application.Features.Authentication.Commands.ForgetPassword
             _backgroundJobService = backgroundJobService;
         }
 
-        public async Task<Result<string>> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user != null)
@@ -33,7 +33,7 @@ namespace ExamSystem.Application.Features.Authentication.Commands.ForgetPassword
                 _backgroundJobService.Enqueue(() =>
                     _emailService.SendEmailForResetPasswordAsync(user, tokenEncoded));
             }
-            return Result<string>.Ok("Password reset link sent successfully.");
+            return Result.Ok("Password reset link sent successfully.");
         }
     }
 }

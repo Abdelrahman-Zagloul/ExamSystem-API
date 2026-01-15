@@ -6,7 +6,7 @@ using MediatR;
 
 namespace ExamSystem.Application.Features.Questions.Commands.CreateQuestion
 {
-    public class CreateQuestionCommandHandler : IRequestHandler<CreateQuestionCommand, Result<string>>
+    public class CreateQuestionCommandHandler : IRequestHandler<CreateQuestionCommand, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -15,11 +15,11 @@ namespace ExamSystem.Application.Features.Questions.Commands.CreateQuestion
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<Result<string>> Handle(CreateQuestionCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(CreateQuestionCommand request, CancellationToken cancellationToken)
         {
             var examExist = await _unitOfWork.Repository<Exam>().AnyAsync(e => e.Id == request.ExamId);
             if (!examExist)
-                return Result<string>.Fail(Error.NotFound("ExamNotFound", "Exam with id not found"));
+                return Result.Fail(Error.NotFound("ExamNotFound", "Exam with id not found"));
 
             var question = _mapper.Map<Question>(request);
 
@@ -28,7 +28,7 @@ namespace ExamSystem.Application.Features.Questions.Commands.CreateQuestion
             question.CorrectOptionId = question.Options.ElementAt(request.CorrectOptionNumber - 1).Id;
             await _unitOfWork.SaveChangesAsync();
 
-            return Result<string>.Ok("Question created successfully");
+            return Result.Ok("Question created successfully");
         }
     }
 }

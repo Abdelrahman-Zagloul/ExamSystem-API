@@ -49,7 +49,6 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ForgetPassword
 
             // Assert
             Assert.True(result.IsSuccess);
-            Assert.Equal("Password reset link sent successfully.", result.Value);
 
             _backgroundJobMock.Verify(x => x.Enqueue(It.IsAny<Expression<Action>>()), Times.Once);
         }

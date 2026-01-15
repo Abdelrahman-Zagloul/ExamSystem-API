@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ExamSystem.Application.Features.Authentication.Commands.ResetPassword
 {
-    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, Result<string>>
+    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, Result>
     {
         private readonly IAppEmailService _appEmailService;
         private readonly IBackgroundJobService _backgroundJobService;
@@ -22,19 +22,19 @@ namespace ExamSystem.Application.Features.Authentication.Commands.ResetPassword
             _userManager = userManager;
         }
 
-        public async Task<Result<string>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
-                return Result<string>.Fail(Error.NotFound("UserNotFound", "User with this email does not exist."));
+                return Result.Fail(Error.NotFound("UserNotFound", "User with this email does not exist."));
 
             var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.Token));
             var resetPassResult = await _userManager.ResetPasswordAsync(user, decodedToken, request.NewPassword);
             if (!resetPassResult.Succeeded)
-                return Result<string>.Fail(resetPassResult.Errors.Select(x => Error.Validation(x.Code, x.Description)).ToList());
+                return Result.Fail(resetPassResult.Errors.Select(x => Error.Validation(x.Code, x.Description)).ToList());
 
             _backgroundJobService.Enqueue(() => _appEmailService.SendEmailForPasswordChangedAsync(user));
-            return Result<string>.Ok("Password reset successfully");
+            return Result.Ok("Password reset successfully");
         }
     }
 }

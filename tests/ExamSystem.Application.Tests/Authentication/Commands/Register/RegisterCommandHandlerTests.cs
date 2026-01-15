@@ -103,7 +103,6 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Register
 
             // Assert
             result.IsSuccess.Should().BeTrue();
-            result.Value.Should().Contain("Registration successful");
         }
     }
 }

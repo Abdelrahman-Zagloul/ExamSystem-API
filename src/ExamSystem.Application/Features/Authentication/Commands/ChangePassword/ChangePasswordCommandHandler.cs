@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ExamSystem.Application.Features.Authentication.Commands.ChangePassword
 {
-    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Result<string>>
+    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Result>
     {
         private readonly IAppEmailService _appEmailService;
         private readonly IBackgroundJobService _backgroundJobService;
@@ -20,18 +20,18 @@ namespace ExamSystem.Application.Features.Authentication.Commands.ChangePassword
             _userManager = userManager;
         }
 
-        public async Task<Result<string>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
             if (user == null)
-                return Result<string>.Fail(Error.NotFound("UserNotFound", "User with this id not found"));
+                return Result.Fail(Error.NotFound("UserNotFound", "User with this id not found"));
 
             var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
             if (!result.Succeeded)
-                return Result<string>.Fail(result.Errors.Select(e => Error.Validation(e.Code, e.Description)).ToList());
+                return Result.Fail(result.Errors.Select(e => Error.Validation(e.Code, e.Description)).ToList());
 
             _backgroundJobService.Enqueue(() => _appEmailService.SendEmailForPasswordChangedAsync(user));
-            return Result<string>.Ok("Password changed successfully");
+            return Result.Ok("Password changed successfully");
         }
 
     }
