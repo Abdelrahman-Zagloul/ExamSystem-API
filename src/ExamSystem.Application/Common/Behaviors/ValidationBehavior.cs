@@ -30,15 +30,24 @@ namespace ExamSystem.Application.Common.Behaviors
                     .Select(f => Error.Validation(f.PropertyName, f.ErrorMessage))
                     .ToList();
 
-                // Create a fail result of type TResponse
-                var resultType = typeof(TResponse).GenericTypeArguments[0];
-                var failResult = typeof(Result<>).MakeGenericType(resultType).GetMethod("Fail", [typeof(List<Error>)])!
-                    .Invoke(null, [errors]);
-
-                return (TResponse)failResult!;
+                return GenerateFailResult(errors);
             }
 
             return await next();
+        }
+
+        private TResponse GenerateFailResult(List<Error> errors)
+        {
+            var responseType = typeof(TResponse);
+            if (responseType == typeof(Result))
+                return (TResponse)(object)Result.Fail(errors);
+
+            var failResult = typeof(Result<>)
+                    .MakeGenericType(responseType.GenericTypeArguments[0])
+                    .GetMethod("Fail", [typeof(List<Error>)])!
+                    .Invoke(null, [errors]);
+
+            return (TResponse)failResult!;
         }
     }
 }

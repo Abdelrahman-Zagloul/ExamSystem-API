@@ -41,10 +41,10 @@ namespace ExamSystem.API.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet("forget-password")]
-        public async Task<IActionResult> ForgetPassword(string email)
+        [HttpPost("forget-password")]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordCommand command)
         {
-            var result = await _mediator.Send(new ForgetPasswordCommand(email));
+            var result = await _mediator.Send(command);
             return HandleResult(result);
         }
 
@@ -63,10 +63,10 @@ namespace ExamSystem.API.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet("resend-confirm-email")]
-        public async Task<IActionResult> ChangePassword(string email)
+        [HttpPost("resend-confirm-email")]
+        public async Task<IActionResult> ChangePassword(ResendConfirmEmailCommand command)
         {
-            var result = await _mediator.Send(new ResendConfirmEmailCommand(email));
+            var result = await _mediator.Send(command);
             return HandleResult(result);
         }
     }

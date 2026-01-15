@@ -15,13 +15,9 @@ namespace ExamSystem.Application.Features.Questions.Commands.DeleteQuestion
         }
         public async Task<Result> Handle(DeleteQuestionCommand request, CancellationToken cancellationToken)
         {
-            var examExist = await _unitOfWork.Repository<Exam>().AnyAsync(x => x.Id == request.ExamId);
-            if (!examExist)
-                return Result.Fail(Error.NotFound("ExamNotFound", "Exam with id not found"));
-
             var question = await _unitOfWork.Repository<Question>().FindAsync(request.QuestionId);
             if (question == null || question.ExamId != request.ExamId)
-                return Result.Fail(Error.NotFound("QuestionNotFound", "Question with id not found in this exam"));
+                return Result.Fail(Error.NotFound("QuestionNotFound", "Question not found in this exam"));
 
             _unitOfWork.Repository<Question>().Remove(question);
             await _unitOfWork.SaveChangesAsync();

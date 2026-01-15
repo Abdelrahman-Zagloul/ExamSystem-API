@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace ExamSystem.Infrastructure.Persistence.Repositories
 {
-    public class GenericRepository<TEntity> : IIGenericRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         private readonly ExamDbContext _context;
         private readonly DbSet<TEntity> _dbSet;

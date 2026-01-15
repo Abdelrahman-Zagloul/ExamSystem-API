@@ -30,8 +30,8 @@ namespace ExamSystem.Application.Features.Questions.Command.CreateQuestion
                 .GreaterThan(0).WithMessage("Correct option number must be greater than zero.")
                 .Must((command, correctOptionNumber) =>
                 {
-                    return command.Options != null && correctOptionNumber <= command.Options.Count;
-                }).WithMessage("Correct option number must correspond to one of the provided options.");
+                    return correctOptionNumber <= command.Options.Count;
+                }).WithMessage("Correct option number must on of options.");
         }
     }
 }

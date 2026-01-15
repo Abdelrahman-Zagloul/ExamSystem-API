@@ -2,7 +2,7 @@
 
 namespace ExamSystem.Domain.Interfaces
 {
-    public interface IIGenericRepository<TEntity> where TEntity : class
+    public interface IGenericRepository<TEntity> where TEntity : class
     {
         Task AddAsync(TEntity entity);
         Task AddRangeAsync(IEnumerable<TEntity> entities);
