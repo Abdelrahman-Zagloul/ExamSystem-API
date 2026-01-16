@@ -1,6 +1,7 @@
 ﻿using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
 using ExamSystem.Application.Features.Questions.Commands.DeleteQuestion;
 using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion;
+using ExamSystem.Application.Features.Questions.Queries.GetAllQuestionsForDoctor;
 using ExamSystem.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +16,15 @@ namespace ExamSystem.API.Controllers
         public QuestionsController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = Role.Doctor)]
+        public async Task<IActionResult> GetExamQuestions(int examId, int pageNumber = 1, int pageSize = 5)
+        {
+            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
+            var result = await _mediator.Send(new GetExamQuestionsForDoctorQuery(GetUserId()!, examId, pageNumber, pageSize, baseUrl));
+            return HandleResult(result);
         }
 
         [HttpPost]

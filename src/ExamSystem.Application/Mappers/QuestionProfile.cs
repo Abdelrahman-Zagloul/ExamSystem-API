@@ -10,15 +10,22 @@ namespace ExamSystem.Application.Mappers
     {
         public QuestionProfile()
         {
+            CreateQuestionMapper();
+            UpdateQuestionMapper();
+            GetExamQuestionsForDoctorMapper();
+        }
+
+        private void CreateQuestionMapper()
+        {
             CreateMap<CreateQuestionCommand, Question>()
                 .ForMember(dest => dest.Options, opt => opt.MapFrom(src => src.Options))
                 .ForMember(dest => dest.CorrectOptionId, opt => opt.Ignore());
 
             CreateMap<CreateOptionDto, Option>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
-
-
-
+               .ForMember(dest => dest.Id, opt => opt.Ignore());
+        }
+        private void UpdateQuestionMapper()
+        {
             CreateMap<UpdateQuestionCommand, Question>()
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(src => src.QuestionId))
                 .ForMember(dest => dest.QuestionMark, opts => opts.MapFrom(src => src.NewQuestionMark))
@@ -28,6 +35,15 @@ namespace ExamSystem.Application.Mappers
             CreateMap<UpdateOptionDto, Option>()
                 .ForMember(dest => dest.OptionText, opts => opts.MapFrom(src => src.NewOptionText))
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+        }
+        private void GetExamQuestionsForDoctorMapper()
+        {
+            CreateMap<Question, QuestionForDoctorDto>()
+                .ForMember(dest => dest.QuestionId, opts => opts.MapFrom(src => src.Id))
+                .ForMember(dest => dest.ExamTitle, opts => opts.MapFrom(src => src.Exam.Title));
+
+            CreateMap<Option, OptionDto>()
+                .ForMember(dest => dest.OptionId, opts => opts.MapFrom(src => src.Id));
         }
     }
 }
