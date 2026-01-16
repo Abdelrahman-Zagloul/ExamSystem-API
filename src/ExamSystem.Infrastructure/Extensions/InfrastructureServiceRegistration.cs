@@ -61,6 +61,8 @@ namespace ExamSystem.Infrastructure.Extensions
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IAppEmailService, AppEmailService>();
             services.AddScoped<IBackgroundJobService, HangfireBackgroundJobService>();
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         }
         private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)
