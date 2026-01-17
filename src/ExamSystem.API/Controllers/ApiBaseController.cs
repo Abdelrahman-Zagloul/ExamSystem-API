@@ -12,6 +12,7 @@ namespace ExamSystem.API.Controllers
     public class ApiBaseController : ControllerBase
     {
         protected string? GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
+        protected string GetBaseUrl() => $"{Request.Scheme}://{Request.Host}{Request.Path}";
         protected ActionResult HandleResult(Result result)
         {
             if (result.IsSuccess)
