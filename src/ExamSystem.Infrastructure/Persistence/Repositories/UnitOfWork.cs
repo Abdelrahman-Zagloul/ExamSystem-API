@@ -13,8 +13,10 @@ namespace ExamSystem.Infrastructure.Persistence.Repositories
         {
             _context = context;
         }
-        public Task<int> SaveChangesAsync() => _context.SaveChangesAsync();
-        public async Task<IDbContextTransaction> BeginTransactionAsync() => await _context.Database.BeginTransactionAsync();
+        public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+            => await _context.SaveChangesAsync(cancellationToken);
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+            => await _context.Database.BeginTransactionAsync();
         public void Dispose()
         {
             _context.Dispose();

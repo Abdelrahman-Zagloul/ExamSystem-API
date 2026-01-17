@@ -19,7 +19,7 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
         public async Task<Result> Handle(UpdateQuestionCommand request, CancellationToken cancellationToken)
         {
             var question = await _unitOfWork.Repository<Question>()
-                .GetAsync(x => x.Id == request.QuestionId, x => x.Options);
+                .GetAsync(x => x.Id == request.QuestionId, cancellationToken, x => x.Options);
 
             if (question == null || question.ExamId != request.ExamId)
                 return Result.Fail(Error.NotFound("QuestionNotFound", "Question with id not found in this exam"));
@@ -43,7 +43,7 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
                     question.CorrectOptionId = request.NewCorrectOptionId.Value;
             }
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return Result.Ok("Question Updated Successfully");
         }
     }

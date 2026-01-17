@@ -20,7 +20,7 @@ namespace ExamSystem.Application.Features.Exams.Commands.DeleteExam
         public async Task<Result> Handle(DeleteExamCommand request, CancellationToken cancellationToken)
         {
             var examRepo = _unitOfWork.Repository<Exam>();
-            var exam = await examRepo.FindAsync(request.ExamId);
+            var exam = await examRepo.FindAsync(cancellationToken, request.ExamId);
             if (exam == null)
                 return Result.Fail(Error.NotFound("ExamNotFound", "Exam With this id not found"));
 
@@ -28,7 +28,8 @@ namespace ExamSystem.Application.Features.Exams.Commands.DeleteExam
                 return Result.Fail(Error.Forbidden("AccessDenied", "you don't have permission to remove this exam"));
 
             examRepo.Remove(exam);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Ok("Exam Deleted successfully");
         }

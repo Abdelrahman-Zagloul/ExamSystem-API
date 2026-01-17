@@ -29,8 +29,8 @@ namespace ExamSystem.Application.Features.Exams.Commands.CreateExam
             var exam = _mapper.Map<Exam>(request);
             exam.DoctorId = _currentUser.UserId!;
 
-            await _unitOfWork.Repository<Exam>().AddAsync(exam);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.Repository<Exam>().AddAsync(exam, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return Result.Ok("Exam created Successfully");
         }
     }

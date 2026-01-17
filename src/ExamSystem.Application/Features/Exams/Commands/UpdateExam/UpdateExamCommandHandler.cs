@@ -22,7 +22,7 @@ namespace ExamSystem.Application.Features.Exams.Commands.UpdateExam
         }
         public async Task<Result> Handle(UpdateExamCommand request, CancellationToken cancellationToken)
         {
-            var exam = await _unitOfWork.Repository<Exam>().FindAsync(request.ExamId);
+            var exam = await _unitOfWork.Repository<Exam>().FindAsync(cancellationToken, request.ExamId);
             if (exam == null)
                 return Result.Fail(Error.NotFound());
 
@@ -35,7 +35,7 @@ namespace ExamSystem.Application.Features.Exams.Commands.UpdateExam
 
             _mapper.Map(request, exam);
 
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             return Result.Ok("Exam Updated Successfully");
         }
 

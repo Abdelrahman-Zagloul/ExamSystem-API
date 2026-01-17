@@ -30,10 +30,10 @@ namespace ExamSystem.Application.Features.Questions.Queries.GetAllQuestionsForDo
                                 .Take(request.PageSize);
 
             var questionsDto = await questionWithPaginatedQuery.ProjectTo<QuestionForDoctorDto>(_mapper.ConfigurationProvider)
-                                     .ToListAsync();
+                                     .ToListAsync(cancellationToken);
 
             var totalCount = await questionRepo
-                    .CountAsync(x => x.ExamId == request.ExamId && x.Exam.DoctorId == request.DoctorId);
+                    .CountAsync(x => x.ExamId == request.ExamId && x.Exam.DoctorId == request.DoctorId, cancellationToken);
 
             if (!questionsDto.Any())
                 return Error.NotFound("QuestionNotFound", "No Question Found For this exam with existing doctor"); // use Implicit conversions for result

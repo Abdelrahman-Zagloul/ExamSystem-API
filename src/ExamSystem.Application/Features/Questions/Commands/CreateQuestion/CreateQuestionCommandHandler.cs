@@ -18,16 +18,16 @@ namespace ExamSystem.Application.Features.Questions.Commands.CreateQuestion
         }
         public async Task<Result> Handle(CreateQuestionCommand request, CancellationToken cancellationToken)
         {
-            var examExist = await _unitOfWork.Repository<Exam>().AnyAsync(e => e.Id == request.ExamId);
+            var examExist = await _unitOfWork.Repository<Exam>().AnyAsync(e => e.Id == request.ExamId, cancellationToken);
             if (!examExist)
                 return Result.Fail(Error.NotFound("ExamNotFound", "Exam with id not found"));
 
             var question = _mapper.Map<Question>(request);
 
-            await _unitOfWork.Repository<Question>().AddAsync(question);
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.Repository<Question>().AddAsync(question, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
             question.CorrectOptionId = question.Options.ElementAt(request.CorrectOptionNumber - 1).Id;
-            await _unitOfWork.SaveChangesAsync();
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result.Ok("Question created successfully");
         }
