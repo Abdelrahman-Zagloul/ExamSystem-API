@@ -3,6 +3,7 @@ using ExamSystem.Application.Features.Exams.Commands.CreateExam;
 using ExamSystem.Application.Features.Exams.Commands.UpdateExam;
 using ExamSystem.Application.Features.Exams.DTOs;
 using ExamSystem.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace ExamSystem.Application.Mappers
 {
@@ -13,6 +14,7 @@ namespace ExamSystem.Application.Mappers
             CreateExamMapper();
             UpdateExamMapper();
             GetExamsForDoctorMapper();
+            GetExamByIdForDoctorMapper();
         }
 
         private void CreateExamMapper()
@@ -32,16 +34,28 @@ namespace ExamSystem.Application.Mappers
         private void GetExamsForDoctorMapper()
         {
             CreateMap<Exam, ExamSummaryDto>()
-                .ForMember(dest => dest.ExamStatus, opts => opts.MapFrom(
-                    x => x.StartAt > DateTime.UtcNow ?
-                        ExamStatus.Upcoming :
-                        x.StartAt < DateTime.UtcNow && x.EndAt > DateTime.UtcNow ?
-                        ExamStatus.Active :
-                        ExamStatus.Finished
-
-                    ))
+                .ForMember(dest => dest.ExamStatus, opts => opts.MapFrom(GetExamStatusExpression()))
                 .ForMember(dest => dest.QuestionsCount, opts => opts.MapFrom(src => src.Questions.Count))
                 .ForMember(dest => dest.SubmissionsCount, opts => opts.MapFrom(src => src.ExamResults.Count));
         }
+        private void GetExamByIdForDoctorMapper()
+        {
+            CreateMap<Exam, ExamDetailsForDoctorDto>()
+                .ForMember(dest => dest.ExamStatus, opts => opts.MapFrom(GetExamStatusExpression()))
+                .ForMember(dest => dest.QuestionsCount, opts => opts.MapFrom(src => src.Questions.Count))
+                .ForMember(dest => dest.SubmissionsCount, opts => opts.MapFrom(src => src.ExamResults.Count))
+                .ForMember(dest => dest.StudentsPassCount, opts => opts.MapFrom(src => src.ExamResults.Count(x => x.Score >= (x.TotalMark / 2))))
+                .ForMember(dest => dest.StudentsPassCount, opts => opts.MapFrom(src => src.ExamResults.Count(x => x.Score < (x.TotalMark / 2))));
+        }
+        private Expression<Func<Exam, ExamStatus>> GetExamStatusExpression()
+        {
+            return x =>
+                x.StartAt > DateTime.UtcNow
+                    ? ExamStatus.Upcoming
+                    : x.StartAt < DateTime.UtcNow && x.EndAt > DateTime.UtcNow
+                    ? ExamStatus.Active
+                    : ExamStatus.Finished;
+        }
     }
+
 }

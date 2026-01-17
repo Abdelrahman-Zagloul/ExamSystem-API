@@ -2,6 +2,7 @@
 using ExamSystem.Application.Features.Exams.Commands.DeleteExam;
 using ExamSystem.Application.Features.Exams.Commands.UpdateExam;
 using ExamSystem.Application.Features.Exams.DTOs;
+using ExamSystem.Application.Features.Exams.Queries.GetExamByIdForDoctor;
 using ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor;
 using ExamSystem.Domain.Constants;
 using MediatR;
@@ -19,11 +20,19 @@ namespace ExamSystem.API.Controllers
         }
 
 
-        [HttpGet]
+        [HttpGet("/api/doctor/Exams")]
         [Authorize(Roles = Role.Doctor)]
-        public async Task<IActionResult> CreateExam(ExamStatus? examStatus, int pageNumber = 1, int pageSize = 5)
+        public async Task<IActionResult> GetExamsForDoctor(ExamStatus? examStatus, int pageNumber = 1, int pageSize = 5)
         {
             var result = await _mediator.Send(new GetExamsForDoctorQuery(GetUserId()!, examStatus, pageNumber, pageSize, GetBaseUrl()));
+            return HandleResult(result);
+        }
+
+        [HttpGet("/api/doctor/Exams/{examId}")]
+        [Authorize(Roles = Role.Doctor)]
+        public async Task<IActionResult> GetExamByIdForDoctor(int examId)
+        {
+            var result = await _mediator.Send(new GetExamByIdForDoctorQuery(GetUserId()!, examId));
             return HandleResult(result);
         }
 
