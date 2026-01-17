@@ -1,4 +1,6 @@
-﻿namespace ExamSystem.Application.Common.Results
+﻿using ExamSystem.Application.Common.Results.Errors;
+
+namespace ExamSystem.Application.Common.Results
 {
     public class Result
     {

@@ -1,4 +1,5 @@
 ﻿using ExamSystem.Application.Common.Results;
+using ExamSystem.Application.Common.Results.Errors;
 using ExamSystem.Application.Contracts.ExternalServices;
 using ExamSystem.Application.Contracts.Identity;
 using ExamSystem.Application.Contracts.Services;

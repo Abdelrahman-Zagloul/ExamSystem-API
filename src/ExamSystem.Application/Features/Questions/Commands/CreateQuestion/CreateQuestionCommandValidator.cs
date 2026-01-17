@@ -1,4 +1,5 @@
-﻿using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
+﻿using ExamSystem.Application.Common.Validations;
+using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
 using FluentValidation;
 
 namespace ExamSystem.Application.Features.Questions.Command.CreateQuestion
@@ -18,8 +19,7 @@ namespace ExamSystem.Application.Features.Questions.Command.CreateQuestion
                 .IsInEnum().WithMessage("Invalid question type.");
 
             RuleFor(x => x.ExamId)
-                .NotEmpty().WithMessage("Exam ID is required.")
-                .GreaterThan(0).WithMessage("Exam ID must be a positive integer.");
+                    .MustBePositiveNumber("Exam ID");
 
             RuleFor(x => x.Options)
                 .NotEmpty().WithMessage("Options are required.")

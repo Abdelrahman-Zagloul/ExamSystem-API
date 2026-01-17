@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using ExamSystem.Application.Common.Validations;
+using FluentValidation;
 
 namespace ExamSystem.Application.Features.Exams.Commands.DeleteExam
 {
@@ -7,8 +8,7 @@ namespace ExamSystem.Application.Features.Exams.Commands.DeleteExam
         public DeleteExamCommandValidator()
         {
             RuleFor(x => x.ExamId)
-                .NotEmpty().WithMessage("Exam ID is required.")
-                .GreaterThan(0).WithMessage("Exam ID must be a positive integer.");
+                .MustBePositiveNumber("Exam ID");
         }
     }
 }

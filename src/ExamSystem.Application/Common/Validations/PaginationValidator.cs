@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using ExamSystem.Application.Common.Interfaces;
+using FluentValidation;
 
-namespace ExamSystem.Application.Common.PaginatedResult
+namespace ExamSystem.Application.Common.Validations
 {
     public class PaginationValidator<T> : AbstractValidator<T> where T : IPaginatedQuery
     {

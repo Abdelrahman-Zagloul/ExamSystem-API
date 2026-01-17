@@ -1,4 +1,5 @@
-﻿using ExamSystem.Application.Features.Questions.DTOs;
+﻿using ExamSystem.Application.Common.Validations;
+using ExamSystem.Application.Features.Questions.DTOs;
 using FluentValidation;
 
 namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
@@ -8,12 +9,10 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
         public UpdateQuestionCommandValidator()
         {
             RuleFor(x => x.ExamId)
-                .GreaterThan(0)
-                .WithMessage("ExamId must be greater than 0");
+                    .MustBePositiveNumber("Exam ID");
 
             RuleFor(x => x.QuestionId)
-                .GreaterThan(0)
-                .WithMessage("QuestionId must be greater than 0");
+                    .MustBePositiveNumber("Question ID");
 
             RuleFor(x => x.QuestionText)
                .MaximumLength(1000)
@@ -43,8 +42,7 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
             public UpdateOptionDtoValidator()
             {
                 RuleFor(x => x.OptionId)
-                    .GreaterThan(0)
-                    .WithMessage("OptionId must be greater than 0");
+                    .MustBePositiveNumber("Option ID");
 
                 RuleFor(x => x.NewOptionText)
                     .MaximumLength(500)

@@ -1,4 +1,4 @@
-﻿using ExamSystem.Application.Common.PaginatedResult;
+﻿using ExamSystem.Application.Common.Interfaces;
 using ExamSystem.Application.Common.Results;
 using ExamSystem.Application.Features.Questions.DTOs;
 

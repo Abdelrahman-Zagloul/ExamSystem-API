@@ -1,4 +1,4 @@
-﻿namespace ExamSystem.Application.Common.PaginatedResult
+﻿namespace ExamSystem.Application.Common.Interfaces
 {
     public interface IPaginatedQuery
     {

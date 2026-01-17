@@ -1,5 +1,4 @@
-﻿using ExamSystem.Application.Common.PaginatedResult;
-using FluentValidation;
+﻿using ExamSystem.Application.Common.Validations;
 
 namespace ExamSystem.Application.Features.Questions.Queries.GetAllQuestionsForDoctor
 {
@@ -9,8 +8,7 @@ namespace ExamSystem.Application.Features.Questions.Queries.GetAllQuestionsForDo
         {
 
             RuleFor(x => x.ExamId)
-                .NotEmpty().WithMessage("Exam Id is required")
-                .GreaterThan(0).WithMessage("Exam Id Must be Greater than 0");
+                    .MustBePositiveNumber("Exam ID");
         }
     }
 }

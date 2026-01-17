@@ -1,4 +1,4 @@
-﻿namespace ExamSystem.Application.Common.Results
+﻿namespace ExamSystem.Application.Common.Results.Errors
 {
     public record Error(string Title, string Description, ErrorType ErrorType)
     {
@@ -6,7 +6,7 @@
             => new Error(title, description, ErrorType.Failure);
         public static Error NotFound(string title = "NotFound", string description = "Resource not found")
             => new Error(title, description, ErrorType.NotFound);
-        public static Error Validation(string title = "Validation Error", string description = "There was a validation error")
+        public static Error Validation(string title = "Validation Error", string description = "One or more validation errors occurred")
             => new Error(title, description, ErrorType.Validation);
         public static Error Unauthorized(string title = "Unauthorized", string description = "You are not authorized to perform this action")
             => new Error(title, description, ErrorType.Unauthorized);

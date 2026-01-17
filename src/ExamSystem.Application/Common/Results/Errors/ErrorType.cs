@@ -1,4 +1,4 @@
-﻿namespace ExamSystem.Application.Common.Results
+﻿namespace ExamSystem.Application.Common.Results.Errors
 {
     public enum ErrorType
     {

@@ -1,4 +1,5 @@
 ﻿using ExamSystem.Application.Common.Results;
+using ExamSystem.Application.Common.Results.Errors;
 using FluentValidation;
 using MediatR;
 

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ExamSystem.Application.Common.Results;
+using ExamSystem.Application.Common.Results.Errors;
 using ExamSystem.Application.Contracts.Identity;
 using ExamSystem.Domain.Entities;
 using ExamSystem.Domain.Interfaces;
