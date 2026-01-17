@@ -1,5 +1,7 @@
 ﻿using ExamSystem.Application.Features.Exams.Commands.CreateExam;
 using ExamSystem.Application.Features.Exams.Commands.DeleteExam;
+using ExamSystem.Application.Features.Exams.Commands.UpdateExam;
+using ExamSystem.Application.Features.Exams.DTOs;
 using ExamSystem.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +23,15 @@ namespace ExamSystem.API.Controllers
         public async Task<IActionResult> CreateExam(CreateExamCommand command)
         {
             var result = await _mediator.Send(command);
+            return HandleResult(result);
+        }
+
+
+        [HttpPut("{examId}")]
+        [Authorize(Roles = Role.Doctor)]
+        public async Task<IActionResult> UpdateExam(int examId, [FromBody] UpdateExamRequestDto dto)
+        {
+            var result = await _mediator.Send(new UpdateExamCommand(examId, dto.Title, dto.Description, dto.StartAt, dto.EndAt, dto.DurationInMinutes));
             return HandleResult(result);
         }
 
