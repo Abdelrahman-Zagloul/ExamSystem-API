@@ -26,9 +26,9 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
 
             _mapper.Map(request, question);
 
-            if (request.OptionsDto != null)
+            if (request.Options != null)
             {
-                foreach (var optionDto in request.OptionsDto)
+                foreach (var optionDto in request.Options)
                 {
                     var option = question.Options.FirstOrDefault(o => o.Id == optionDto.OptionId);
                     if (option == null)

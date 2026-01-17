@@ -1,6 +1,7 @@
 ﻿using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
 using ExamSystem.Application.Features.Questions.Commands.DeleteQuestion;
 using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion;
+using ExamSystem.Application.Features.Questions.DTOs;
 using ExamSystem.Application.Features.Questions.Queries.GetAllQuestionsForDoctor;
 using ExamSystem.Domain.Constants;
 using MediatR;
@@ -29,20 +30,20 @@ namespace ExamSystem.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = Role.Doctor)]
-        public async Task<IActionResult> CreateQuestion(int examId, CreateQuestionCommand command)
+        public async Task<IActionResult> CreateQuestion(int examId, CreateQuestionRequestDto dto)
         {
-            command = command with { ExamId = examId };
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(
+                new CreateQuestionCommand(examId, dto.QuestionText, dto.QuestionMark, dto.QuestionType, dto.Options, dto.CorrectOptionNumber));
             return HandleResult(result);
         }
 
 
         [HttpPut("{questionId}")]
         [Authorize(Roles = Role.Doctor)]
-        public async Task<IActionResult> UpdateQuestion(int examId, int questionId, UpdateQuestionCommand command)
+        public async Task<IActionResult> UpdateQuestion(int examId, int questionId, UpdateQuestionRequestDto dto)
         {
-            command = command with { ExamId = examId, QuestionId = questionId };
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(
+                new UpdateQuestionCommand(examId, questionId, dto.QuestionText, dto.NewQuestionMark, dto.Options, dto.NewCorrectOptionId));
             return HandleResult(result);
         }
 

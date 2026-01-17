@@ -6,10 +6,10 @@ using MediatR;
 namespace ExamSystem.Application.Features.Questions.Commands.CreateQuestion
 {
     public record CreateQuestionCommand(
+        int ExamId,
         string QuestionText,
         double QuestionMark,
         QuestionType QuestionType,
-        int ExamId,
         List<CreateOptionDto> Options,
         int CorrectOptionNumber) : IRequest<Result>;
 }

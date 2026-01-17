@@ -9,6 +9,6 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
         int QuestionId,
         string? QuestionText,
         int? NewQuestionMark,
-        List<UpdateOptionDto>? OptionsDto,
+        List<UpdateOptionDto>? Options,
         int? NewCorrectOptionId) : IRequest<Result>;
 }

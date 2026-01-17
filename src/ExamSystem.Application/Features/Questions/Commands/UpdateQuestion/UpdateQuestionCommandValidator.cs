@@ -24,11 +24,11 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
                 .When(x => x.NewQuestionMark.HasValue)
                 .WithMessage("Question mark must be greater than or equal to 0");
 
-            RuleForEach(x => x.OptionsDto)
+            RuleForEach(x => x.Options)
                  .NotNull()
                  .WithMessage("OptionDto cannot be null")
                  .SetValidator(new UpdateOptionDtoValidator()!)
-                 .When(x => x.OptionsDto != null);
+                 .When(x => x.Options != null);
 
             RuleFor(x => x.NewCorrectOptionId)
                .GreaterThan(0)
