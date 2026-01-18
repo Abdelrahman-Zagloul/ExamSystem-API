@@ -24,10 +24,10 @@ namespace ExamSystem.Application.Features.Exams.Commands.UpdateExam
         {
             var exam = await _unitOfWork.Repository<Exam>().FindAsync(cancellationToken, request.ExamId);
             if (exam == null)
-                return Result.Fail(Error.NotFound());
+                return Error.NotFound();
 
             if (exam.DoctorId != _currentUserService.UserId)
-                return Result.Fail(Error.Forbidden(description: "You don't have permission to update this exam"));
+                return Error.Forbidden(description: "You don't have permission to update this exam");
 
             var validationResult = ValidateExamSchedule(request, exam);
             if (!validationResult.IsSuccess)
@@ -45,11 +45,11 @@ namespace ExamSystem.Application.Features.Exams.Commands.UpdateExam
             var endAt = request.EndAt ?? exam.EndAt;
 
             if (endAt <= startAt)
-                return Result.Fail(Error.Validation(description: "End time must be after start time"));
+                return Error.BadRequest(description: "End time must be after start time");
 
             var availableMinutes = (endAt - startAt).TotalMinutes;
             if (request.DurationInMinutes.HasValue && request.DurationInMinutes.Value > availableMinutes)
-                return Result.Fail(Error.Validation(description: $"Duration In Minutes of exam must be less than or equal to {availableMinutes}"));
+                return Error.BadRequest(description: $"Duration In Minutes of exam must be less than or equal to {availableMinutes}");
 
             return Result.Ok();
         }

@@ -5,7 +5,8 @@ namespace ExamSystem.Application.Common.Results
     public class Result<TValue> : Result
     {
         private readonly TValue _value;
-        public TValue Value => IsSuccess ? _value : throw new InvalidOperationException("The value of a failure result can not be accessed.");
+        public TValue Value => IsSuccess ?
+            _value : throw new InvalidOperationException("The value of a failure result can not be accessed.");
 
 
         private Result(TValue value) : base()

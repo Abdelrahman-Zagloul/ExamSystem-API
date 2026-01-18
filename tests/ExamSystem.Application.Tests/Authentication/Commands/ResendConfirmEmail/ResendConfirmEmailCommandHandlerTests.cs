@@ -43,7 +43,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ResendConfirmEmai
         }
 
         [Fact]
-        public async Task Handle_EmailAlreadyConfirmed_ReturnsValidationError()
+        public async Task Handle_EmailAlreadyConfirmed_ReturnsConflict()
         {
             // Arrange
             var user = new ApplicationUser

@@ -28,7 +28,7 @@ namespace ExamSystem.Application.Features.Authentication.Commands.Register
         {
             var isEmailExist = await _userManager.Users.AnyAsync(x => x.Email == request.Email);
             if (isEmailExist)
-                return Result.Fail(Error.Validation("Email Already Exists", "This email is already in use. try anther email."));
+                return Error.Conflict("Email Already Exists", "This email is already in use. try anther email.");
 
             ApplicationUser user;
             if (request.Role == DTOs.RoleDto.Doctor)
@@ -39,11 +39,11 @@ namespace ExamSystem.Application.Features.Authentication.Commands.Register
             var createUserResult = await _userManager.CreateAsync(user, request.Password);
 
             if (!createUserResult.Succeeded)
-                return Result.Fail(createUserResult.Errors.Select(e => Error.Validation("User Creation Failed", e.Description)).ToList());
+                return createUserResult.Errors.Select(e => Error.Validation("User Creation Failed", e.Description)).ToList();
 
             var addToToRoleResult = await _userManager.AddToRoleAsync(user, request.Role.ToString());
             if (!addToToRoleResult.Succeeded)
-                return Result.Fail(addToToRoleResult.Errors.Select(x => Error.Validation("Role Assignment Failed", x.Description)).ToList());
+                return addToToRoleResult.Errors.Select(x => Error.Validation("Role Assignment Failed", x.Description)).ToList();
 
 
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);

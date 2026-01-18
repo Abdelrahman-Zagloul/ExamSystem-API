@@ -27,14 +27,12 @@ namespace ExamSystem.API.Controllers
             else
                 return HandleResultErrors(result);
         }
-
-
         private ActionResult HandleResultErrors(Result result)
         {
             if (result.Errors.All(x => x.ErrorType == ErrorType.Validation))
                 return HandleValidationErrors(result);
 
-            var statusCode = GetStatusCodeFromErrorType(result.Errors[0].ErrorType);
+            var statusCode = (int)result.Errors[0].ErrorType;
             return StatusCode(statusCode, new
             {
                 isSuccess = false,
@@ -60,18 +58,6 @@ namespace ExamSystem.API.Controllers
                 errors = result.Errors.GroupBy(e => e.Title)
                         .ToDictionary(g => g.Key, g => g.Select(x => x.Description).ToList())
             });
-        }
-        private int GetStatusCodeFromErrorType(ErrorType errorType)
-        {
-            return errorType switch
-            {
-                ErrorType.NotFound => StatusCodes.Status404NotFound,
-                ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
-                ErrorType.Forbidden => StatusCodes.Status403Forbidden,
-                ErrorType.Validation => StatusCodes.Status400BadRequest,
-                ErrorType.Failure => StatusCodes.Status500InternalServerError,
-                _ => StatusCodes.Status500InternalServerError
-            };
         }
     }
 }

@@ -25,11 +25,11 @@ namespace ExamSystem.Application.Features.Authentication.Commands.ChangePassword
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
             if (user == null)
-                return Result.Fail(Error.NotFound("UserNotFound", "User with this id not found"));
+                return Error.NotFound("UserNotFound", "User with this id not found");
 
             var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
             if (!result.Succeeded)
-                return Result.Fail(result.Errors.Select(e => Error.Validation(e.Code, e.Description)).ToList());
+                return result.Errors.Select(e => Error.Validation(e.Code, e.Description)).ToList();
 
             _backgroundJobService.Enqueue(() => _appEmailService.SendEmailForPasswordChangedAsync(user));
             return Result.Ok("Password changed successfully");

@@ -21,10 +21,10 @@ namespace ExamSystem.Application.Features.Exams.Commands.SubmitExam
         {
             var exam = await _unitOfWork.Repository<Exam>().FindAsync(cancellationToken, request.ExamId);
             if (exam == null)
-                return Result.Fail(Error.NotFound("ExamNotFound", "Exam with this id not found"));
+                return Error.NotFound("ExamNotFound", "Exam with this id not found");
 
             if (exam.EndAt < DateTime.UtcNow)
-                return Result.Fail(Error.Validation("ExamTimeFinished", "you can't submit exam after finished"));
+                return Error.Conflict("ExamTimeFinished", "You cannot submit the exam after it has finished");
 
 
             var examResultRepo = _unitOfWork.Repository<ExamResult>();
@@ -32,7 +32,7 @@ namespace ExamSystem.Application.Features.Exams.Commands.SubmitExam
                         .AnyAsync(x => x.ExamId == request.ExamId && x.StudentId == request.StudentId, cancellationToken);
 
             if (alreadySubmitted)
-                return Result.Fail(Error.Validation("ExamAlreadySubmitted", "You have already submitted this exam"));
+                return Error.Conflict("ExamAlreadySubmitted", "You have already submitted this exam");
 
 
             var examQuestions = await _unitOfWork.Repository<Question>()

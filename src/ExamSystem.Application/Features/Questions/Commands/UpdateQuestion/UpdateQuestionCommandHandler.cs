@@ -22,7 +22,7 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
                 .GetAsync(x => x.Id == request.QuestionId, cancellationToken, x => x.Options);
 
             if (question == null || question.ExamId != request.ExamId)
-                return Result.Fail(Error.NotFound("QuestionNotFound", "Question with id not found in this exam"));
+                return Error.NotFound("QuestionNotFound", "Question with id not found in this exam");
 
             _mapper.Map(request, question);
 
@@ -32,7 +32,7 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
                 {
                     var option = question.Options.FirstOrDefault(o => o.Id == optionDto.OptionId);
                     if (option == null)
-                        return Result.Fail(Error.NotFound("OptionNotFound", "Option with id not found"));
+                        return Error.NotFound("OptionNotFound", "Option with id not found");
                     _mapper.Map(optionDto, option);
                 }
             }

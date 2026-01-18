@@ -20,7 +20,7 @@ namespace ExamSystem.Application.Features.Questions.Commands.CreateQuestion
         {
             var examExist = await _unitOfWork.Repository<Exam>().AnyAsync(e => e.Id == request.ExamId, cancellationToken);
             if (!examExist)
-                return Result.Fail(Error.NotFound("ExamNotFound", "Exam with id not found"));
+                return Error.NotFound("ExamNotFound", "Exam with id not found");
 
             var question = _mapper.Map<Question>(request);
 

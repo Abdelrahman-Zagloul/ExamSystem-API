@@ -29,7 +29,7 @@ namespace ExamSystem.Application.Features.Authentication.Commands.ResendConfirmE
             if (user != null)
             {
                 if (user.EmailConfirmed == true)
-                    return Result.Fail(Error.Validation("EmailAlreadyConfirmed", "This Email is already confirmed."));
+                    return Error.Conflict("EmailAlreadyConfirmed", "This Email is already confirmed.");
 
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));

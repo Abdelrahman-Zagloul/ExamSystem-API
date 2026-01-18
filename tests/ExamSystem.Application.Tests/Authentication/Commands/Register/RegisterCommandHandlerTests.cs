@@ -26,7 +26,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Register
         }
 
         [Fact]
-        public async Task Handle_ShouldReturnValidationError_WhenEmailAlreadyExists()
+        public async Task Handle_ShouldReturnConflict_WhenEmailAlreadyExists()
         {
             //Arrange
             var command = new RegisterCommand("test", "test@example.com", "Password123", "Password123", RoleDto.Student);

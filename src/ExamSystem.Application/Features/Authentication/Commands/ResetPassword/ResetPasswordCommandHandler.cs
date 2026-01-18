@@ -27,12 +27,12 @@ namespace ExamSystem.Application.Features.Authentication.Commands.ResetPassword
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
-                return Result.Fail(Error.NotFound("UserNotFound", "User with this email does not exist."));
+                return Error.NotFound("UserNotFound", "User with this email does not exist.");
 
             var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.Token));
             var resetPassResult = await _userManager.ResetPasswordAsync(user, decodedToken, request.NewPassword);
             if (!resetPassResult.Succeeded)
-                return Result.Fail(resetPassResult.Errors.Select(x => Error.Validation(x.Code, x.Description)).ToList());
+                return resetPassResult.Errors.Select(x => Error.Validation(x.Code, x.Description)).ToList();
 
             _backgroundJobService.Enqueue(() => _appEmailService.SendEmailForPasswordChangedAsync(user));
             return Result.Ok("Password reset successfully");

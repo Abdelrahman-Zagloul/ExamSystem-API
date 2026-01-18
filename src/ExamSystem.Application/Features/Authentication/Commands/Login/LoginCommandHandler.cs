@@ -23,13 +23,13 @@ namespace ExamSystem.Application.Features.Authentication.Commands.Login
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
-                return Result<AuthDto>.Fail(Error.Unauthorized("InvalidCredentials", "Email or password is invalid."));
+                return Error.Unauthorized("InvalidCredentials", "Email or password is invalid.");
 
             if (!user.EmailConfirmed)
-                return Result<AuthDto>.Fail(Error.Unauthorized("EmailNotConfirmed", "Please confirm your email before logging in."));
+                return Error.Unauthorized("EmailNotConfirmed", "Please confirm your email before logging in.");
 
             var authDto = await _jwtTokenService.GenerateTokenAsync(user);
-            return Result<AuthDto>.Ok(authDto);
+            return authDto;
         }
     }
 }

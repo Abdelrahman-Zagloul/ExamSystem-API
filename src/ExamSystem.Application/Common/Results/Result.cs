@@ -28,5 +28,10 @@ namespace ExamSystem.Application.Common.Results
         public static Result Ok(string message) => new Result(message);
         public static Result Fail(Error error) => new Result(error);
         public static Result Fail(List<Error> errors) => new Result(errors);
+
+        // Implicit conversions
+        public static implicit operator Result(string message) => Ok(message);
+        public static implicit operator Result(Error error) => Fail(error);
+        public static implicit operator Result(List<Error> errors) => Fail(errors);
     }
 }

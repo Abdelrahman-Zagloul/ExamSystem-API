@@ -32,16 +32,16 @@ namespace ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
-                return Result<AuthDto>.Fail(Error.NotFound("UserNotFound", $"User with email:'{request.Email}' not found"));
+                return Error.NotFound("UserNotFound", $"User with email:'{request.Email}' not found");
 
             var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(request.Token));
             var result = await _userManager.ConfirmEmailAsync(user, decodedToken);
             if (!result.Succeeded)
-                return Result<AuthDto>.Fail(result.Errors.Select(x => Error.Validation(x.Code, x.Description)).ToList());
+                return result.Errors.Select(x => Error.Validation(x.Code, x.Description)).ToList();
 
             _backgroundJobService.Enqueue(() => _appEmailService.SendEmailForWelcomeMessageAsync(user));
             var authDto = await _jwtTokenService.GenerateTokenAsync(user);
-            return Result<AuthDto>.Ok(authDto);
+            return authDto;
         }
     }
 }

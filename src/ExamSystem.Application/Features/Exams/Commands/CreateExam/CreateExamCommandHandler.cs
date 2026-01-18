@@ -24,7 +24,7 @@ namespace ExamSystem.Application.Features.Exams.Commands.CreateExam
         public async Task<Result> Handle(CreateExamCommand request, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(_currentUser.UserId))
-                return Result.Fail(Error.Unauthorized());
+                return Error.Unauthorized();
 
             var exam = _mapper.Map<Exam>(request);
             exam.DoctorId = _currentUser.UserId!;
