@@ -19,6 +19,7 @@ namespace ExamSystem.Infrastructure.Persistence.Contexts
         public DbSet<Option> Options { get; set; }
         public DbSet<ExamResult> ExamResults { get; set; }
         public DbSet<StudentAnswer> StudentAnswers { get; set; }
+        public DbSet<ExamSession> ExamSessions { get; set; }
 
     }
 }
