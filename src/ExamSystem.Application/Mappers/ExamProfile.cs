@@ -15,7 +15,9 @@ namespace ExamSystem.Application.Mappers
             UpdateExamMapper();
             GetExamsForDoctorMapper();
             GetExamByIdForDoctorMapper();
+            StartExamMapper();
         }
+
 
         private void CreateExamMapper()
         {
@@ -47,6 +49,16 @@ namespace ExamSystem.Application.Mappers
                 .ForMember(dest => dest.StudentsPassCount, opts => opts.MapFrom(src => src.ExamResults.Count(x => x.Score >= (x.TotalMark / 2))))
                 .ForMember(dest => dest.StudentsPassCount, opts => opts.MapFrom(src => src.ExamResults.Count(x => x.Score < (x.TotalMark / 2))));
         }
+        private void StartExamMapper()
+        {
+            CreateMap<Exam, StartExamResponseDto>()
+                .ForMember(dest => dest.ExamId, opts => opts.MapFrom(src => src.Id))
+                .ForMember(dest => dest.QuestionsCount, opts => opts.MapFrom(src => src.Questions.Count));
+
+            CreateMap<Question, ExamQuestionDto>()
+             .ForMember(dest => dest.QuestionId, opts => opts.MapFrom(src => src.Id));
+        }
+
         private Expression<Func<Exam, ExamStatus>> GetExamStatusExpression()
         {
             return x =>
