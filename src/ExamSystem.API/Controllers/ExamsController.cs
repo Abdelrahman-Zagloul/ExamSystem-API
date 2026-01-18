@@ -1,5 +1,6 @@
 ﻿using ExamSystem.Application.Features.Exams.Commands.CreateExam;
 using ExamSystem.Application.Features.Exams.Commands.DeleteExam;
+using ExamSystem.Application.Features.Exams.Commands.SubmitExam;
 using ExamSystem.Application.Features.Exams.Commands.UpdateExam;
 using ExamSystem.Application.Features.Exams.DTOs;
 using ExamSystem.Application.Features.Exams.Queries.GetExamByIdForDoctor;
@@ -42,6 +43,14 @@ namespace ExamSystem.API.Controllers
         public async Task<IActionResult> StartExam(int examId)
         {
             var result = await _mediator.Send(new StartExamQuery(GetUserId()!, examId));
+            return HandleResult(result);
+        }
+
+        [HttpPost("{examId}/submit-exam")]
+        [Authorize(Roles = Role.Student)]
+        public async Task<IActionResult> SubmitExam(int examId, List<SubmitAnswerDto> answers)
+        {
+            var result = await _mediator.Send(new SubmitExamCommand(GetUserId()!, examId, answers));
             return HandleResult(result);
         }
 
