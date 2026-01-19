@@ -8,35 +8,37 @@ using ExamSystem.Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor
+namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForStudent
 {
-    public class GetExamsForDoctorQueryHandler : IRequestHandler<GetExamsForDoctorQuery, Result<PaginatedResult<ExamSummaryDto>>>
+    public class GetExamsForStudentQueryHandler
+        : IRequestHandler<GetExamsForStudentQuery, Result<PaginatedResult<ExamDetailsForStudentDto>>>
     {
+
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetExamsForDoctorQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetExamsForStudentQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<Result<PaginatedResult<ExamSummaryDto>>> Handle(GetExamsForDoctorQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PaginatedResult<ExamDetailsForStudentDto>>> Handle(GetExamsForStudentQuery request, CancellationToken cancellationToken)
         {
             var examQuery = _unitOfWork.Repository<Exam>().GetAsQuery(true)
-                    .Where(x => x.DoctorId == request.DoctorId)
                     .ApplyExamStatusFilter(request.ExamStatus);
 
             var totalCount = await examQuery.CountAsync(cancellationToken);
 
-            var examsForDoctorDto = await examQuery
+            var examsForStudentDto = await examQuery
                         .OrderBy(x => x.Id)
-                        .ProjectTo<ExamSummaryDto>(_mapper.ConfigurationProvider)
+                        .ProjectTo<ExamDetailsForStudentDto>(_mapper.ConfigurationProvider)
                         .Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize)
                         .ToListAsync(cancellationToken);
 
-            return PaginatedResult<ExamSummaryDto>
-                .CreatePaginatedResult(examsForDoctorDto, totalCount, request.PageNumber, request.PageSize, request.BaseUrl);
+            return PaginatedResult<ExamDetailsForStudentDto>
+                .CreatePaginatedResult(examsForStudentDto, totalCount, request.PageNumber, request.PageSize, request.BaseUrl);
         }
+
     }
 }

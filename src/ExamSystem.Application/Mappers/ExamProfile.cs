@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using ExamSystem.Application.Features.Exams.Commands.CreateExam;
 using ExamSystem.Application.Features.Exams.Commands.UpdateExam;
+using ExamSystem.Application.Features.Exams.Common;
 using ExamSystem.Application.Features.Exams.DTOs;
 using ExamSystem.Domain.Entities;
-using System.Linq.Expressions;
 
 namespace ExamSystem.Application.Mappers
 {
@@ -16,6 +16,7 @@ namespace ExamSystem.Application.Mappers
             GetExamsForDoctorMapper();
             GetExamByIdForDoctorMapper();
             StartExamMapper();
+            GetExamsForStudentMapper();
         }
 
 
@@ -36,14 +37,14 @@ namespace ExamSystem.Application.Mappers
         private void GetExamsForDoctorMapper()
         {
             CreateMap<Exam, ExamSummaryDto>()
-                .ForMember(dest => dest.ExamStatus, opts => opts.MapFrom(GetExamStatusExpression()))
+                .ForMember(dest => dest.ExamStatus, opts => opts.MapFrom(ExamExtensions.GetExamStatusExpression()))
                 .ForMember(dest => dest.QuestionsCount, opts => opts.MapFrom(src => src.Questions.Count))
                 .ForMember(dest => dest.SubmissionsCount, opts => opts.MapFrom(src => src.ExamResults.Count));
         }
         private void GetExamByIdForDoctorMapper()
         {
             CreateMap<Exam, ExamDetailsForDoctorDto>()
-                .ForMember(dest => dest.ExamStatus, opts => opts.MapFrom(GetExamStatusExpression()))
+                .ForMember(dest => dest.ExamStatus, opts => opts.MapFrom(ExamExtensions.GetExamStatusExpression()))
                 .ForMember(dest => dest.QuestionsCount, opts => opts.MapFrom(src => src.Questions.Count))
                 .ForMember(dest => dest.SubmissionsCount, opts => opts.MapFrom(src => src.ExamResults.Count))
                 .ForMember(dest => dest.StudentsPassCount, opts => opts.MapFrom(src => src.ExamResults.Count(x => x.Score >= (x.TotalMark / 2))))
@@ -58,15 +59,12 @@ namespace ExamSystem.Application.Mappers
             CreateMap<Question, ExamQuestionDto>()
              .ForMember(dest => dest.QuestionId, opts => opts.MapFrom(src => src.Id));
         }
-
-        private Expression<Func<Exam, ExamStatus>> GetExamStatusExpression()
+        private void GetExamsForStudentMapper()
         {
-            return x =>
-                x.StartAt > DateTime.UtcNow
-                    ? ExamStatus.Upcoming
-                    : x.StartAt < DateTime.UtcNow && x.EndAt > DateTime.UtcNow
-                    ? ExamStatus.Active
-                    : ExamStatus.Finished;
+            CreateMap<Exam, ExamDetailsForStudentDto>()
+                .ForMember(dest => dest.DoctorName, opts => opts.MapFrom(src => src.Doctor.FullName))
+                .ForMember(dest => dest.ExamStatus, opts => opts.MapFrom(ExamExtensions.GetExamStatusExpression()))
+                .ForMember(dest => dest.QuestionsCount, opts => opts.MapFrom(src => src.Questions.Count));
         }
     }
 

@@ -6,6 +6,7 @@ using ExamSystem.Application.Features.Exams.Commands.UpdateExam;
 using ExamSystem.Application.Features.Exams.DTOs;
 using ExamSystem.Application.Features.Exams.Queries.GetExamByIdForDoctor;
 using ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor;
+using ExamSystem.Application.Features.Exams.Queries.GetExamsForStudent;
 using ExamSystem.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -27,6 +28,14 @@ namespace ExamSystem.API.Controllers
         public async Task<IActionResult> GetExamsForDoctor(ExamStatus? examStatus, int pageNumber = 1, int pageSize = 5)
         {
             var result = await _mediator.Send(new GetExamsForDoctorQuery(GetUserId()!, examStatus, pageNumber, pageSize, GetBaseUrl()));
+            return HandleResult(result);
+        }
+
+        [HttpGet("/api/student/Exams")]
+        //[Authorize]
+        public async Task<IActionResult> GetExamsForStudent(ExamStatus? examStatus, int pageNumber = 1, int pageSize = 5)
+        {
+            var result = await _mediator.Send(new GetExamsForStudentQuery(examStatus, pageNumber, pageSize, GetBaseUrl()));
             return HandleResult(result);
         }
 
