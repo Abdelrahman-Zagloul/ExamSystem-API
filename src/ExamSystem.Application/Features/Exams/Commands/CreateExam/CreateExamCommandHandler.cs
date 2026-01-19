@@ -23,7 +23,10 @@ namespace ExamSystem.Application.Features.Exams.Commands.CreateExam
 
         public async Task<Result> Handle(CreateExamCommand request, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(_currentUser.UserId))
+            var doctorExist = await _unitOfWork.Repository<Doctor>()
+                .AnyAsync(x => x.Id == _currentUser.UserId, cancellationToken);
+
+            if (!doctorExist)
                 return Error.Unauthorized();
 
             var exam = _mapper.Map<Exam>(request);

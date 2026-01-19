@@ -29,6 +29,9 @@ namespace ExamSystem.Application.Features.Exams.Commands.UpdateExam
             if (exam.DoctorId != _currentUserService.UserId)
                 return Error.Forbidden(description: "You don't have permission to update this exam");
 
+            if (DateTime.UtcNow > exam.StartAt)
+                return Error.BadRequest("Exam is already started and cannot be updated.");
+
             var validationResult = ValidateExamSchedule(request, exam);
             if (!validationResult.IsSuccess)
                 return validationResult;
@@ -41,15 +44,15 @@ namespace ExamSystem.Application.Features.Exams.Commands.UpdateExam
 
         private Result ValidateExamSchedule(UpdateExamCommand request, Exam exam)
         {
-            var startAt = request.StartAt ?? exam.StartAt;
-            var endAt = request.EndAt ?? exam.EndAt;
+            var newStartAt = request.StartAt ?? exam.StartAt;
+            var newEndAt = request.EndAt ?? exam.EndAt;
 
-            if (endAt <= startAt)
-                return Error.BadRequest(description: "End time must be after start time");
+            if (newEndAt <= newStartAt)
+                return Error.BadRequest("InvalidSchedule", "End time must be after start time");
 
-            var availableMinutes = (endAt - startAt).TotalMinutes;
-            if (request.DurationInMinutes.HasValue && request.DurationInMinutes.Value > availableMinutes)
-                return Error.BadRequest(description: $"Duration In Minutes of exam must be less than or equal to {availableMinutes}");
+            var newAvailableMinutes = (newEndAt - newStartAt).TotalMinutes;
+            if (request.DurationInMinutes.HasValue && request.DurationInMinutes.Value > newAvailableMinutes)
+                return Error.BadRequest("InvalidDuration", $"Duration In Minutes of exam must be less than or equal to {newAvailableMinutes}");
 
             return Result.Ok();
         }

@@ -24,8 +24,22 @@ namespace ExamSystem.Application.Features.Exams.Commands.DeleteExam
             if (exam == null)
                 return Error.NotFound("ExamNotFound", "Exam With this id not found");
 
-            if (_currentUserService.UserId != exam.DoctorId)
+            if (exam.DoctorId != _currentUserService.UserId!)
                 return Error.Forbidden("AccessDenied", "you don't have permission to remove this exam");
+
+            if (DateTime.UtcNow > exam.EndAt)
+                return Error.Conflict("ExamAlreadyFinished", "Exam already finished and cannot be deleted.");
+
+            var hasSession = await _unitOfWork.Repository<ExamSession>()
+                            .AnyAsync(x => x.ExamId == request.ExamId, cancellationToken);
+            if (hasSession)
+                return Error.Conflict("ExamHasSessions", "This exam cannot deleted because students already started it.");
+
+            var hasResult = await _unitOfWork.Repository<ExamResult>()
+                            .AnyAsync(x => x.ExamId == request.ExamId, cancellationToken);
+            if (hasResult)
+                return Error.Conflict("ExamHasResults", "This exam cannot be deleted because results already been submitted.");
+
 
             examRepo.Remove(exam);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
