@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using ExamSystem.Application.Common.Extensions;
 using ExamSystem.Application.Features.Exams.Commands.CreateExam;
 using ExamSystem.Application.Features.Exams.Commands.UpdateExam;
-using ExamSystem.Application.Features.Exams.Common;
 using ExamSystem.Application.Features.Exams.DTOs;
 using ExamSystem.Domain.Entities.Exams;
 using ExamSystem.Domain.Entities.Questions;

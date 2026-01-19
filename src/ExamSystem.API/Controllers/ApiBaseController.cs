@@ -11,7 +11,7 @@ namespace ExamSystem.API.Controllers
     [Route("api/[controller]")]
     public class ApiBaseController : ControllerBase
     {
-        protected string? GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier);
+        protected string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
         protected string GetBaseUrl() => $"{Request.Scheme}://{Request.Host}{Request.Path}";
         protected Dictionary<string, string> GetQueryParam()
             => Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());

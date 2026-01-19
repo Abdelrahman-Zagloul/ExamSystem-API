@@ -1,8 +1,7 @@
-﻿using ExamSystem.Application.Features.Exams.DTOs;
-using ExamSystem.Domain.Entities.Exams;
+﻿using ExamSystem.Domain.Entities.Exams;
 using System.Linq.Expressions;
 
-namespace ExamSystem.Application.Features.Exams.Common
+namespace ExamSystem.Application.Common.Extensions
 {
     public static class ExamExtensions
     {
@@ -19,6 +18,18 @@ namespace ExamSystem.Application.Features.Exams.Common
                 ExamStatus.Active => examQuery.Where(x => x.StartAt <= now && x.EndAt >= now),
                 ExamStatus.Finished => examQuery.Where(x => x.EndAt < now),
                 _ => examQuery
+            };
+        }
+        public static IQueryable<ExamResult> ApplyExamResultStatusFilter(this IQueryable<ExamResult> examResultQuery, ExamResultStatus? status)
+        {
+            if (!status.HasValue)
+                return examResultQuery;
+
+            return status.Value switch
+            {
+                ExamResultStatus.Passed => examResultQuery.Where(x => (x.TotalMark * 0.5) <= x.Score),
+                ExamResultStatus.Failed => examResultQuery.Where(x => (x.TotalMark * 0.5) > x.Score),
+                _ => examResultQuery
             };
         }
 

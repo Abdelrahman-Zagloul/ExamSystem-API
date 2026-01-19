@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using ExamSystem.Application.Common.Extensions;
 using ExamSystem.Application.Common.Results;
-using ExamSystem.Application.Features.Exams.Common;
 using ExamSystem.Application.Features.Exams.DTOs;
 using ExamSystem.Domain.Entities.Exams;
 using ExamSystem.Domain.Interfaces;
