@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ExamSystem.Application.Common.Results;
-using ExamSystem.Application.Common.Results.Errors;
 using ExamSystem.Application.Features.Questions.DTOs;
 using ExamSystem.Domain.Entities;
 using ExamSystem.Domain.Interfaces;
@@ -35,11 +34,8 @@ namespace ExamSystem.Application.Features.Questions.Queries.GetAllQuestionsForDo
             var totalCount = await questionRepo
                     .CountAsync(x => x.ExamId == request.ExamId && x.Exam.DoctorId == request.DoctorId, cancellationToken);
 
-            if (!questionsDto.Any())
-                return Error.NotFound("QuestionNotFound", "No Question Found For this exam with existing doctor"); // use Implicit conversions for result
-
             return PaginatedResult<QuestionForDoctorDto>
-                    .CreatePaginatedResult(questionsDto, totalCount, request.PageNumber, request.PageSize, request.BaseUrl);
+                    .CreatePaginatedResult(questionsDto, totalCount, request.PageNumber, request.PageSize, request.BaseUrl, request.QueryParams);
         }
 
     }

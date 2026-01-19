@@ -5,5 +5,7 @@
         int PageNumber { get; }
         int PageSize { get; }
         string BaseUrl { get; }
+        Dictionary<string, string> QueryParams { get; }
+
     }
 }

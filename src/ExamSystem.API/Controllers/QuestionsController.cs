@@ -23,8 +23,7 @@ namespace ExamSystem.API.Controllers
         [Authorize(Roles = Role.Doctor)]
         public async Task<IActionResult> GetExamQuestions(int examId, int pageNumber = 1, int pageSize = 5)
         {
-            var baseUrl = $"{Request.Scheme}://{Request.Host}{Request.Path}";
-            var result = await _mediator.Send(new GetExamQuestionsForDoctorQuery(GetUserId()!, examId, pageNumber, pageSize, baseUrl));
+            var result = await _mediator.Send(new GetExamQuestionsForDoctorQuery(GetUserId()!, examId, pageNumber, pageSize, GetBaseUrl(), GetQueryParam()));
             return HandleResult(result);
         }
 

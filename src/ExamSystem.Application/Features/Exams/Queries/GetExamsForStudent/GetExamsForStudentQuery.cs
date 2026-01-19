@@ -9,7 +9,8 @@ namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForStudent
             ExamStatus? ExamStatus,
             int PageNumber,
             int PageSize,
-            string BaseUrl)
+            string BaseUrl,
+            Dictionary<string, string> QueryParams)
         : IPaginatedQuery,
         IResultRequest<PaginatedResult<ExamDetailsForStudentDto>>;
 }

@@ -37,7 +37,7 @@ namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForStudent
                         .ToListAsync(cancellationToken);
 
             return PaginatedResult<ExamDetailsForStudentDto>
-                .CreatePaginatedResult(examsForStudentDto, totalCount, request.PageNumber, request.PageSize, request.BaseUrl);
+                .CreatePaginatedResult(examsForStudentDto, totalCount, request.PageNumber, request.PageSize, request.BaseUrl, request.QueryParams);
         }
 
     }

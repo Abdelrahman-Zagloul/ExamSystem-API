@@ -9,6 +9,7 @@ namespace ExamSystem.Application.Features.Questions.Queries.GetAllQuestionsForDo
             int ExamId,
             int PageNumber,
             int PageSize,
-            string BaseUrl)
+            string BaseUrl,
+            Dictionary<string, string> QueryParams)
             : IResultRequest<PaginatedResult<QuestionForDoctorDto>>, IPaginatedQuery;
 }

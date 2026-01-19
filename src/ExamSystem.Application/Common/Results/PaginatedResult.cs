@@ -15,7 +15,8 @@
                                                                int totalCount,
                                                                int pageNumber,
                                                                int pageSize,
-                                                               string baseUrl)
+                                                               string baseUrl,
+                                                               Dictionary<string, string> queryParams)
         {
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
             return new PaginatedResult<T>
@@ -25,13 +26,22 @@
                 PageSize = pageSize,
                 TotalPages = totalPages,
                 NextPageUrl = totalPages > pageNumber
-                                ? CreatePageUrl(baseUrl, pageNumber + 1, pageSize) : null,
+                                ? CreatePageUrl(baseUrl, pageNumber + 1, pageSize, queryParams) : null,
                 PreviousPageUrl = pageNumber > 1
-                                ? CreatePageUrl(baseUrl, pageNumber - 1, pageSize) : null
+                                ? CreatePageUrl(baseUrl, pageNumber - 1, pageSize, queryParams) : null
             };
         }
 
-        private static string? CreatePageUrl(string baseUrl, int pageNumber, int pageSize)
-            => $"{baseUrl}?pageNumber={pageNumber}&pageSize={pageSize}";
+        private static string? CreatePageUrl(string baseUrl, int pageNumber, int pageSize, Dictionary<string, string> queryParams)
+        {
+            var query = new Dictionary<string, string>(queryParams)
+            {
+                ["pageNumber"] = pageNumber.ToString(),
+                ["pageSize"] = pageSize.ToString()
+            };
+
+            var queryString = string.Join("&", query.Select(q => $"{q.Key}={Uri.EscapeDataString(q.Value!)}"));
+            return baseUrl + "?" + queryString;
+        }
     }
 }

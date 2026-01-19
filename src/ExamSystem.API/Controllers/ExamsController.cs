@@ -27,7 +27,7 @@ namespace ExamSystem.API.Controllers
         [Authorize(Roles = Role.Doctor)]
         public async Task<IActionResult> GetExamsForDoctor(ExamStatus? examStatus, int pageNumber = 1, int pageSize = 5)
         {
-            var result = await _mediator.Send(new GetExamsForDoctorQuery(GetUserId()!, examStatus, pageNumber, pageSize, GetBaseUrl()));
+            var result = await _mediator.Send(new GetExamsForDoctorQuery(GetUserId()!, examStatus, pageNumber, pageSize, GetBaseUrl(), GetQueryParam()));
             return HandleResult(result);
         }
 
@@ -35,7 +35,7 @@ namespace ExamSystem.API.Controllers
         //[Authorize]
         public async Task<IActionResult> GetExamsForStudent(ExamStatus? examStatus, int pageNumber = 1, int pageSize = 5)
         {
-            var result = await _mediator.Send(new GetExamsForStudentQuery(examStatus, pageNumber, pageSize, GetBaseUrl()));
+            var result = await _mediator.Send(new GetExamsForStudentQuery(examStatus, pageNumber, pageSize, GetBaseUrl(), GetQueryParam()));
             return HandleResult(result);
         }
 
