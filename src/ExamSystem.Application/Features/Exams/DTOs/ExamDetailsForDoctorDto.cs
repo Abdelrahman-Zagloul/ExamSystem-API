@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using ExamSystem.Domain.Entities.Exams;
+using System.Text.Json.Serialization;
 
 namespace ExamSystem.Application.Features.Exams.DTOs
 {

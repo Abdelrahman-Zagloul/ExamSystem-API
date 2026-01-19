@@ -1,4 +1,5 @@
-﻿using ExamSystem.Domain.Entities;
+﻿using ExamSystem.Domain.Entities.Exams;
+using ExamSystem.Domain.Entities.Questions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

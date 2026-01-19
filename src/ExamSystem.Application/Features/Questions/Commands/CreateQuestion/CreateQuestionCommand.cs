@@ -1,6 +1,6 @@
 ﻿using ExamSystem.Application.Common.Results;
 using ExamSystem.Application.Features.Questions.DTOs;
-using ExamSystem.Domain.Enums;
+using ExamSystem.Domain.Entities.Questions;
 using MediatR;
 
 namespace ExamSystem.Application.Features.Questions.Commands.CreateQuestion

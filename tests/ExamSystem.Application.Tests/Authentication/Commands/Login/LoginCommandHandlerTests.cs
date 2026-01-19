@@ -2,7 +2,7 @@
 using ExamSystem.Application.Features.Authentication.Commands.Login;
 using ExamSystem.Application.Features.Authentication.DTOs;
 using ExamSystem.Application.Tests.Helpers;
-using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Users;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Moq;

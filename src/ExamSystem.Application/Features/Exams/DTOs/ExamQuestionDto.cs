@@ -1,5 +1,5 @@
 ﻿using ExamSystem.Application.Features.Questions.DTOs;
-using ExamSystem.Domain.Enums;
+using ExamSystem.Domain.Entities.Questions;
 
 namespace ExamSystem.Application.Features.Exams.DTOs
 {

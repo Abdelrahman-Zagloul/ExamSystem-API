@@ -1,4 +1,6 @@
-﻿namespace ExamSystem.Domain.Entities
+﻿using ExamSystem.Domain.Entities.Exams;
+
+namespace ExamSystem.Domain.Entities.Questions
 {
     public class Option
     {

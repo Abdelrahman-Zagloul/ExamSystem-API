@@ -2,7 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using ExamSystem.Application.Common.Results;
 using ExamSystem.Application.Features.Questions.DTOs;
-using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Questions;
 using ExamSystem.Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

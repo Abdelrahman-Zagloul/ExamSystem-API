@@ -2,7 +2,7 @@
 using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
 using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion;
 using ExamSystem.Application.Features.Questions.DTOs;
-using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Questions;
 
 namespace ExamSystem.Application.Mappers
 {

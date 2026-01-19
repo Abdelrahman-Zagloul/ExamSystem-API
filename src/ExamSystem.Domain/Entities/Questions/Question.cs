@@ -1,6 +1,6 @@
-﻿using ExamSystem.Domain.Enums;
+﻿using ExamSystem.Domain.Entities.Exams;
 
-namespace ExamSystem.Domain.Entities
+namespace ExamSystem.Domain.Entities.Questions
 {
     public class Question
     {

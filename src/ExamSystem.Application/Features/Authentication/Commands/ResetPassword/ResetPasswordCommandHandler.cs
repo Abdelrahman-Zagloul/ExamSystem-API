@@ -2,7 +2,7 @@
 using ExamSystem.Application.Common.Results.Errors;
 using ExamSystem.Application.Contracts.ExternalServices;
 using ExamSystem.Application.Contracts.Services;
-using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Users;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;

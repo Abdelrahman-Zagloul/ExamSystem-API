@@ -1,4 +1,6 @@
-﻿namespace ExamSystem.Domain.Entities
+﻿using ExamSystem.Domain.Entities.Users;
+
+namespace ExamSystem.Domain.Entities.Exams
 {
     public class ExamSession
     {

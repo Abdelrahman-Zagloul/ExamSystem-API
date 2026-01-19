@@ -8,6 +8,7 @@ using ExamSystem.Application.Features.Exams.Queries.GetExamByIdForDoctor;
 using ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor;
 using ExamSystem.Application.Features.Exams.Queries.GetExamsForStudent;
 using ExamSystem.Domain.Constants;
+using ExamSystem.Domain.Entities.Exams;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

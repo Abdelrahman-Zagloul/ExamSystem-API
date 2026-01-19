@@ -1,4 +1,4 @@
-﻿using ExamSystem.Domain.Enums;
+﻿using ExamSystem.Domain.Entities.Questions;
 
 namespace ExamSystem.Application.Features.Questions.DTOs
 {

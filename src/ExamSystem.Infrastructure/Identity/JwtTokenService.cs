@@ -1,7 +1,7 @@
 ﻿using ExamSystem.Application.Contracts.Identity;
 using ExamSystem.Application.Features.Authentication.DTOs;
 using ExamSystem.Application.Settings;
-using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

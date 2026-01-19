@@ -1,4 +1,4 @@
-﻿namespace ExamSystem.Domain.Enums
+﻿namespace ExamSystem.Domain.Entities.Questions
 {
     public enum QuestionType
     {

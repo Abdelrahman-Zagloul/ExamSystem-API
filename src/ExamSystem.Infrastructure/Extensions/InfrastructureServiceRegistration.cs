@@ -2,7 +2,7 @@
 using ExamSystem.Application.Contracts.Identity;
 using ExamSystem.Application.Contracts.Services;
 using ExamSystem.Application.Settings;
-using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Users;
 using ExamSystem.Domain.Interfaces;
 using ExamSystem.Infrastructure.ExternalServices;
 using ExamSystem.Infrastructure.Identity;

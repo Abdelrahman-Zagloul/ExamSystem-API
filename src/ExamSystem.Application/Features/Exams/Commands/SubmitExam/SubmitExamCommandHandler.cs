@@ -1,7 +1,8 @@
 ﻿using ExamSystem.Application.Common.Results;
 using ExamSystem.Application.Common.Results.Errors;
 using ExamSystem.Application.Features.Exams.DTOs;
-using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Exams;
+using ExamSystem.Domain.Entities.Questions;
 using ExamSystem.Domain.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

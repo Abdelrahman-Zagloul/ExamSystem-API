@@ -1,4 +1,4 @@
-﻿using ExamSystem.Domain.Entities;
+﻿using ExamSystem.Domain.Entities.Users;
 
 namespace ExamSystem.Application.Contracts.Services
 {

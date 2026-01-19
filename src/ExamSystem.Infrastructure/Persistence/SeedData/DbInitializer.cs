@@ -1,6 +1,7 @@
 ﻿using ExamSystem.Application.Settings;
 using ExamSystem.Domain.Constants;
 using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Users;
 using ExamSystem.Domain.Interfaces;
 using ExamSystem.Infrastructure.Persistence.Contexts;
 using Microsoft.AspNetCore.Identity;

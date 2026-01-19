@@ -1,7 +1,7 @@
 ﻿using ExamSystem.Application.Contracts.ExternalServices;
 using ExamSystem.Application.Contracts.Services;
 using ExamSystem.Application.Settings;
-using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Users;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Options;
 

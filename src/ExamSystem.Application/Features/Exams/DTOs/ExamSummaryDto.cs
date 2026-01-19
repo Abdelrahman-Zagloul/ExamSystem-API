@@ -1,4 +1,6 @@
-﻿namespace ExamSystem.Application.Features.Exams.DTOs
+﻿using ExamSystem.Domain.Entities.Exams;
+
+namespace ExamSystem.Application.Features.Exams.DTOs
 {
     public class ExamSummaryDto
     {

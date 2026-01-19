@@ -1,5 +1,5 @@
 ﻿using ExamSystem.Application.Features.Exams.DTOs;
-using ExamSystem.Domain.Entities;
+using ExamSystem.Domain.Entities.Exams;
 using System.Linq.Expressions;
 
 namespace ExamSystem.Application.Features.Exams.Common
