@@ -19,21 +19,29 @@ namespace ExamSystem.Application.Features.Exams.Commands.SubmitExam
 
         public async Task<Result> Handle(SubmitExamCommand request, CancellationToken cancellationToken)
         {
+            var now = DateTime.UtcNow;
             var exam = await _unitOfWork.Repository<Exam>().FindAsync(cancellationToken, request.ExamId);
             if (exam == null)
                 return Error.NotFound("ExamNotFound", "Exam with this id not found");
 
-            if (exam.EndAt < DateTime.UtcNow)
-                return Error.Conflict("ExamTimeFinished", "You cannot submit the exam after it has finished");
+            if (exam.EndAt < now)
+                return Error.Conflict("ExamFinished", "You cannot submit the exam after it has finished");
 
+            var examSession = await _unitOfWork.Repository<ExamSession>()
+                .FindAsync(cancellationToken, request.StudentId, request.ExamId);
 
-            var examResultRepo = _unitOfWork.Repository<ExamResult>();
-            var alreadySubmitted = await examResultRepo
-                        .AnyAsync(x => x.ExamId == request.ExamId && x.StudentId == request.StudentId, cancellationToken);
+            if (examSession == null)
+                return Error.Conflict("ExamNotStarted", "You must start the exam before submitting");
 
-            if (alreadySubmitted)
+            if (examSession.SubmittedAt != null)
                 return Error.Conflict("ExamAlreadySubmitted", "You have already submitted this exam");
 
+
+            var studentExamTime = (now - examSession.StartedAt).TotalMinutes;
+            if (exam.DurationInMinutes < studentExamTime)
+                return Error.Conflict("ExamTimeExceeded", "You exceeded the allowed exam duration");
+
+            examSession.SubmittedAt = now;
 
             var examQuestions = await _unitOfWork.Repository<Question>()
                         .GetAsQuery(true).Where(x => x.ExamId == exam.Id)
@@ -42,6 +50,8 @@ namespace ExamSystem.Application.Features.Exams.Commands.SubmitExam
 
 
             var result = CalculateResult(examQuestions, request);
+
+
             var examResult = new ExamResult
             {
                 Score = result.score,
@@ -49,13 +59,11 @@ namespace ExamSystem.Application.Features.Exams.Commands.SubmitExam
                 StudentId = request.StudentId,
                 TotalMark = examQuestions.Sum(x => x.QuestionMark),
             };
-
-
-            await examResultRepo.AddAsync(examResult);
+            await _unitOfWork.Repository<ExamResult>().AddAsync(examResult);
             await _unitOfWork.Repository<StudentAnswer>().AddRangeAsync(result.answers, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Result.Ok("Exam Submit Successfully");
+            return Result.Ok($"Exam submitted Successfully.Your result will be available at : {exam.EndAt}");
         }
 
         private (double score, List<StudentAnswer> answers) CalculateResult(

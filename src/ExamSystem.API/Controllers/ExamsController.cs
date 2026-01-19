@@ -1,11 +1,11 @@
 ﻿using ExamSystem.Application.Features.Exams.Commands.CreateExam;
 using ExamSystem.Application.Features.Exams.Commands.DeleteExam;
+using ExamSystem.Application.Features.Exams.Commands.StartExam;
 using ExamSystem.Application.Features.Exams.Commands.SubmitExam;
 using ExamSystem.Application.Features.Exams.Commands.UpdateExam;
 using ExamSystem.Application.Features.Exams.DTOs;
 using ExamSystem.Application.Features.Exams.Queries.GetExamByIdForDoctor;
 using ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor;
-using ExamSystem.Application.Features.Exams.Queries.StartExam;
 using ExamSystem.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +42,7 @@ namespace ExamSystem.API.Controllers
         [Authorize(Roles = Role.Student)]
         public async Task<IActionResult> StartExam(int examId)
         {
-            var result = await _mediator.Send(new StartExamQuery(GetUserId()!, examId));
+            var result = await _mediator.Send(new StartExamCommand(GetUserId()!, examId));
             return HandleResult(result);
         }
 

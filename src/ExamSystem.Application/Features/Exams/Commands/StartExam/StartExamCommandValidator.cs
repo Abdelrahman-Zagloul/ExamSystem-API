@@ -1,11 +1,11 @@
 ﻿using ExamSystem.Application.Common.Validations;
 using FluentValidation;
 
-namespace ExamSystem.Application.Features.Exams.Queries.StartExam
+namespace ExamSystem.Application.Features.Exams.Commands.StartExam
 {
-    public class StartExamQueryValidator : AbstractValidator<StartExamQuery>
+    public class StartExamCommandValidator : AbstractValidator<StartExamCommand>
     {
-        public StartExamQueryValidator()
+        public StartExamCommandValidator()
         {
             RuleFor(x => x.ExamId)
                 .MustBePositiveNumber("Exam ID");
