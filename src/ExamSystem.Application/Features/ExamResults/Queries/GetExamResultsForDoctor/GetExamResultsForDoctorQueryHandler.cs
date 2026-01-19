@@ -40,7 +40,7 @@ namespace ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForD
                 .GetAsQuery(true).Where(x => x.ExamId == request.ExamId)
                 .ApplyExamResultStatusFilter(request.Status);
 
-            var totalCount = await examResultsQuery.CountAsync();
+            var totalCount = await examResultsQuery.CountAsync(cancellationToken);
 
             var examResultsResponse = await examResultsQuery
                 .ProjectTo<StudentExamResultForDoctorDto>(_mapper.ConfigurationProvider)
