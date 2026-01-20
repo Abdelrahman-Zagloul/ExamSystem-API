@@ -1,4 +1,5 @@
-﻿using ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForCurrentStudent;
+﻿using ExamSystem.Application.Features.ExamResults.Queries.GetExamResultDetailsForCurrentStudent;
+using ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForCurrentStudent;
 using ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForDoctor;
 using ExamSystem.Domain.Constants;
 using ExamSystem.Domain.Entities.Exams;
@@ -17,7 +18,7 @@ namespace ExamSystem.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("{examId}")]
+        [HttpGet("exams/{examId}/results")]
         [Authorize(Roles = Role.Doctor)]
         public async Task<IActionResult> GetExamResultsForDoctor(int examId, ExamResultStatus? status, int pageNumber = 1, int pageSize = 5)
         {
@@ -25,7 +26,16 @@ namespace ExamSystem.API.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet("")]
+
+        [HttpGet("exams/{examId}/my-result")]
+        [Authorize(Roles = Role.Student)]
+        public async Task<IActionResult> GetExamResultDetails(int examId)
+        {
+            var result = await _mediator.Send(new GetExamResultDetailsForCurrentStudentQuery(GetUserId(), examId));
+            return HandleResult(result);
+        }
+
+        [HttpGet("my-results")]
         [Authorize(Roles = Role.Student)]
         public async Task<IActionResult> GetExamResultsForCurrentStudent(int pageNumber = 1, int pageSize = 5)
         {

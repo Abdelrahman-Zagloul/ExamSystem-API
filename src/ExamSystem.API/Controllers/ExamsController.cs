@@ -33,7 +33,7 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpGet("/api/student/Exams")]
-        //[Authorize]
+        [Authorize]
         public async Task<IActionResult> GetExamsForStudent(ExamStatus? examStatus, int pageNumber = 1, int pageSize = 5)
         {
             var result = await _mediator.Send(new GetExamsForStudentQuery(examStatus, pageNumber, pageSize, GetBaseUrl(), GetQueryParam()));
@@ -48,7 +48,7 @@ namespace ExamSystem.API.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet("{examId}/start-exam")]
+        [HttpPost("{examId}/start-exam")]
         [Authorize(Roles = Role.Student)]
         public async Task<IActionResult> StartExam(int examId)
         {

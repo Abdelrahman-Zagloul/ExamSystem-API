@@ -23,7 +23,8 @@ namespace ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForC
         public async Task<Result<PaginatedResult<StudentExamResultForStudentDto>>> Handle(GetExamResultsForCurrentStudentQuery request, CancellationToken cancellationToken)
         {
             var examResultsQuery = _unitOfWork.Repository<ExamResult>()
-                .GetAsQuery(true).Where(x => x.StudentId == request.StudentId);
+                .GetAsQuery(true)
+                .Where(x => x.StudentId == request.StudentId && x.Exam.EndAt < DateTime.UtcNow);
 
             var totalCount = await examResultsQuery.CountAsync(cancellationToken);
 
