@@ -2,8 +2,7 @@
 using ExamSystem.API.Extensions;
 using ExamSystem.Application.Extensions;
 using ExamSystem.Infrastructure.Extensions;
-using Hangfire;
-using Swashbuckle.AspNetCore.SwaggerUI;
+using Serilog;
 
 namespace ExamSystem.API
 {
@@ -12,33 +11,16 @@ namespace ExamSystem.API
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Host.UseSerilog();
             builder.Services.AddApiServices(builder.Configuration)
                 .AddApplicationServices(builder.Configuration)
                 .AddInfrastructureServices(builder.Configuration);
 
             var app = builder.Build();
 
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.DisplayRequestDuration();
-                options.EnableFilter();
-                options.DocExpansion(DocExpansion.None);
-            });
-
-            await app.InitializeAsync();
-            app.UseHangfireDashboard("/hangfire");
-
-            app.UseStaticFiles();
-            app.UseHttpsRedirection();
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.MapControllers();
+            await app.UseApiPipeline();
 
             app.Run();
         }
-
-
     }
 }

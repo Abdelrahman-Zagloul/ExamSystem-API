@@ -31,6 +31,7 @@ namespace ExamSystem.Application.Extensions
             services.Configure<FrontendURLsSettings>(configuration.GetSection(nameof(FrontendURLsSettings)));
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
         }
         private static void ConfigureFluentValidation(IServiceCollection services)
         {

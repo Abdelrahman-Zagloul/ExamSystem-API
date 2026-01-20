@@ -28,6 +28,10 @@ bld/
 [Oo]bj/
 [Ll]og/
 
+# Application logs
+Logs/
+**/Logs/
+
 #appsettings files
 appsettings.Development.json
 
