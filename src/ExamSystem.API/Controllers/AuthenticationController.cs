@@ -2,6 +2,7 @@
 using ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail;
 using ExamSystem.Application.Features.Authentication.Commands.ForgetPassword;
 using ExamSystem.Application.Features.Authentication.Commands.Login;
+using ExamSystem.Application.Features.Authentication.Commands.Logout;
 using ExamSystem.Application.Features.Authentication.Commands.Register;
 using ExamSystem.Application.Features.Authentication.Commands.ResendConfirmEmail;
 using ExamSystem.Application.Features.Authentication.Commands.ResetPassword;
@@ -15,6 +16,8 @@ namespace ExamSystem.API.Controllers
     public class AuthenticationController : ApiBaseController
     {
         private readonly IMediator _mediator;
+        private string? IpAddress => HttpContext.Connection.RemoteIpAddress?.ToString();
+        private const string RefreshTokenCookieName = "refreshToken";
         public AuthenticationController(IMediator mediator)
         {
             _mediator = mediator;
@@ -69,5 +72,35 @@ namespace ExamSystem.API.Controllers
             var result = await _mediator.Send(command);
             return HandleResult(result);
         }
+
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var result = await _mediator.Send(new LogoutCommand(GetUserId(), IpAddress));
+            RemoveRefreshTokenFromCookie();
+            return HandleResult(result);
+        }
+
+        private void AddRefreshTokenToCookie(string refreshToken, DateTime expires)
+        {
+            Response.Cookies.Append(RefreshTokenCookieName, refreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = expires
+            });
+        }
+        private void RemoveRefreshTokenFromCookie()
+        {
+            Response.Cookies.Delete(RefreshTokenCookieName, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+        }
+
     }
 }
