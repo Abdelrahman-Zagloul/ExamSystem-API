@@ -17,7 +17,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ConfirmEmail
     public class ConfirmEmailCommandHandlerTests
     {
         private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
-        private readonly Mock<IJwtTokenService> _jwtTokenServiceMock;
+        private readonly Mock<IAccessTokenService> _jwtTokenServiceMock;
         private readonly Mock<IAppEmailService> _appEmailServiceMock;
         private readonly Mock<IBackgroundJobService> _backgroundJobServiceMock;
         private readonly ConfirmEmailCommandHandler _handler;
@@ -25,7 +25,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ConfirmEmail
         public ConfirmEmailCommandHandlerTests()
         {
             _userManagerMock = MockHelper.CreateUserManagerMock<ApplicationUser>();
-            _jwtTokenServiceMock = new Mock<IJwtTokenService>();
+            _jwtTokenServiceMock = new Mock<IAccessTokenService>();
             _appEmailServiceMock = new Mock<IAppEmailService>();
             _backgroundJobServiceMock = new Mock<IBackgroundJobService>();
 

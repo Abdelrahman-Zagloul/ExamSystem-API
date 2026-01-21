@@ -15,12 +15,12 @@ namespace ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail
     public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, Result<AuthDto>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IJwtTokenService _jwtTokenService;
+        private readonly IAccessTokenService _jwtTokenService;
         private readonly IAppEmailService _appEmailService;
         private readonly IBackgroundJobService _backgroundJobService;
 
 
-        public ConfirmEmailCommandHandler(UserManager<ApplicationUser> userManager, IJwtTokenService jwtTokenService, IAppEmailService appEmailService, IBackgroundJobService backgroundJobService)
+        public ConfirmEmailCommandHandler(UserManager<ApplicationUser> userManager, IAccessTokenService jwtTokenService, IAppEmailService appEmailService, IBackgroundJobService backgroundJobService)
         {
             _userManager = userManager;
             _jwtTokenService = jwtTokenService;

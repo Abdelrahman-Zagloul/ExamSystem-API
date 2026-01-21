@@ -11,9 +11,9 @@ namespace ExamSystem.Application.Features.Authentication.Commands.Login
     public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<AuthDto>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IJwtTokenService _jwtTokenService;
+        private readonly IAccessTokenService _jwtTokenService;
 
-        public LoginCommandHandler(UserManager<ApplicationUser> userManager, IJwtTokenService jwtTokenService)
+        public LoginCommandHandler(UserManager<ApplicationUser> userManager, IAccessTokenService jwtTokenService)
         {
             _userManager = userManager;
             _jwtTokenService = jwtTokenService;

@@ -57,7 +57,8 @@ namespace ExamSystem.Infrastructure.Extensions
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDbInitializer, DbInitializer>();
-            services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IAccessTokenService, AccessTokenService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IAppEmailService, AppEmailService>();
             services.AddScoped<IBackgroundJobService, HangfireBackgroundJobService>();

@@ -3,7 +3,7 @@ using ExamSystem.Domain.Entities.Users;
 
 namespace ExamSystem.Application.Contracts.Identity
 {
-    public interface IJwtTokenService
+    public interface IAccessTokenService
     {
         Task<AuthDto> GenerateTokenAsync(ApplicationUser user);
     }

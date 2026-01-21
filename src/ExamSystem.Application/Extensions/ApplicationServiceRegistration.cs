@@ -29,6 +29,7 @@ namespace ExamSystem.Application.Extensions
             services.Configure<JWTSettings>(configuration.GetSection(nameof(JWTSettings)));
             services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
             services.Configure<FrontendURLsSettings>(configuration.GetSection(nameof(FrontendURLsSettings)));
+            services.Configure<RefreshTokenSettings>(configuration.GetSection(nameof(RefreshTokenSettings)));
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));

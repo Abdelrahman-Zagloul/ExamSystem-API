@@ -12,13 +12,13 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
     public class LoginCommandHandlerTests
     {
         private readonly LoginCommandHandler _handler;
-        private readonly Mock<IJwtTokenService> _jwtTokenServiceMock;
+        private readonly Mock<IAccessTokenService> _jwtTokenServiceMock;
         private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
 
         public LoginCommandHandlerTests()
         {
             _userManagerMock = MockHelper.CreateUserManagerMock<ApplicationUser>();
-            _jwtTokenServiceMock = new Mock<IJwtTokenService>();
+            _jwtTokenServiceMock = new Mock<IAccessTokenService>();
             _handler = new LoginCommandHandler(_userManagerMock.Object, _jwtTokenServiceMock.Object);
         }
 

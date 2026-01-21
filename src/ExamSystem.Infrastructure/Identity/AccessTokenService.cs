@@ -11,12 +11,12 @@ using System.Text;
 
 namespace ExamSystem.Infrastructure.Identity
 {
-    public class JwtTokenService : IJwtTokenService
+    public class AccessTokenService : IAccessTokenService
     {
         private readonly JWTSettings _jwt;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public JwtTokenService(UserManager<ApplicationUser> userManager, IOptions<JWTSettings> jwt)
+        public AccessTokenService(UserManager<ApplicationUser> userManager, IOptions<JWTSettings> jwt)
         {
             _userManager = userManager;
             _jwt = jwt.Value;

@@ -20,7 +20,7 @@
         private RefreshToken() { }
         public RefreshToken(string userId, string tokenHash, DateTime expiresAt, string? createdByIp)
         {
-            UserId = UserId;
+            UserId = userId;
             TokenHash = tokenHash;
             ExpiresAt = expiresAt;
             CreatedByIp = createdByIp;
