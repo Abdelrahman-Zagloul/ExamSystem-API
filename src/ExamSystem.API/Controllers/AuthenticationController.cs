@@ -1,4 +1,5 @@
-﻿using ExamSystem.Application.Features.Authentication.Commands.ChangePassword;
+﻿using ExamSystem.Application.Common.Results;
+using ExamSystem.Application.Features.Authentication.Commands.ChangePassword;
 using ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail;
 using ExamSystem.Application.Features.Authentication.Commands.ForgetPassword;
 using ExamSystem.Application.Features.Authentication.Commands.Login;
@@ -33,7 +34,7 @@ namespace ExamSystem.API.Controllers
                 return HandleResult(result);
 
             AddRefreshTokenToCookie(result.Value.RefreshTokenDto.RefreshToken, result.Value.RefreshTokenDto.ExpiresAt);
-            return Ok(result.Value.AccessTokenDto);
+            return HandleResult(Result<AccessTokenDto>.Ok(result.Value.AccessTokenDto, "Login Successfully"));
         }
 
         [HttpPost("register")]
@@ -51,7 +52,7 @@ namespace ExamSystem.API.Controllers
                 return HandleResult(result);
 
             AddRefreshTokenToCookie(result.Value.RefreshTokenDto.RefreshToken, result.Value.RefreshTokenDto.ExpiresAt);
-            return Ok(result.Value.AccessTokenDto);
+            return HandleResult(Result<AccessTokenDto>.Ok(result.Value.AccessTokenDto, "Email confirmed successfully"));
         }
 
         [HttpPost("forget-password")]
@@ -92,7 +93,7 @@ namespace ExamSystem.API.Controllers
                 return HandleResult(result);
 
             AddRefreshTokenToCookie(result.Value.RefreshTokenDto.RefreshToken, result.Value.RefreshTokenDto.ExpiresAt);
-            return Ok(result.Value.AccessTokenDto);
+            return HandleResult(Result<AccessTokenDto>.Ok(result.Value.AccessTokenDto, "Token refreshed successfully"));
         }
 
         [HttpPost("revoke-token")]

@@ -1,4 +1,6 @@
-﻿namespace ExamSystem.API.Middlewares
+﻿using ExamSystem.API.Common.Responses;
+
+namespace ExamSystem.API.Middlewares
 {
     public class GlobalExceptionMiddleware
     {
@@ -38,12 +40,11 @@
             context.Response.Clear();
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-            var response = new
+            var response = ApiResponse.Failure("Internal Server Error", new ErrorResponse
             {
-                isSuccess = false,
-                message = "Internal Server Error.",
-                traceId = context.TraceIdentifier
-            };
+                Title = "Unhandled exception occurred",
+                Description = $"TraceId of exception: {context.TraceIdentifier} "
+            });
             await context.Response.WriteAsJsonAsync(response);
         }
     }

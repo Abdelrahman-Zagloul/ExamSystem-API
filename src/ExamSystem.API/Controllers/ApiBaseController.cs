@@ -1,7 +1,6 @@
-﻿using ExamSystem.Application.Common.Results;
-using ExamSystem.Application.Common.Results.Errors;
+﻿using ExamSystem.API.Common.Factories;
+using ExamSystem.Application.Common.Results;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Security.Claims;
 
 namespace ExamSystem.API.Controllers
@@ -16,52 +15,11 @@ namespace ExamSystem.API.Controllers
         protected Dictionary<string, string> GetQueryParam()
             => Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
 
+        protected ActionResult HandleResult(Result result) =>
+           ApiResponseFactory.Create(result, this);
 
-        protected ActionResult HandleResult(Result result)
-        {
-            if (result.IsSuccess)
-                return Ok(result);
-            else
-                return HandleResultErrors(result);
-        }
-        protected ActionResult HandleResult<TValue>(Result<TValue> result)
-        {
-            if (result.IsSuccess)
-                return Ok(result);
-            else
-                return HandleResultErrors(result);
-        }
-        private ActionResult HandleResultErrors(Result result)
-        {
-            if (result.Errors.All(x => x.ErrorType == ErrorType.Validation))
-                return HandleValidationErrors(result);
+        protected ActionResult HandleResult<TValue>(Result<TValue> result) =>
+            ApiResponseFactory.Create(result, this);
 
-            var statusCode = (int)result.Errors[0].ErrorType;
-            return StatusCode(statusCode, new
-            {
-                isSuccess = false,
-                message = result.Message,
-                errors = new
-                {
-                    result.Errors[0].Title,
-                    result.Errors[0].Description,
-                }
-            });
-        }
-        private ActionResult HandleValidationErrors(Result result)
-        {
-            var modelState = new ModelStateDictionary();
-            foreach (var error in result.Errors)
-                modelState.AddModelError(error.Title, error.Description);
-
-
-            return BadRequest(new
-            {
-                isSuccess = false,
-                message = "One or more validation fail",
-                errors = result.Errors.GroupBy(e => e.Title)
-                        .ToDictionary(g => g.Key, g => g.Select(x => x.Description).ToList())
-            });
-        }
     }
 }
