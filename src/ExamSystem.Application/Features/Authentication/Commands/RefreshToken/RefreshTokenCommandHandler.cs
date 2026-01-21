@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ExamSystem.Application.Features.Authentication.Commands.RefreshToken
 {
-    internal class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Result<AuthWithRefreshDto>>
+    internal class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Result<AccessWithRefreshTokenDto>>
     {
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly IAccessTokenService _accessTokenService;
@@ -21,7 +21,7 @@ namespace ExamSystem.Application.Features.Authentication.Commands.RefreshToken
             _userManager = userManager;
         }
 
-        public async Task<Result<AuthWithRefreshDto>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        public async Task<Result<AccessWithRefreshTokenDto>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(request.RefreshToken))
                 return Error.Unauthorized("InvalidCredentials", "Invalid authentication credentials");
@@ -36,7 +36,7 @@ namespace ExamSystem.Application.Features.Authentication.Commands.RefreshToken
 
             var authDto = await _accessTokenService.GenerateTokenAsync(user);
 
-            return new AuthWithRefreshDto(authDto, refreshResultDto.Value);
+            return new AccessWithRefreshTokenDto(authDto, refreshResultDto.Value);
         }
     }
 }

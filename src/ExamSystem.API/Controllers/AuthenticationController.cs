@@ -26,10 +26,14 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginCommand command)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
-            var result = await _mediator.Send(command);
-            return HandleResult(result);
+            var result = await _mediator.Send(new LoginCommand(request.Email, request.Password, IpAddress));
+            if (!result.IsSuccess)
+                return HandleResult(result);
+
+            AddRefreshTokenToCookie(result.Value.RefreshTokenDto.RefreshToken, result.Value.RefreshTokenDto.ExpiresAt);
+            return Ok(result.Value.AccessTokenDto);
         }
 
         [HttpPost("register")]
@@ -42,8 +46,12 @@ namespace ExamSystem.API.Controllers
         [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
-            var result = await _mediator.Send(new ConfirmEmailCommand(email, token));
-            return HandleResult(result);
+            var result = await _mediator.Send(new ConfirmEmailCommand(email, token, IpAddress));
+            if (!result.IsSuccess)
+                return HandleResult(result);
+
+            AddRefreshTokenToCookie(result.Value.RefreshTokenDto.RefreshToken, result.Value.RefreshTokenDto.ExpiresAt);
+            return Ok(result.Value.AccessTokenDto);
         }
 
         [HttpPost("forget-password")]
@@ -84,7 +92,7 @@ namespace ExamSystem.API.Controllers
                 return HandleResult(result);
 
             AddRefreshTokenToCookie(result.Value.RefreshTokenDto.RefreshToken, result.Value.RefreshTokenDto.ExpiresAt);
-            return Ok(result.Value.AuthDto);
+            return Ok(result.Value.AccessTokenDto);
         }
 
         [HttpPost("revoke-token")]
@@ -123,6 +131,5 @@ namespace ExamSystem.API.Controllers
                 SameSite = SameSiteMode.None
             });
         }
-
     }
 }

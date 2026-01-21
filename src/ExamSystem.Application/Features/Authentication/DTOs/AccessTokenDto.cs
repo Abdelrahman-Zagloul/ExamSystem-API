@@ -1,6 +1,6 @@
 ﻿namespace ExamSystem.Application.Features.Authentication.DTOs
 {
-    public record AuthDto(
+    public record AccessTokenDto(
         string AccessToken,
         string Role,
         string UserId,

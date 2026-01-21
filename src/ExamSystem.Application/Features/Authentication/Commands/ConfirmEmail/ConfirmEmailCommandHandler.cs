@@ -12,23 +12,25 @@ using System.Text;
 
 namespace ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail
 {
-    public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, Result<AuthDto>>
+    public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, Result<AccessWithRefreshTokenDto>>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAccessTokenService _jwtTokenService;
         private readonly IAppEmailService _appEmailService;
         private readonly IBackgroundJobService _backgroundJobService;
+        private readonly IRefreshTokenService _refreshTokenService;
 
 
-        public ConfirmEmailCommandHandler(UserManager<ApplicationUser> userManager, IAccessTokenService jwtTokenService, IAppEmailService appEmailService, IBackgroundJobService backgroundJobService)
+        public ConfirmEmailCommandHandler(UserManager<ApplicationUser> userManager, IAccessTokenService jwtTokenService, IAppEmailService appEmailService, IBackgroundJobService backgroundJobService, IRefreshTokenService refreshTokenService)
         {
             _userManager = userManager;
             _jwtTokenService = jwtTokenService;
             _appEmailService = appEmailService;
             _backgroundJobService = backgroundJobService;
+            _refreshTokenService = refreshTokenService;
         }
 
-        public async Task<Result<AuthDto>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+        public async Task<Result<AccessWithRefreshTokenDto>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
@@ -41,7 +43,9 @@ namespace ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail
 
             _backgroundJobService.Enqueue(() => _appEmailService.SendEmailForWelcomeMessageAsync(user));
             var authDto = await _jwtTokenService.GenerateTokenAsync(user);
-            return authDto;
+            var refreshTokenDto = await _refreshTokenService.CreateAsync(user, request.IpAddress, cancellationToken);
+
+            return new AccessWithRefreshTokenDto(authDto, refreshTokenDto);
         }
     }
 }

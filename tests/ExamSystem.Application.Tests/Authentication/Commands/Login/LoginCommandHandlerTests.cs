@@ -14,12 +14,15 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
         private readonly LoginCommandHandler _handler;
         private readonly Mock<IAccessTokenService> _jwtTokenServiceMock;
         private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
+        private readonly Mock<IRefreshTokenService> _refreshTokenServiceMock;
+
 
         public LoginCommandHandlerTests()
         {
             _userManagerMock = MockHelper.CreateUserManagerMock<ApplicationUser>();
             _jwtTokenServiceMock = new Mock<IAccessTokenService>();
-            _handler = new LoginCommandHandler(_userManagerMock.Object, _jwtTokenServiceMock.Object);
+            _refreshTokenServiceMock = new Mock<IRefreshTokenService>();
+            _handler = new LoginCommandHandler(_userManagerMock.Object, _jwtTokenServiceMock.Object, _refreshTokenServiceMock.Object);
         }
 
         [Fact]
@@ -31,20 +34,27 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
                 Email = "test@test.com",
                 EmailConfirmed = true
             };
-            var command = new LoginCommand(user.Email, "123456");
-            var authDto = new AuthDto("fake-jwt-token", "fake-role", "fake-userId", DateTime.UtcNow.AddMinutes(30));
+
+            var command = new LoginCommand(user.Email, "123456", "IP_Address");
+            var accessTokenDto = new AccessTokenDto("fake-jwt-token", "fake-role", "fake-userId", DateTime.UtcNow.AddMinutes(30));
+            var refreshTokenDto = new RefreshTokenDto("RefreshToken", DateTime.UtcNow.AddDays(10), "user-id");
+            var expected = new AccessWithRefreshTokenDto(accessTokenDto, refreshTokenDto);
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _userManagerMock.Setup(x => x.CheckPasswordAsync(user, command.Password)).ReturnsAsync(true);
-            _jwtTokenServiceMock.Setup(x => x.GenerateTokenAsync(user)).ReturnsAsync(authDto);
+            _jwtTokenServiceMock.Setup(x => x.GenerateTokenAsync(user)).ReturnsAsync(accessTokenDto);
+            _refreshTokenServiceMock
+                .Setup(x => x.CreateAsync(user, command.IpAddress, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(refreshTokenDto);
 
             // Act
             var result = await _handler.Handle(command, CancellationToken.None);
 
             // Assert
             result.IsSuccess.Should().BeTrue();
-            result.Value.Should().BeEquivalentTo(authDto);
+            result.Value.Should().BeEquivalentTo(expected);
         }
+
 
         [Fact]
         public async Task Handle_ShouldReturnFailure_When_CredentialsAreInvalid()
@@ -55,7 +65,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
                 Email = "test@test.com",
                 EmailConfirmed = true
             };
-            var command = new LoginCommand(user.Email, "wrong-password");
+            var command = new LoginCommand(user.Email, "wrong-password", "IP_Address");
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _userManagerMock.Setup(x => x.CheckPasswordAsync(user, command.Password)).ReturnsAsync(false);
@@ -76,7 +86,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
                 Email = "test@test.com",
                 EmailConfirmed = false
             };
-            var command = new LoginCommand(user.Email, "123456");
+            var command = new LoginCommand(user.Email, "123456", "IP_Address");
 
             _userManagerMock.Setup(x => x.FindByEmailAsync(command.Email)).ReturnsAsync(user);
             _userManagerMock.Setup(x => x.CheckPasswordAsync(user, command.Password)).ReturnsAsync(true);

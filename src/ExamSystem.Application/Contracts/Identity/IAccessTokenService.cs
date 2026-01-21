@@ -5,6 +5,6 @@ namespace ExamSystem.Application.Contracts.Identity
 {
     public interface IAccessTokenService
     {
-        Task<AuthDto> GenerateTokenAsync(ApplicationUser user);
+        Task<AccessTokenDto> GenerateTokenAsync(ApplicationUser user);
     }
 }

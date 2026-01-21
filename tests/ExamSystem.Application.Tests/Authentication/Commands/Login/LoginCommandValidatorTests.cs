@@ -15,7 +15,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
         public void Validate_ShouldHaveError_ForInvalidInputs(string email, string password)
         {
             // Arrange
-            var command = new LoginCommand(email, password);
+            var command = new LoginCommand(email, password, "IP_Address");
 
             // Act
             var result = _validator.Validate(command);
@@ -28,7 +28,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
         public void Validate_ShouldPass_When_CommandIsValid()
         {
             // Arrange
-            var command = new LoginCommand("test@test.com", "12345678");
+            var command = new LoginCommand("test@test.com", "12345678", "IP_Address");
 
             // Act
             var result = _validator.Validate(command);

@@ -15,7 +15,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ConfirmEmail
         public void Validate_ShouldHaveError_WhenInvalidInputs(string email, string token)
         {
             // Arrange
-            var command = new ConfirmEmailCommand(email, token);
+            var command = new ConfirmEmailCommand(email, token, "IP_Address");
 
             // Act
             var result = _validator.Validate(command);
@@ -28,7 +28,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ConfirmEmail
         public void Validate_ShouldPass_WhenInputIsValid()
         {
             // Arrange
-            var command = new ConfirmEmailCommand("test@gmail.com", "token");
+            var command = new ConfirmEmailCommand("test@gmail.com", "token", "IP_Address");
 
             // Act
             var result = _validator.Validate(command);
