@@ -33,7 +33,7 @@ namespace ExamSystem.Infrastructure.Identity
             await _refreshTokenRepo.AddAsync(newRefreshToken, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return new RefreshTokenDto(rawToken, newRefreshToken.ExpiresAt);
+            return new RefreshTokenDto(rawToken, newRefreshToken.ExpiresAt, user.Id);
         }
         public async Task<Result<RefreshTokenDto>> RotateAsync(string refreshToken, string? ipAddress, CancellationToken cancellationToken)
         {
@@ -59,7 +59,7 @@ namespace ExamSystem.Infrastructure.Identity
             existingToken.Revoke(ipAddress, newRefreshToken.Id);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
-            return new RefreshTokenDto(newRawToken, newRefreshToken.ExpiresAt);
+            return new RefreshTokenDto(newRawToken, newRefreshToken.ExpiresAt, existingToken.UserId);
         }
         public async Task<Result> RevokeAsync(string refreshToken, string? ipAddress, CancellationToken cancellationToken)
         {

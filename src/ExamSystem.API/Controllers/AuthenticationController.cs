@@ -3,9 +3,11 @@ using ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail;
 using ExamSystem.Application.Features.Authentication.Commands.ForgetPassword;
 using ExamSystem.Application.Features.Authentication.Commands.Login;
 using ExamSystem.Application.Features.Authentication.Commands.Logout;
+using ExamSystem.Application.Features.Authentication.Commands.RefreshToken;
 using ExamSystem.Application.Features.Authentication.Commands.Register;
 using ExamSystem.Application.Features.Authentication.Commands.ResendConfirmEmail;
 using ExamSystem.Application.Features.Authentication.Commands.ResetPassword;
+using ExamSystem.Application.Features.Authentication.Commands.RevokeToken;
 using ExamSystem.Application.Features.Authentication.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -70,6 +72,26 @@ namespace ExamSystem.API.Controllers
         public async Task<IActionResult> ChangePassword(ResendConfirmEmailCommand command)
         {
             var result = await _mediator.Send(command);
+            return HandleResult(result);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken()
+        {
+            var refreshToken = Request.Cookies[RefreshTokenCookieName];
+            var result = await _mediator.Send(new RefreshTokenCommand(refreshToken, IpAddress));
+            if (!result.IsSuccess)
+                return HandleResult(result);
+
+            AddRefreshTokenToCookie(result.Value.RefreshTokenDto.RefreshToken, result.Value.RefreshTokenDto.ExpiresAt);
+            return Ok(result.Value.AuthDto);
+        }
+
+        [HttpPost("revoke-token")]
+        public async Task<IActionResult> RevokeToken()
+        {
+            var refreshToken = Request.Cookies[RefreshTokenCookieName];
+            var result = await _mediator.Send(new RevokeTokenCommand(refreshToken, IpAddress));
             return HandleResult(result);
         }
 
