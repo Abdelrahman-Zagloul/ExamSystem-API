@@ -12,7 +12,7 @@ namespace ExamSystem.API.Controllers
     {
         protected string GetUserId() => User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
         protected string GetBaseUrl() => $"{Request.Scheme}://{Request.Host}{Request.Path}";
-        protected Dictionary<string, string> GetQueryParam()
+        protected Dictionary<string, string> GetQueryParams()
             => Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
 
         protected ActionResult HandleResult(Result result) =>

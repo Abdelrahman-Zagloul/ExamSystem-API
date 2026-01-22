@@ -1,7 +1,7 @@
 ﻿using ExamSystem.Application.Common.Results;
 using ExamSystem.Application.Common.Results.Errors;
 using ExamSystem.Application.Contracts.Identity;
-using ExamSystem.Application.Features.Authentication.DTOs;
+using ExamSystem.Application.Features.Authentication.Shared;
 using ExamSystem.Domain.Entities.Users;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

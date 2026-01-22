@@ -2,7 +2,7 @@
 using ExamSystem.Application.Contracts.Identity;
 using ExamSystem.Application.Contracts.Services;
 using ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail;
-using ExamSystem.Application.Features.Authentication.DTOs;
+using ExamSystem.Application.Features.Authentication.Shared;
 using ExamSystem.Application.Tests.Helpers;
 using ExamSystem.Domain.Entities.Users;
 using FluentAssertions;
@@ -46,7 +46,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.ConfirmEmail
             var rawToken = "valid-confirmation-token";
             var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(rawToken));
             var command = new ConfirmEmailCommand(user.Email, encodedToken, "IP_Address");
-            var expectedAccessTokenDto = new AccessTokenDto("jwt-token", "Role", user.Id, DateTime.UtcNow.AddMinutes(30));
+            var expectedAccessTokenDto = new AccessTokenResponse("jwt-token", "Role", user.Id, DateTime.UtcNow.AddMinutes(30));
             var expectedRefreshTokenDto = new RefreshTokenDto("RefreshToken", DateTime.UtcNow.AddDays(10), "user-id");
             var expectedAccessTokenWithRefreshTokenDto = new AccessWithRefreshTokenDto(expectedAccessTokenDto, expectedRefreshTokenDto);
 

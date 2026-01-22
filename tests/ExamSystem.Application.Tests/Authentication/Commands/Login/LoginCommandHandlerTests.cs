@@ -1,6 +1,6 @@
 ﻿using ExamSystem.Application.Contracts.Identity;
 using ExamSystem.Application.Features.Authentication.Commands.Login;
-using ExamSystem.Application.Features.Authentication.DTOs;
+using ExamSystem.Application.Features.Authentication.Shared;
 using ExamSystem.Application.Tests.Helpers;
 using ExamSystem.Domain.Entities.Users;
 using FluentAssertions;
@@ -36,7 +36,7 @@ namespace ExamSystem.Application.Tests.Authentication.Commands.Login
             };
 
             var command = new LoginCommand(user.Email, "123456", "IP_Address");
-            var accessTokenDto = new AccessTokenDto("fake-jwt-token", "fake-role", "fake-userId", DateTime.UtcNow.AddMinutes(30));
+            var accessTokenDto = new AccessTokenResponse("fake-jwt-token", "fake-role", "fake-userId", DateTime.UtcNow.AddMinutes(30));
             var refreshTokenDto = new RefreshTokenDto("RefreshToken", DateTime.UtcNow.AddDays(10), "user-id");
             var expected = new AccessWithRefreshTokenDto(accessTokenDto, refreshTokenDto);
 

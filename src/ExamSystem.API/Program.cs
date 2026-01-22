@@ -1,7 +1,7 @@
 
 using ExamSystem.API.Extensions;
-using ExamSystem.Application.Extensions;
-using ExamSystem.Infrastructure.Extensions;
+using ExamSystem.Application;
+using ExamSystem.Infrastructure;
 using Serilog;
 
 namespace ExamSystem.API
@@ -13,7 +13,7 @@ namespace ExamSystem.API
             var builder = WebApplication.CreateBuilder(args);
             builder.Host.UseSerilog();
             builder.Services.AddApiServices(builder.Configuration)
-                .AddApplicationServices(builder.Configuration)
+                .AddApplicationServices()
                 .AddInfrastructureServices(builder.Configuration);
 
             var app = builder.Build();

@@ -1,6 +1,6 @@
 ﻿using ExamSystem.Application.Common.Interfaces;
 using ExamSystem.Application.Common.Results;
-using ExamSystem.Application.Features.ExamResults.DTOs;
+using ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForCurrentStudent.Responses;
 
 namespace ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForCurrentStudent
 {
@@ -11,5 +11,5 @@ namespace ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForC
         int PageSize,
         string BaseUrl,
         Dictionary<string, string> QueryParams
-    ) : IResultRequest<PaginatedResult<StudentExamResultForStudentDto>>, IPaginatedQuery;
+    ) : IResultRequest<PaginatedResult<StudentExamResultForStudentResponse>>, IPaginatedQuery;
 }

@@ -1,7 +1,7 @@
 ﻿using ExamSystem.Application.Contracts.ExternalServices;
 using ExamSystem.Application.Contracts.Services;
 using ExamSystem.Application.Features.Authentication.Commands.Register;
-using ExamSystem.Application.Features.Authentication.DTOs;
+using ExamSystem.Application.Features.Authentication.Shared;
 using ExamSystem.Application.Tests.Helpers;
 using ExamSystem.Domain.Entities.Users;
 using FluentAssertions;

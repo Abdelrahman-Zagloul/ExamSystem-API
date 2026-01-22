@@ -1,6 +1,6 @@
 ﻿using ExamSystem.Application.Common.Interfaces;
 using ExamSystem.Application.Common.Results;
-using ExamSystem.Application.Features.Exams.DTOs;
+using ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor.Responses;
 using ExamSystem.Domain.Entities.Exams;
 
 namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor
@@ -12,6 +12,6 @@ namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor
         int PageSize,
         string BaseUrl,
         Dictionary<string, string> QueryParams)
-        : IResultRequest<PaginatedResult<ExamSummaryDto>>,
+        : IResultRequest<PaginatedResult<ExamSummaryResponse>>,
           IPaginatedQuery;
 }

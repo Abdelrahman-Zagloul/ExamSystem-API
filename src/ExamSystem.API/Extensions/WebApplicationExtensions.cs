@@ -1,7 +1,6 @@
 ﻿using ExamSystem.API.Middlewares;
 using ExamSystem.Domain.Interfaces;
 using Hangfire;
-using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace ExamSystem.API.Extensions
 {
@@ -26,7 +25,7 @@ namespace ExamSystem.API.Extensions
                 {
                     options.DisplayRequestDuration();
                     options.EnableFilter();
-                    options.DocExpansion(DocExpansion.None);
+                    //options.DocExpansion(DocExpansion.None);
                 });
 
                 app.UseCors("DevelopmentPolicy");

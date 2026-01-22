@@ -1,5 +1,5 @@
 ﻿using ExamSystem.Application.Contracts.Identity;
-using ExamSystem.Application.Features.Authentication.DTOs;
+using ExamSystem.Application.Features.Authentication.Shared;
 using ExamSystem.Application.Settings;
 using ExamSystem.Domain.Entities.Users;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +22,7 @@ namespace ExamSystem.Infrastructure.Identity
             _jwt = jwt.Value;
         }
 
-        public async Task<AccessTokenDto> GenerateTokenAsync(ApplicationUser user)
+        public async Task<AccessTokenResponse> GenerateTokenAsync(ApplicationUser user)
         {
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new List<Claim>
@@ -47,7 +47,7 @@ namespace ExamSystem.Infrastructure.Identity
 
 
             var token = new JwtSecurityTokenHandler().WriteToken(JwtToken);
-            return new AccessTokenDto(token, roles.FirstOrDefault() ?? "", user.Id, JwtToken.ValidTo);
+            return new AccessTokenResponse(token, roles.FirstOrDefault() ?? "", user.Id, JwtToken.ValidTo);
         }
     }
 }

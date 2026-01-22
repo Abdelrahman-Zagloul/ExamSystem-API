@@ -1,16 +1,20 @@
 ﻿using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
+using ExamSystem.Application.Features.Questions.Commands.CreateQuestion.Requests;
 using ExamSystem.Application.Features.Questions.Commands.DeleteQuestion;
 using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion;
-using ExamSystem.Application.Features.Questions.DTOs;
+using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion.Requests;
 using ExamSystem.Application.Features.Questions.Queries.GetAllQuestionsForDoctor;
 using ExamSystem.Domain.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace ExamSystem.API.Controllers
 {
+    [Authorize(Roles = Role.Doctor)]
     [Route("api/exams/{examId}/questions")]
+    [SwaggerTag("Manage exam questions: create, update, delete and list questions for a specific exam.")]
     public class QuestionsController : ApiBaseController
     {
         private readonly IMediator _mediator;
@@ -20,35 +24,38 @@ namespace ExamSystem.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = Role.Doctor)]
-        public async Task<IActionResult> GetExamQuestions(int examId, int pageNumber = 1, int pageSize = 5)
+        [SwaggerOperation(Summary = "Get exam questions", Description = "Retrieve all questions for a specific exam with pagination support using pageNumber and pageSize query parameters. Accessible only by the exam owner (doctor).")]
+        public async Task<IActionResult> GetExamQuestions(int examId, int pageNumber = 1, int pageSize = 10)
         {
-            var result = await _mediator.Send(new GetExamQuestionsForDoctorQuery(GetUserId()!, examId, pageNumber, pageSize, GetBaseUrl(), GetQueryParam()));
+            var result = await _mediator.Send(new GetExamQuestionsForDoctorQuery(GetUserId()!, examId, pageNumber, pageSize, GetBaseUrl(), GetQueryParams()));
             return HandleResult(result);
         }
 
+
         [HttpPost]
-        [Authorize(Roles = Role.Doctor)]
-        public async Task<IActionResult> CreateQuestion(int examId, CreateQuestionRequestDto dto)
+        [SwaggerOperation(Summary = "Create exam question", Description = "Create a new question for a specific exam. Only the exam owner (doctor) can add questions.")]
+        public async Task<IActionResult> CreateQuestion(int examId, CreateQuestionRequest request)
         {
             var result = await _mediator.Send(
-                new CreateQuestionCommand(examId, dto.QuestionText, dto.QuestionMark, dto.QuestionType, dto.Options, dto.CorrectOptionNumber));
+                new CreateQuestionCommand(examId, request.QuestionText, request.QuestionMark, request.QuestionType, request.Options, request.CorrectOptionNumber));
             return HandleResult(result);
         }
+
 
 
         [HttpPut("{questionId}")]
-        [Authorize(Roles = Role.Doctor)]
-        public async Task<IActionResult> UpdateQuestion(int examId, int questionId, UpdateQuestionRequestDto dto)
+        [SwaggerOperation(Summary = "Update exam question", Description = "Update an existing question for a specific exam. Only the exam owner (doctor) can modify questions.")]
+        public async Task<IActionResult> UpdateQuestion(int examId, int questionId, UpdateQuestionRequest request)
         {
             var result = await _mediator.Send(
-                new UpdateQuestionCommand(examId, questionId, dto.QuestionText, dto.NewQuestionMark, dto.Options, dto.NewCorrectOptionId));
+                new UpdateQuestionCommand(examId, questionId, request.QuestionText, request.NewQuestionMark, request.Options, request.NewCorrectOptionId));
             return HandleResult(result);
         }
 
 
+
         [HttpDelete("{questionId}")]
-        [Authorize(Roles = Role.Doctor)]
+        [SwaggerOperation(Summary = "Delete exam question", Description = "Delete a specific question from an exam. Only the exam owner (doctor) can delete questions.")]
         public async Task<IActionResult> DeleteQuestion(int examId, int questionId)
         {
             var result = await _mediator.Send(new DeleteQuestionCommand(examId, questionId));

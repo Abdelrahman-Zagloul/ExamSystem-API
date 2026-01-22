@@ -1,5 +1,5 @@
 ﻿using ExamSystem.Application.Common.Validations;
-using ExamSystem.Application.Features.Questions.DTOs;
+using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion.Requests;
 using FluentValidation;
 
 namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
@@ -37,7 +37,7 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
         }
 
 
-        private class UpdateOptionDtoValidator : AbstractValidator<UpdateOptionDto>
+        private class UpdateOptionDtoValidator : AbstractValidator<UpdateOptionRequest>
         {
             public UpdateOptionDtoValidator()
             {

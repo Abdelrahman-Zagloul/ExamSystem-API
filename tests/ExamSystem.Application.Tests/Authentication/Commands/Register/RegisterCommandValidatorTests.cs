@@ -1,5 +1,5 @@
 ﻿using ExamSystem.Application.Features.Authentication.Commands.Register;
-using ExamSystem.Application.Features.Authentication.DTOs;
+using ExamSystem.Application.Features.Authentication.Shared;
 using FluentAssertions;
 
 namespace ExamSystem.Application.Tests.Authentication.Commands.Register

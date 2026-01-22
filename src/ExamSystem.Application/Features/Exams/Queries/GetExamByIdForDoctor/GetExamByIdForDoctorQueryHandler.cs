@@ -2,7 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using ExamSystem.Application.Common.Results;
 using ExamSystem.Application.Common.Results.Errors;
-using ExamSystem.Application.Features.Exams.DTOs;
+using ExamSystem.Application.Features.Exams.Queries.GetExamByIdForDoctor.Responses;
 using ExamSystem.Domain.Entities.Exams;
 using ExamSystem.Domain.Interfaces;
 using MediatR;
@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExamSystem.Application.Features.Exams.Queries.GetExamByIdForDoctor
 {
-    public class GetExamByIdForDoctorQueryHandler : IRequestHandler<GetExamByIdForDoctorQuery, Result<ExamDetailsForDoctorDto>>
+    public class GetExamByIdForDoctorQueryHandler : IRequestHandler<GetExamByIdForDoctorQuery, Result<ExamDetailsForDoctorResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -21,12 +21,12 @@ namespace ExamSystem.Application.Features.Exams.Queries.GetExamByIdForDoctor
             _mapper = mapper;
         }
 
-        public async Task<Result<ExamDetailsForDoctorDto>> Handle(GetExamByIdForDoctorQuery request, CancellationToken cancellationToken)
+        public async Task<Result<ExamDetailsForDoctorResponse>> Handle(GetExamByIdForDoctorQuery request, CancellationToken cancellationToken)
         {
             var examQuery = _unitOfWork.Repository<Exam>().GetAsQuery(true)
                 .Where(x => x.Id == request.ExamId);
 
-            var examDto = await examQuery.ProjectTo<ExamDetailsForDoctorDto>(_mapper.ConfigurationProvider)
+            var examDto = await examQuery.ProjectTo<ExamDetailsForDoctorResponse>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (examDto == null)

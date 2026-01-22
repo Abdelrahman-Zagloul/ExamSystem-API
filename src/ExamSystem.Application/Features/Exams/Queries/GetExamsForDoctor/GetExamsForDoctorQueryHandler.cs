@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using ExamSystem.Application.Common.Extensions;
 using ExamSystem.Application.Common.Results;
-using ExamSystem.Application.Features.Exams.DTOs;
+using ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor.Responses;
+using ExamSystem.Application.Features.Exams.Shared;
 using ExamSystem.Domain.Entities.Exams;
 using ExamSystem.Domain.Interfaces;
 using MediatR;
@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor
 {
-    public class GetExamsForDoctorQueryHandler : IRequestHandler<GetExamsForDoctorQuery, Result<PaginatedResult<ExamSummaryDto>>>
+    public class GetExamsForDoctorQueryHandler : IRequestHandler<GetExamsForDoctorQuery, Result<PaginatedResult<ExamSummaryResponse>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor
             _mapper = mapper;
         }
 
-        public async Task<Result<PaginatedResult<ExamSummaryDto>>> Handle(GetExamsForDoctorQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PaginatedResult<ExamSummaryResponse>>> Handle(GetExamsForDoctorQuery request, CancellationToken cancellationToken)
         {
             var examQuery = _unitOfWork.Repository<Exam>().GetAsQuery(true)
                     .Where(x => x.DoctorId == request.DoctorId)
@@ -31,11 +31,11 @@ namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForDoctor
 
             var examsForDoctorDto = await examQuery
                         .OrderBy(x => x.Id)
-                        .ProjectTo<ExamSummaryDto>(_mapper.ConfigurationProvider)
+                        .ProjectTo<ExamSummaryResponse>(_mapper.ConfigurationProvider)
                         .Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize)
                         .ToListAsync(cancellationToken);
 
-            return PaginatedResult<ExamSummaryDto>
+            return PaginatedResult<ExamSummaryResponse>
                 .CreatePaginatedResult(examsForDoctorDto, totalCount, request.PageNumber, request.PageSize, request.BaseUrl, request.QueryParams);
         }
     }

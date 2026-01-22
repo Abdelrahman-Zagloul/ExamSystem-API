@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using ExamSystem.Application.Common.Extensions;
 using ExamSystem.Application.Common.Results;
 using ExamSystem.Application.Common.Results.Errors;
-using ExamSystem.Application.Features.ExamResults.DTOs;
+using ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForDoctor.Responses;
+using ExamSystem.Application.Features.Exams.Shared;
 using ExamSystem.Domain.Entities.Exams;
 using ExamSystem.Domain.Interfaces;
 using MediatR;
@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForDoctor
 {
     public class GetExamResultsForDoctorQueryHandler
-        : IRequestHandler<GetExamResultsForDoctorQuery, Result<PaginatedResult<StudentExamResultForDoctorDto>>>
+        : IRequestHandler<GetExamResultsForDoctorQuery, Result<PaginatedResult<StudentExamResultForDoctorResponse>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -23,7 +23,7 @@ namespace ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForD
             _mapper = mapper;
         }
 
-        public async Task<Result<PaginatedResult<StudentExamResultForDoctorDto>>> Handle(GetExamResultsForDoctorQuery request, CancellationToken cancellationToken)
+        public async Task<Result<PaginatedResult<StudentExamResultForDoctorResponse>>> Handle(GetExamResultsForDoctorQuery request, CancellationToken cancellationToken)
         {
             var exam = await _unitOfWork.Repository<Exam>().FindAsync(cancellationToken, request.ExamId);
             if (exam == null)
@@ -43,11 +43,11 @@ namespace ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForD
             var totalCount = await examResultsQuery.CountAsync(cancellationToken);
 
             var examResultsResponse = await examResultsQuery
-                .ProjectTo<StudentExamResultForDoctorDto>(_mapper.ConfigurationProvider)
+                .ProjectTo<StudentExamResultForDoctorResponse>(_mapper.ConfigurationProvider)
                 .Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize)
                 .ToListAsync(cancellationToken);
 
-            return PaginatedResult<StudentExamResultForDoctorDto>
+            return PaginatedResult<StudentExamResultForDoctorResponse>
                 .CreatePaginatedResult(examResultsResponse,
                                        totalCount,
                                        request.PageNumber,

@@ -2,7 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using ExamSystem.Application.Common.Results;
 using ExamSystem.Application.Common.Results.Errors;
-using ExamSystem.Application.Features.Exams.DTOs;
+using ExamSystem.Application.Features.Exams.Commands.StartExam.Responses;
 using ExamSystem.Domain.Entities.Exams;
 using ExamSystem.Domain.Interfaces;
 using MediatR;
@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExamSystem.Application.Features.Exams.Commands.StartExam
 {
-    public class StartExamCommandHandler : IRequestHandler<StartExamCommand, Result<StartExamResponseDto>>
+    public class StartExamCommandHandler : IRequestHandler<StartExamCommand, Result<StartExamResponseResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ namespace ExamSystem.Application.Features.Exams.Commands.StartExam
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async Task<Result<StartExamResponseDto>> Handle(StartExamCommand request, CancellationToken cancellationToken)
+        public async Task<Result<StartExamResponseResponse>> Handle(StartExamCommand request, CancellationToken cancellationToken)
         {
             var examRepo = _unitOfWork.Repository<Exam>();
 
@@ -59,7 +59,7 @@ namespace ExamSystem.Application.Features.Exams.Commands.StartExam
 
             var examResponse = await examRepo.GetAsQuery(true)
                             .Where(x => x.Id == request.ExamId)
-                            .ProjectTo<StartExamResponseDto>(_mapper.ConfigurationProvider)
+                            .ProjectTo<StartExamResponseResponse>(_mapper.ConfigurationProvider)
                             .FirstOrDefaultAsync(cancellationToken);
 
             if (examResponse is null)

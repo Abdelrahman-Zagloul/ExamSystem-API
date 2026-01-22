@@ -1,5 +1,5 @@
 ﻿using ExamSystem.Application.Common.Results;
-using ExamSystem.Application.Features.Questions.DTOs;
+using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion.Requests;
 using MediatR;
 
 namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
@@ -9,6 +9,6 @@ namespace ExamSystem.Application.Features.Questions.Commands.UpdateQuestion
         int QuestionId,
         string? QuestionText,
         int? NewQuestionMark,
-        List<UpdateOptionDto>? Options,
+        List<UpdateOptionRequest>? Options,
         int? NewCorrectOptionId) : IRequest<Result>;
 }

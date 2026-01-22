@@ -2,6 +2,7 @@
 using ExamSystem.Application.Common.Results.Errors;
 using ExamSystem.Application.Contracts.ExternalServices;
 using ExamSystem.Application.Contracts.Services;
+using ExamSystem.Application.Features.Authentication.Shared;
 using ExamSystem.Domain.Entities;
 using ExamSystem.Domain.Entities.Users;
 using MediatR;
@@ -32,7 +33,7 @@ namespace ExamSystem.Application.Features.Authentication.Commands.Register
                 return Error.Conflict("Email Already Exists", "This email is already in use. try anther email.");
 
             ApplicationUser user;
-            if (request.Role == DTOs.RoleDto.Doctor)
+            if (request.Role == RoleDto.Doctor)
                 user = new Doctor { Email = request.Email, FullName = request.FullName, UserName = Guid.NewGuid().ToString() };
             else
                 user = new Student { Email = request.Email, FullName = request.FullName, UserName = Guid.NewGuid().ToString() };

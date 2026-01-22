@@ -23,7 +23,7 @@ namespace ExamSystem.API.Extensions
                     {
                         Name = "MIT License",
                         Url = new Uri("https://opensource.org/licenses/MIT")
-                    }
+                    },
                 });
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -50,6 +50,7 @@ namespace ExamSystem.API.Extensions
                     }
                 });
 
+                options.EnableAnnotations();
             });
             return services;
         }
