@@ -3,7 +3,6 @@ using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
 using ExamSystem.Application.Features.Questions.Commands.CreateQuestion.Requests;
 using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion;
 using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion.Requests;
-using ExamSystem.Application.Features.Questions.Queries.GetExamQuestionsForDoctor.Responses;
 using ExamSystem.Application.Features.Questions.Shared;
 using ExamSystem.Domain.Entities.Questions;
 
@@ -15,8 +14,9 @@ namespace ExamSystem.Application.Mappers
         {
             CreateQuestionMapper();
             UpdateQuestionMapper();
-            GetExamQuestionsForDoctorMapper();
+            GetQuestionsMapper();
         }
+
 
         private void CreateQuestionMapper()
         {
@@ -39,14 +39,15 @@ namespace ExamSystem.Application.Mappers
                 .ForMember(dest => dest.OptionText, opts => opts.MapFrom(src => src.NewOptionText))
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
-        private void GetExamQuestionsForDoctorMapper()
+        private void GetQuestionsMapper()
         {
-            CreateMap<Question, QuestionForDoctorResponse>()
+            CreateMap<Question, QuestionResponse>()
                 .ForMember(dest => dest.QuestionId, opts => opts.MapFrom(src => src.Id))
                 .ForMember(dest => dest.ExamTitle, opts => opts.MapFrom(src => src.Exam.Title));
 
             CreateMap<Option, OptionResponse>()
                 .ForMember(dest => dest.OptionId, opts => opts.MapFrom(src => src.Id));
         }
+
     }
 }

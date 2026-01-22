@@ -1,12 +1,11 @@
-﻿using ExamSystem.Application.Features.Questions.Shared;
-using ExamSystem.Domain.Entities.Questions;
+﻿using ExamSystem.Domain.Entities.Questions;
 
-namespace ExamSystem.Application.Features.Questions.Queries.GetExamQuestionsForDoctor.Responses
+namespace ExamSystem.Application.Features.Questions.Shared
 {
-    public class QuestionForDoctorResponse
+    public class QuestionResponse
     {
         public int QuestionId { get; init; }
-        public string? QuestionText { get; init; }
+        public string QuestionText { get; init; } = null!;
         public double QuestionMark { get; init; }
         public QuestionType QuestionType { get; init; }
         public List<OptionResponse>? Options { get; init; }
