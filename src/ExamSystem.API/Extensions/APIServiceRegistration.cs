@@ -18,29 +18,13 @@ namespace ExamSystem.API.Extensions
             return services;
         }
 
-        private static void ConfigureRateLimiter(IServiceCollection services)
-        {
-            services.AddRateLimiter(options =>
-            {
-                options.AddSlidingWindowLimiter("sliding", limiterOptions =>
-                {
-                    limiterOptions.PermitLimit = 100;
-                    limiterOptions.Window = TimeSpan.FromMinutes(1);
-                    limiterOptions.SegmentsPerWindow = 6;
-                    limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
-                    limiterOptions.QueueLimit = 0;
-                });
-                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
-            });
-
-        }
         private static void ConfigureControllersAndSwagger(IServiceCollection services)
         {
             services.AddControllers()
-                .AddJsonOptions(cfg =>
-                {
-                    cfg.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                });
+            .AddJsonOptions(cfg =>
+            {
+                cfg.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
             services.AddSwaggerDocumentation();
         }
@@ -101,6 +85,22 @@ namespace ExamSystem.API.Extensions
                 outputTemplate: outputTemplate
                 )
                 .CreateLogger();
+        }
+        private static void ConfigureRateLimiter(IServiceCollection services)
+        {
+            services.AddRateLimiter(options =>
+            {
+                options.AddSlidingWindowLimiter("sliding", limiterOptions =>
+                {
+                    limiterOptions.PermitLimit = 100;
+                    limiterOptions.Window = TimeSpan.FromMinutes(1);
+                    limiterOptions.SegmentsPerWindow = 6;
+                    limiterOptions.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+                    limiterOptions.QueueLimit = 0;
+                });
+                options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+            });
+
         }
     }
 }

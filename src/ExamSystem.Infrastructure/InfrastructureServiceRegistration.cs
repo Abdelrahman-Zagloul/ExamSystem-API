@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Text;
 namespace ExamSystem.Infrastructure
 {
@@ -28,9 +29,10 @@ namespace ExamSystem.Infrastructure
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             ConfigureDbContextAndIdentity(services, configuration);
-            RegisterDependencies(services);
             ConfigureJwtAuthentication(services, configuration);
             ConfigureHangfire(services, configuration);
+            ConfigureRedis(services, configuration);
+            RegisterDependencies(services);
             RegisterSettingDependencies(services, configuration);
             return services;
         }
@@ -51,27 +53,6 @@ namespace ExamSystem.Infrastructure
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ExamDbContext>()
             .AddDefaultTokenProviders();
-        }
-        private static void RegisterDependencies(IServiceCollection services)
-        {
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IDbInitializer, DbInitializer>();
-            services.AddScoped<IAccessTokenService, AccessTokenService>();
-            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
-            services.AddScoped<IMailService, MailService>();
-            services.AddScoped<IAppEmailService, AppEmailService>();
-            services.AddScoped<IBackgroundJobService, HangfireBackgroundJobService>();
-            services.AddHttpContextAccessor();
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
-
-        }
-        private static void RegisterSettingDependencies(IServiceCollection services, IConfiguration configuration)
-        {
-            services.Configure<DefaultUsersSettings>(configuration.GetSection(nameof(DefaultUsersSettings)));
-            services.Configure<JWTSettings>(configuration.GetSection(nameof(JWTSettings)));
-            services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
-            services.Configure<FrontendURLsSettings>(configuration.GetSection(nameof(FrontendURLsSettings)));
-            services.Configure<RefreshTokenSettings>(configuration.GetSection(nameof(RefreshTokenSettings)));
         }
         private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)
         {
@@ -137,7 +118,35 @@ namespace ExamSystem.Infrastructure
 
             services.AddHangfireServer();
         }
+        private static void ConfigureRedis(IServiceCollection services, IConfiguration configuration)
+        {
+            var redisConnection = configuration.GetConnectionString("RedisConnection") ??
+                throw new InvalidOperationException("Redis connection string 'RedisConnection' is missing.");
 
+            services.AddSingleton<IConnectionMultiplexer>(x =>
+                    ConnectionMultiplexer.Connect(redisConnection));
+        }
+        private static void RegisterDependencies(IServiceCollection services)
+        {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDbInitializer, DbInitializer>();
+            services.AddScoped<IAccessTokenService, AccessTokenService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IAppEmailService, AppEmailService>();
+            services.AddScoped<IBackgroundJobService, HangfireBackgroundJobService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<ICacheService, RedisCacheService>();
+            services.AddHttpContextAccessor();
 
+        }
+        private static void RegisterSettingDependencies(IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<DefaultUsersSettings>(configuration.GetSection(nameof(DefaultUsersSettings)));
+            services.Configure<JWTSettings>(configuration.GetSection(nameof(JWTSettings)));
+            services.Configure<MailSettings>(configuration.GetSection(nameof(MailSettings)));
+            services.Configure<FrontendURLsSettings>(configuration.GetSection(nameof(FrontendURLsSettings)));
+            services.Configure<RefreshTokenSettings>(configuration.GetSection(nameof(RefreshTokenSettings)));
+        }
     }
 }
