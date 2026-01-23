@@ -1,5 +1,6 @@
 ﻿using ExamSystem.Application.Contracts.ExternalServices;
 using ExamSystem.Application.Contracts.Identity;
+using ExamSystem.Application.Contracts.Jobs;
 using ExamSystem.Application.Contracts.Services;
 using ExamSystem.Application.Settings;
 using ExamSystem.Domain.Entities.Users;
@@ -7,6 +8,7 @@ using ExamSystem.Domain.Interfaces;
 using ExamSystem.Infrastructure.ExternalServices;
 using ExamSystem.Infrastructure.Identity;
 using ExamSystem.Infrastructure.Identity.Responses;
+using ExamSystem.Infrastructure.Jobs;
 using ExamSystem.Infrastructure.Persistence.Contexts;
 using ExamSystem.Infrastructure.Persistence.Repositories;
 using ExamSystem.Infrastructure.Persistence.SeedData;
@@ -137,6 +139,7 @@ namespace ExamSystem.Infrastructure
             services.AddScoped<IBackgroundJobService, HangfireBackgroundJobService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICacheService, RedisCacheService>();
+            services.AddScoped<ICalculateExamResultJob, CalculateExamResultJob>();
             services.AddHttpContextAccessor();
 
         }

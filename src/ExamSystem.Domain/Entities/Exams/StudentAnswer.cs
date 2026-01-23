@@ -5,7 +5,7 @@ namespace ExamSystem.Domain.Entities.Exams
 {
     public class StudentAnswer
     {
-        public bool IsCorrect { get; set; }
+        public AnswerEvaluationStatus EvaluationStatus { get; set; } = AnswerEvaluationStatus.Pending;
 
         public string StudentId { get; set; } = null!;
         public Student Student { get; set; } = null!;

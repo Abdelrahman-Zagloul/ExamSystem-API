@@ -12,8 +12,9 @@ namespace ExamSystem.Infrastructure.Persistence.Configurations
 
             builder.HasKey(x => new { x.StudentId, x.ExamId, x.QuestionId });
 
-            builder.Property(e => e.IsCorrect).IsRequired();
-
+            builder.Property(e => e.EvaluationStatus)
+                .IsRequired()
+                .HasConversion<int>();
 
             builder.HasOne(x => x.Student)
                 .WithMany(x => x.StudentAnswers)
