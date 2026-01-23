@@ -12,11 +12,14 @@ namespace ExamSystem.Application.Features.Exams.Commands.SubmitExam
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBackgroundJobService _backgroundJobService;
-
+        private readonly IGenericRepository<ExamSession> _sessionRepo;
+        private readonly IGenericRepository<StudentAnswer> _studentAnswerRepo;
         public SubmitExamCommandHandler(IUnitOfWork unitOfWork, IBackgroundJobService backgroundJobService)
         {
             _unitOfWork = unitOfWork;
             _backgroundJobService = backgroundJobService;
+            _sessionRepo = _unitOfWork.Repository<ExamSession>();
+            _studentAnswerRepo = _unitOfWork.Repository<StudentAnswer>();
         }
 
         public async Task<Result> Handle(SubmitExamCommand request, CancellationToken cancellationToken)
@@ -29,8 +32,7 @@ namespace ExamSystem.Application.Features.Exams.Commands.SubmitExam
             if (exam.EndAt < now)
                 return Error.Conflict("ExamFinished", "You cannot submit the exam after it has finished");
 
-            var examSession = await _unitOfWork.Repository<ExamSession>()
-                .FindAsync(cancellationToken, request.StudentId, request.ExamId);
+            var examSession = await _sessionRepo.FindAsync(cancellationToken, request.StudentId, request.ExamId);
 
             if (examSession == null)
                 return Error.Conflict("ExamNotStarted", "You must start the exam before submitting");
@@ -38,10 +40,15 @@ namespace ExamSystem.Application.Features.Exams.Commands.SubmitExam
             if (examSession.SubmittedAt != null)
                 return Error.Conflict("ExamAlreadySubmitted", "You have already submitted this exam");
 
-
             var studentExamTime = (now - examSession.StartedAt).TotalMinutes;
             if (exam.DurationInMinutes < studentExamTime)
                 return Error.Conflict("ExamTimeExceeded", "You exceeded the allowed exam duration");
+
+            if (!exam.ResultsJobScheduled)
+            {
+                exam.ResultsJobScheduled = true;
+                _backgroundJobService.Schedule<IPublishExamResultsJob>(job => job.ExecuteAsync(request.ExamId), exam.EndAt);
+            }
 
             examSession.SubmittedAt = now;
             var studentAnswers = new List<StudentAnswer>();
@@ -57,11 +64,11 @@ namespace ExamSystem.Application.Features.Exams.Commands.SubmitExam
                 });
             }
 
-            await _unitOfWork.Repository<StudentAnswer>().AddRangeAsync(studentAnswers);
+            await _studentAnswerRepo.AddRangeAsync(studentAnswers);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             _backgroundJobService.Enqueue<ICalculateExamResultJob>(job => job.ExecuteAsync(request.ExamId, request.StudentId));
-            return Result.Ok($"Exam submitted Successfully.Your result will be available at : {exam.EndAt}");
+            return Result.Ok($"Exam submitted Successfully. Your result will be available at : {exam.EndAt}");
         }
     }
 }

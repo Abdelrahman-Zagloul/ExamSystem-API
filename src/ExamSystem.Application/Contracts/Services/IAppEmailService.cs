@@ -8,5 +8,6 @@ namespace ExamSystem.Application.Contracts.Services
         Task SendEmailForConfirmEmailAsync(ApplicationUser user, string EncodedToken);
         Task SendEmailForPasswordChangedAsync(ApplicationUser user);
         Task SendEmailForResetPasswordAsync(ApplicationUser user, string EncodedToken);
+        Task SendEmailForExamResultAsync(string examTitle, string fullName, double totalMark, double score, string email, int examId);
     }
 }

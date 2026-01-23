@@ -140,6 +140,7 @@ namespace ExamSystem.Infrastructure
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<ICacheService, RedisCacheService>();
             services.AddScoped<ICalculateExamResultJob, CalculateExamResultJob>();
+            services.AddScoped<IPublishExamResultsJob, PublishExamResultsJob>();
             services.AddHttpContextAccessor();
 
         }
