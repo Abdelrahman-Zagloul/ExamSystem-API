@@ -3,7 +3,7 @@ using ExamSystem.Domain.Entities.Questions;
 
 namespace ExamSystem.Application.Features.Exams.Commands.StartExam.Responses
 {
-    public class ExamQuestionResponse
+    public record ExamQuestionResponse
     {
         public int QuestionId { get; init; }
         public string QuestionText { get; init; } = null!;

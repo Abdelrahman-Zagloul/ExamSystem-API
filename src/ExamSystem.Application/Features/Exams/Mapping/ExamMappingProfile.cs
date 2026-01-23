@@ -56,7 +56,7 @@ namespace ExamSystem.Application.Features.Exams.Mapping
         }
         private void StartExamMapper()
         {
-            CreateMap<Exam, StartExamResponseResponse>()
+            CreateMap<Exam, StartExamResponse>()
                 .ForMember(dest => dest.ExamId, opts => opts.MapFrom(src => src.Id))
                 .ForMember(dest => dest.QuestionsCount, opts => opts.MapFrom(src => src.Questions.Count));
 

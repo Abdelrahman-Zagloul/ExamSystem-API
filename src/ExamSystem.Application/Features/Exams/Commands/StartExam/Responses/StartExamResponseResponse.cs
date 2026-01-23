@@ -1,6 +1,6 @@
 ﻿namespace ExamSystem.Application.Features.Exams.Commands.StartExam.Responses
 {
-    public class StartExamResponseResponse
+    public record StartExamResponse
     {
         public int ExamId { get; init; }
         public string Title { get; init; } = null!;
@@ -9,6 +9,6 @@
         public DateTime EndAt { get; init; }
         public int DurationInMinutes { get; init; }
         public int QuestionsCount { get; init; }
-        public List<ExamQuestionResponse> Questions { get; init; } = [];
+        public IReadOnlyList<ExamQuestionResponse> Questions { get; init; } = [];
     }
 }
