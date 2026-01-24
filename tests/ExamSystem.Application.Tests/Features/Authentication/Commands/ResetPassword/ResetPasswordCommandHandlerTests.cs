@@ -10,8 +10,12 @@ using Moq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.ResetPassword
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResetPassword
 {
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "ResetPassword")]
+    [Trait("Component", "Handler")]
     public class ResetPasswordCommandHandlerTests
     {
         private readonly Mock<IAppEmailService> _appEmailServiceMock;

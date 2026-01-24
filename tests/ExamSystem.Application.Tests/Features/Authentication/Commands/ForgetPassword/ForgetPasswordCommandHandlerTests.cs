@@ -7,8 +7,13 @@ using Microsoft.AspNetCore.Identity;
 using Moq;
 using System.Linq.Expressions;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.ForgetPassword
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ForgetPassword
 {
+
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "ForgetPassword")]
+    [Trait("Component", "Handler")]
     public class ForgetPasswordCommandHandlerTests
     {
         private readonly Mock<IAppEmailService> _emailServiceMock;

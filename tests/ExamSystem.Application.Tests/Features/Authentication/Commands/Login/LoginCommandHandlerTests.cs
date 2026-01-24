@@ -7,8 +7,13 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.Login
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.Login
 {
+
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "Login")]
+    [Trait("Component", "Handler")]
     public class LoginCommandHandlerTests
     {
         private readonly LoginCommandHandler _handler;

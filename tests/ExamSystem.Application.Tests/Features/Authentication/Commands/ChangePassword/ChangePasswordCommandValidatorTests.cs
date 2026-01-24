@@ -1,8 +1,12 @@
 ﻿using ExamSystem.Application.Features.Authentication.Commands.ChangePassword;
 using FluentAssertions;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.ChangePassword
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ChangePassword
 {
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "ChangePassword")]
+    [Trait("Component", "Validator")]
     public class ChangePasswordCommandValidatorTests
     {
         private readonly ChangePasswordCommandValidator _validator = new ChangePasswordCommandValidator();

@@ -1,8 +1,12 @@
 ﻿using ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail;
 using FluentAssertions;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.ConfirmEmail
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ConfirmEmail
 {
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "ConfirmEmail")]
+    [Trait("Component", "Validator")]
     public class ConfirmEmailCommandValidatorTests
     {
         private readonly ConfirmEmailCommandValidator _validator = new ConfirmEmailCommandValidator();

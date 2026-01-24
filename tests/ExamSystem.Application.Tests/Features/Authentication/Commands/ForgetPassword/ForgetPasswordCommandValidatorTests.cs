@@ -1,8 +1,12 @@
 ﻿using ExamSystem.Application.Features.Authentication.Commands.ForgetPassword;
 using FluentAssertions;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.ForgetPassword
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ForgetPassword
 {
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "ForgetPassword")]
+    [Trait("Component", "Validator")]
     public class ForgetPasswordCommandValidatorTests
     {
         private readonly ForgetPasswordCommandValidator _validator = new ForgetPasswordCommandValidator();

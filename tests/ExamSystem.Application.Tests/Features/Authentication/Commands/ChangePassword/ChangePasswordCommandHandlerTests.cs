@@ -8,8 +8,12 @@ using Microsoft.AspNetCore.Identity;
 using Moq;
 using System.Linq.Expressions;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.ChangePassword
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ChangePassword
 {
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "ChangePassword")]
+    [Trait("Component", "Handler")]
     public class ChangePasswordCommandHandlerTests
     {
         private readonly Mock<IAppEmailService> _appEmailServiceMock;

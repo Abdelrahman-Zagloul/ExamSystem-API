@@ -2,8 +2,12 @@
 using ExamSystem.Application.Features.Authentication.Shared;
 using FluentAssertions;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.Register
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.Register
 {
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "Register")]
+    [Trait("Component", "Validator")]
     public class RegisterCommandValidatorTests
     {
         private readonly RegisterCommandValidator _validator = new RegisterCommandValidator();

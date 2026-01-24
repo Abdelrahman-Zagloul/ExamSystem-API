@@ -1,8 +1,12 @@
 ﻿using ExamSystem.Application.Features.Authentication.Commands.Login;
 using FluentAssertions;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.Login
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.Login
 {
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "Login")]
+    [Trait("Component", "Validator")]
     public class LoginCommandValidatorTests
     {
         private readonly LoginCommandValidator _validator = new LoginCommandValidator();

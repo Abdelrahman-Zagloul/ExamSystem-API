@@ -12,8 +12,12 @@ using Moq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.ConfirmEmail
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ConfirmEmail
 {
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "ConfirmEmail")]
+    [Trait("Component", "Handler")]
     public class ConfirmEmailCommandHandlerTests
     {
         private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;

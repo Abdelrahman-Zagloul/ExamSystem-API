@@ -1,8 +1,13 @@
 ﻿using ExamSystem.Application.Features.Authentication.Commands.ResendConfirmEmail;
 using FluentAssertions;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.ResendConfirmEmail
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResendConfirmEmail
 {
+
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "ResendConfirmEmail")]
+    [Trait("Component", "Validator")]
     public class ResendConfirmEmailCommandValidatorTests
     {
         private readonly ResendConfirmEmailCommandValidator _validator = new ResendConfirmEmailCommandValidator();

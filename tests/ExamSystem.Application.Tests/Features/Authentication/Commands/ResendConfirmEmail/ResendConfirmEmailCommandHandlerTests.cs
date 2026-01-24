@@ -8,10 +8,13 @@ using Microsoft.AspNetCore.Identity;
 using Moq;
 using System.Linq.Expressions;
 
-namespace ExamSystem.Application.Tests.Authentication.Commands.ResendConfirmEmail
+namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResendConfirmEmail
 {
 
-
+    [Trait("Layer", "Application")]
+    [Trait("Feature", "Authentication")]
+    [Trait("Action", "ResendConfirmEmail")]
+    [Trait("Component", "Handler")]
     public class ResendConfirmEmailCommandHandlerTests
     {
         private readonly Mock<IAppEmailService> _emailServiceMock;
