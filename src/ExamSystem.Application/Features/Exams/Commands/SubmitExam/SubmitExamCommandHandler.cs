@@ -46,22 +46,15 @@ namespace ExamSystem.Application.Features.Exams.Commands.SubmitExam
 
             if (!exam.ResultsJobScheduled)
             {
-                exam.ResultsJobScheduled = true;
+                exam.ScheduleResultsJob();
                 _backgroundJobService.Schedule<IPublishExamResultsJob>(job => job.ExecuteAsync(request.ExamId), exam.EndAt);
             }
 
-            examSession.SubmittedAt = now;
+            examSession.SubmitSession();
             var studentAnswers = new List<StudentAnswer>();
             foreach (var answer in request.Answers)
             {
-                studentAnswers.Add(new StudentAnswer
-                {
-                    ExamId = request.ExamId,
-                    StudentId = request.StudentId,
-                    QuestionId = answer.QuestionId,
-                    SelectedOptionId = answer.SelectedOptionId,
-                    EvaluationStatus = AnswerEvaluationStatus.Pending,
-                });
+                studentAnswers.Add(new StudentAnswer(request.ExamId, request.StudentId, answer.QuestionId, answer.SelectedOptionId));
             }
 
             await _studentAnswerRepo.AddRangeAsync(studentAnswers);

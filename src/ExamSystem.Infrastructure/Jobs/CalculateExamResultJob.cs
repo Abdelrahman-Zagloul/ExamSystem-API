@@ -47,23 +47,15 @@ namespace ExamSystem.Infrastructure.Jobs
                 if (!questionLookup.TryGetValue(answer.QuestionId, out var question))
                     continue;
 
-                if (question.CorrectOptionId == answer.SelectedOptionId)
-                {
+                bool isCorrect = question.CorrectOptionId == answer.SelectedOptionId;
+                if (isCorrect)
                     score += question.QuestionMark;
-                    answer.EvaluationStatus = AnswerEvaluationStatus.Correct;
-                }
-                else
-                    answer.EvaluationStatus = AnswerEvaluationStatus.Wrong;
+
+                answer.EvaluateAnswer(isCorrect);
 
             }
 
-            var examResult = new ExamResult
-            {
-                Score = score,
-                ExamId = examId,
-                StudentId = studentId,
-                TotalMark = examQuestions.Sum(x => x.QuestionMark),
-            };
+            var examResult = new ExamResult(studentId, examId, examQuestions.Sum(x => x.QuestionMark), score);
             await _examResultRepo.AddAsync(examResult);
             await _unitOfWork.SaveChangesAsync();
 

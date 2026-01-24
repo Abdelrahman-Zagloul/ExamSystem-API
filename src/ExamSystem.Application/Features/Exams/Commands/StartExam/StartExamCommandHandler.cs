@@ -40,8 +40,7 @@ namespace ExamSystem.Application.Features.Exams.Commands.StartExam
                 return Error.Conflict("ExamFinished", "Exam is already finished");
 
 
-            var session = await _sessionRepo
-                    .FindAsync(cancellationToken, request.StudentId, request.ExamId);
+            var session = await _sessionRepo.FindAsync(cancellationToken, request.StudentId, request.ExamId);
 
             if (session != null)
             {
@@ -50,13 +49,8 @@ namespace ExamSystem.Application.Features.Exams.Commands.StartExam
 
                 return await LoadExamResponseAsync(request, exam.EndAt, cancellationToken);
             }
-            var examSession = new ExamSession
-            {
-                ExamId = request.ExamId,
-                StudentId = request.StudentId,
-                StartedAt = now
-            };
 
+            var examSession = new ExamSession(request.ExamId, request.StudentId);
             await _sessionRepo.AddAsync(examSession, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 

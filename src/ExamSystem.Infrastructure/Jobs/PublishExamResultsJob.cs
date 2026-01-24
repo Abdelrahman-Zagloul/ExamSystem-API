@@ -37,7 +37,7 @@ namespace ExamSystem.Infrastructure.Jobs
                     (result.ExamTitle, result.StudentName, result.TotalMark, result.Score, result.Email, examId);
             }
 
-            exam.ResultsPublished = true;
+            exam.PublishExamResults();
             await _unitOfWork.SaveChangesAsync();
         }
     }
