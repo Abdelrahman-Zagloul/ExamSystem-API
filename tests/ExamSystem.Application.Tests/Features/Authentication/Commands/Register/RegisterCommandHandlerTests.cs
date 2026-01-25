@@ -11,11 +11,7 @@ using Moq;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.Register
 {
-
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "Register")]
-    [Trait("Component", "Handler")]
+    [Trait("Category", "Application.Authentication.Register.Handler")]
     public class RegisterCommandHandlerTests
     {
         private readonly Mock<IAppEmailService> _appEmailServiceMock;

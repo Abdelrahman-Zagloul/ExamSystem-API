@@ -14,10 +14,7 @@ using System.Text;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ConfirmEmail
 {
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "ConfirmEmail")]
-    [Trait("Component", "Handler")]
+    [Trait("Category", "Application.Authentication.ConfirmEmail.Handler")]
     public class ConfirmEmailCommandHandlerTests
     {
         private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;

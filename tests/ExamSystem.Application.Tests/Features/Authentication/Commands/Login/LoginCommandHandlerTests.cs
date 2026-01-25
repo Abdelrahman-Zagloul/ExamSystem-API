@@ -10,10 +10,7 @@ using Moq;
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.Login
 {
 
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "Login")]
-    [Trait("Component", "Handler")]
+    [Trait("Category", "Application.Authentication.Login.Handler")]
     public class LoginCommandHandlerTests
     {
         private readonly LoginCommandHandler _handler;

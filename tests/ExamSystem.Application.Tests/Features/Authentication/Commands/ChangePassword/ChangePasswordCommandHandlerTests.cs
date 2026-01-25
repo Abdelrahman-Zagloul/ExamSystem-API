@@ -10,10 +10,7 @@ using System.Linq.Expressions;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ChangePassword
 {
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "ChangePassword")]
-    [Trait("Component", "Handler")]
+    [Trait("Category", "Application.Authentication.ChangePassword.Handler")]
     public class ChangePasswordCommandHandlerTests
     {
         private readonly Mock<IAppEmailService> _appEmailServiceMock;

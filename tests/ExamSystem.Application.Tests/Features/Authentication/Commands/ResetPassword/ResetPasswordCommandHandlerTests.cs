@@ -12,10 +12,7 @@ using System.Text;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResetPassword
 {
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "ResetPassword")]
-    [Trait("Component", "Handler")]
+    [Trait("Category", "Application.Authentication.ResetPassword.Handler")]
     public class ResetPasswordCommandHandlerTests
     {
         private readonly Mock<IAppEmailService> _appEmailServiceMock;

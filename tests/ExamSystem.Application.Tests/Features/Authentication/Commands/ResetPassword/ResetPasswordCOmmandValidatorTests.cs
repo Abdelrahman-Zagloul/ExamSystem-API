@@ -3,10 +3,7 @@ using FluentAssertions;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResetPassword
 {
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "ResetPassword")]
-    [Trait("Component", "Validator")]
+    [Trait("Category", "Application.Authentication.ResetPassword.Validator")]
     public class ResetPasswordCommandValidatorTests
     {
         private readonly ResetPasswordCommandValidator _validator = new ResetPasswordCommandValidator();

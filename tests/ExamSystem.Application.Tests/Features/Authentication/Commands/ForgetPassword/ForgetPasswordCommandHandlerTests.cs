@@ -9,11 +9,7 @@ using System.Linq.Expressions;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ForgetPassword
 {
-
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "ForgetPassword")]
-    [Trait("Component", "Handler")]
+    [Trait("Category", "Application.Authentication.ForgetPassword.Handler")]
     public class ForgetPasswordCommandHandlerTests
     {
         private readonly Mock<IAppEmailService> _emailServiceMock;

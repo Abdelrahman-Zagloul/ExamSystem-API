@@ -10,11 +10,7 @@ using System.Linq.Expressions;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResendConfirmEmail
 {
-
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "ResendConfirmEmail")]
-    [Trait("Component", "Handler")]
+    [Trait("Category", "Application.Authentication.ResendConfirmEmail.Handler")]
     public class ResendConfirmEmailCommandHandlerTests
     {
         private readonly Mock<IAppEmailService> _emailServiceMock;

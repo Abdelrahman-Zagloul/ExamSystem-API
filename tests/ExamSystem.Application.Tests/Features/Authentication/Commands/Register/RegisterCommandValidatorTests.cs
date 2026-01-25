@@ -4,10 +4,7 @@ using FluentAssertions;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.Register
 {
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "Register")]
-    [Trait("Component", "Validator")]
+    [Trait("Category", "Application.Authentication.Register.Validator")]
     public class RegisterCommandValidatorTests
     {
         private readonly RegisterCommandValidator _validator = new RegisterCommandValidator();

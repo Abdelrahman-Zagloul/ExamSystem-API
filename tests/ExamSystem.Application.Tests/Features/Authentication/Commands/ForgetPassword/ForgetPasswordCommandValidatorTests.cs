@@ -3,10 +3,7 @@ using FluentAssertions;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ForgetPassword
 {
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "ForgetPassword")]
-    [Trait("Component", "Validator")]
+    [Trait("Category", "Application.Authentication.ForgetPassword.Validator")]
     public class ForgetPasswordCommandValidatorTests
     {
         private readonly ForgetPasswordCommandValidator _validator = new ForgetPasswordCommandValidator();

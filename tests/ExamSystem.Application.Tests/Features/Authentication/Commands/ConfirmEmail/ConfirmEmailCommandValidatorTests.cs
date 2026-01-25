@@ -3,10 +3,7 @@ using FluentAssertions;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ConfirmEmail
 {
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "ConfirmEmail")]
-    [Trait("Component", "Validator")]
+    [Trait("Category", "Application.Authentication.ConfirmEmail.Validator")]
     public class ConfirmEmailCommandValidatorTests
     {
         private readonly ConfirmEmailCommandValidator _validator = new ConfirmEmailCommandValidator();

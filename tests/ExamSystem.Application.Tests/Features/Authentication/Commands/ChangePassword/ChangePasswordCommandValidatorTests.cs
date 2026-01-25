@@ -3,10 +3,7 @@ using FluentAssertions;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ChangePassword
 {
-    [Trait("Layer", "Application")]
-    [Trait("Feature", "Authentication")]
-    [Trait("Action", "ChangePassword")]
-    [Trait("Component", "Validator")]
+    [Trait("Category", "Application.Authentication.ChangePassword.Validator")]
     public class ChangePasswordCommandValidatorTests
     {
         private readonly ChangePasswordCommandValidator _validator = new ChangePasswordCommandValidator();
