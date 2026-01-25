@@ -7,7 +7,6 @@ using ExamSystem.Domain.Entities.Users;
 using ExamSystem.Domain.Interfaces;
 using ExamSystem.Infrastructure.ExternalServices;
 using ExamSystem.Infrastructure.Identity;
-using ExamSystem.Infrastructure.Identity.Responses;
 using ExamSystem.Infrastructure.Jobs;
 using ExamSystem.Infrastructure.Persistence.Contexts;
 using ExamSystem.Infrastructure.Persistence.Repositories;
@@ -16,7 +15,6 @@ using ExamSystem.Infrastructure.Services;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -59,12 +57,8 @@ namespace ExamSystem.Infrastructure
         private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("JWTSettings").Get<JWTSettings>() ?? throw new Exception();
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
             {
                 options.SaveToken = true;
                 options.RequireHttpsMetadata = true;
@@ -77,27 +71,6 @@ namespace ExamSystem.Infrastructure
                     ValidIssuer = jwtSettings.Issuer,
                     ValidAudience = jwtSettings.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
-                };
-
-                //override the Unauthorized / Forbidden responses
-                options.Events = new JwtBearerEvents
-                {
-                    OnChallenge = async context =>
-                    {
-                        context.HandleResponse();
-                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-                        context.Response.ContentType = "application/json";
-                        await context.Response.WriteAsJsonAsync(JwtAuthErrorResponse.Unauthorized());
-                    },
-                    OnForbidden = async context =>
-                    {
-                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                        context.Response.ContentType = "application/json";
-
-                        await context.Response.WriteAsJsonAsync(
-                            JwtAuthErrorResponse.Forbidden()
-                        );
-                    }
                 };
             });
         }

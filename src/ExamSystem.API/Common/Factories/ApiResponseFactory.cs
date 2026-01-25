@@ -28,9 +28,9 @@ namespace ExamSystem.API.Common.Factories
             if (result.Errors.All(e => e.ErrorType == ErrorType.Validation))
                 return HandleValidationErrors(result, controller);
 
-
             var error = result.Errors.First();
-            return controller.StatusCode((int)error.ErrorType,
+            var statusCode = ToStatusCode(error.ErrorType);
+            return controller.StatusCode(statusCode,
                 ApiResponse.Failure(result.Message, new ErrorResponse
                 {
                     Title = error.Title,
@@ -44,6 +44,21 @@ namespace ExamSystem.API.Common.Factories
                     .GroupBy(e => e.Title)
                     .ToDictionary(g => g.Key, g => g.Select(e => e.Description).ToList());
             return controller.BadRequest(ApiResponse.ValidationFailure(errors: validationErrors));
+        }
+
+        private static int ToStatusCode(ErrorType errorType)
+        {
+            return errorType switch
+            {
+                ErrorType.Validation => StatusCodes.Status400BadRequest,
+                ErrorType.BadRequest => StatusCodes.Status400BadRequest,
+                ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
+                ErrorType.Forbidden => StatusCodes.Status403Forbidden,
+                ErrorType.NotFound => StatusCodes.Status404NotFound,
+                ErrorType.Conflict => StatusCodes.Status409Conflict,
+                ErrorType.Failure => StatusCodes.Status500InternalServerError,
+                _ => StatusCodes.Status500InternalServerError
+            };
         }
     }
 }

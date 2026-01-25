@@ -1,4 +1,6 @@
-﻿using ExamSystem.Application.Settings;
+﻿using ExamSystem.API.Common.Responses;
+using ExamSystem.Application.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.RateLimiting;
 using Serilog;
 using Serilog.Events;
@@ -15,6 +17,9 @@ namespace ExamSystem.API.Extensions
             ConfigureCorsPolicy(services, configuration);
             ConfigureSerilog();
             ConfigureRateLimiter(services);
+            ConfigureJwtEvents(services);
+
+
             return services;
         }
 
@@ -101,6 +106,40 @@ namespace ExamSystem.API.Extensions
                 options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
             });
 
+        }
+        private static void ConfigureJwtEvents(IServiceCollection services)
+        {
+            services.PostConfigure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.Events = new JwtBearerEvents
+                {
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse();
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        context.Response.ContentType = "application/json";
+                        var response = ApiResponse.Failure("Unauthorized", new ErrorResponse
+                        {
+                            Title = "Auth.Unauthorized",
+                            Description = "Authentication token is missing or invalid"
+                        });
+                        await context.Response.WriteAsJsonAsync(response);
+
+                    },
+                    OnForbidden = async context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                        context.Response.ContentType = "application/json";
+
+                        var response = ApiResponse.Failure("Forbidden", new ErrorResponse
+                        {
+                            Title = "Auth.Forbidden",
+                            Description = "You do not have permission to access this resource"
+                        });
+                        await context.Response.WriteAsJsonAsync(response);
+                    }
+                };
+            });
         }
     }
 }
