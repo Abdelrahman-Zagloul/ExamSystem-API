@@ -13,6 +13,8 @@ namespace ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForD
             RuleFor(x => x.Status)
                 .IsInEnum().When(x => x.Status.HasValue)
                 .WithMessage("invalid exam result status");
+
+            Include(new PaginationValidator<GetExamResultsForDoctorQuery>());
         }
     }
 }

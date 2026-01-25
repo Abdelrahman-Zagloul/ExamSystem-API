@@ -9,6 +9,8 @@ namespace ExamSystem.Application.Features.Questions.Queries.GetQuestionsByExamId
 
             RuleFor(x => x.ExamId)
                     .MustBePositiveNumber("Exam ID");
+
+            Include(new PaginationValidator<GetQuestionsByExamIdQuery>());
         }
     }
 }

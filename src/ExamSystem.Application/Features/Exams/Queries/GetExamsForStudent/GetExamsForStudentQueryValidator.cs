@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using ExamSystem.Application.Common.Validations;
+using FluentValidation;
 
 namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForStudent
 {
@@ -10,6 +11,8 @@ namespace ExamSystem.Application.Features.Exams.Queries.GetExamsForStudent
                 .IsInEnum()
                 .When(x => x.ExamStatus.HasValue)
                 .WithMessage("invalid exam status");
+
+            Include(new PaginationValidator<GetExamsForStudentQuery>());
         }
     }
 }
