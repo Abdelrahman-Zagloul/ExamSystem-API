@@ -1,4 +1,6 @@
-﻿using ExamSystem.Application.Features.Exams.Commands.CreateExam;
+﻿using Asp.Versioning;
+using ExamSystem.API.Controllers.Common;
+using ExamSystem.Application.Features.Exams.Commands.CreateExam;
 using ExamSystem.Application.Features.Exams.Commands.DeleteExam;
 using ExamSystem.Application.Features.Exams.Commands.StartExam;
 using ExamSystem.Application.Features.Exams.Commands.SubmitExam;
@@ -15,9 +17,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace ExamSystem.API.Controllers
+namespace ExamSystem.API.Controllers.V1
 {
     [Route("api/exams")]
+    [ApiVersion(1.0)]
     [SwaggerTag("Manage exams: create, update, delete, view exams for doctors and students with different response, start and submit exams.")]
     public class ExamsController : ApiBaseController
     {

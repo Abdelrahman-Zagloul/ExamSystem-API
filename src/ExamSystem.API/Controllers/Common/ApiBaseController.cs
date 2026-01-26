@@ -3,7 +3,7 @@ using ExamSystem.Application.Common.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace ExamSystem.API.Controllers
+namespace ExamSystem.API.Controllers.Common
 {
 
     [ApiController]

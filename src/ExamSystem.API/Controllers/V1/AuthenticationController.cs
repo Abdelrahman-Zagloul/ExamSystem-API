@@ -1,4 +1,6 @@
-﻿using ExamSystem.Application.Common.Results;
+﻿using Asp.Versioning;
+using ExamSystem.API.Controllers.Common;
+using ExamSystem.Application.Common.Results;
 using ExamSystem.Application.Features.Authentication.Commands.ChangePassword;
 using ExamSystem.Application.Features.Authentication.Commands.ChangePassword.Requests;
 using ExamSystem.Application.Features.Authentication.Commands.ConfirmEmail;
@@ -17,9 +19,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace ExamSystem.API.Controllers
+namespace ExamSystem.API.Controllers.V1
 {
     [Route("api/auth")]
+    [ApiVersion(1.0)]
     [SwaggerTag("Manage user authentication: register, login, logout, confirm and resend confirm email, refresh token, revoke token, forget, reset and change password")]
     public class AuthenticationController : ApiBaseController
     {

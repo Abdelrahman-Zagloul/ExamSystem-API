@@ -1,4 +1,6 @@
-﻿using ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForCurrentStudent;
+﻿using Asp.Versioning;
+using ExamSystem.API.Controllers.Common;
+using ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForCurrentStudent;
 using ExamSystem.Application.Features.ExamResults.Queries.GetExamResultsForDoctor;
 using ExamSystem.Application.Features.ExamResults.Queries.GetExamReviewForCurrentStudent;
 using ExamSystem.Domain.Constants;
@@ -8,9 +10,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace ExamSystem.API.Controllers
+namespace ExamSystem.API.Controllers.V1
 {
     [Route("api")]
+    [ApiVersion(1.0)]
     [SwaggerTag("Manage exam results and reviews: view exam results for doctors, review exams for students, and list student results.")]
     public class ExamResultsController : ApiBaseController
     {

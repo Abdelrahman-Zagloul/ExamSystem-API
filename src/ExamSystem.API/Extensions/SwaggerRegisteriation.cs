@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using ExamSystem.API.Filters;
+using Microsoft.OpenApi.Models;
 
 namespace ExamSystem.API.Extensions
 {
@@ -9,6 +10,7 @@ namespace ExamSystem.API.Extensions
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
             {
+                options.OperationFilter<RemoveApiVersionParametersFilter>();
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Exam System API",

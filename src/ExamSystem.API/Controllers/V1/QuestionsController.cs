@@ -1,4 +1,6 @@
-﻿using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
+﻿using Asp.Versioning;
+using ExamSystem.API.Controllers.Common;
+using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
 using ExamSystem.Application.Features.Questions.Commands.CreateQuestion.Requests;
 using ExamSystem.Application.Features.Questions.Commands.DeleteQuestion;
 using ExamSystem.Application.Features.Questions.Commands.UpdateQuestion;
@@ -10,9 +12,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-namespace ExamSystem.API.Controllers
+namespace ExamSystem.API.Controllers.V1
 {
     [Authorize(Roles = Role.Doctor)]
+    [ApiVersion(1.0)]
     [Route("api/exams/{examId}/questions")]
     [SwaggerTag("Manage exam questions: create, update, delete and list questions for a specific exam.")]
     public class QuestionsController : ApiBaseController
