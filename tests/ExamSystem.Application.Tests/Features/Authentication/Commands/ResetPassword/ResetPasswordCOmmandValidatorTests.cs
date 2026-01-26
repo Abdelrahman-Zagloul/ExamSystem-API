@@ -1,5 +1,6 @@
 ﻿using ExamSystem.Application.Features.Authentication.Commands.ResetPassword;
 using FluentAssertions;
+using FluentValidation.TestHelper;
 
 namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResetPassword
 {
@@ -18,10 +19,11 @@ namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResetPas
             var command = new ResetPasswordCommand(email, "validToken", "ValidPass123");
 
             // Act
-            var result = _validator.Validate(command);
+            var result = _validator.TestValidate(command);
 
             // Assert
             result.IsValid.Should().BeFalse();
+            result.ShouldHaveValidationErrorFor(c => c.Email);
         }
 
         [Theory]
@@ -33,10 +35,11 @@ namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResetPas
             var command = new ResetPasswordCommand("email@gmail.com", token, "ValidPass123");
 
             // Act
-            var result = _validator.Validate(command);
+            var result = _validator.TestValidate(command);
 
             // Assert
             result.IsValid.Should().BeFalse();
+            result.ShouldHaveValidationErrorFor(c => c.Token);
         }
 
         [Theory]
@@ -49,25 +52,25 @@ namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResetPas
             var command = new ResetPasswordCommand("email@gmail.com", "validToken", newPassword);
 
             // Act
-            var result = _validator.Validate(command);
+            var result = _validator.TestValidate(command);
 
             // Assert
             result.IsValid.Should().BeFalse();
+            result.ShouldHaveValidationErrorFor(c => c.NewPassword);
         }
 
-
-
         [Fact]
-        public void Validate_ShouldPass_WhenInputIsValid()
+        public void Validate_ShouldNotHaveAnyValidationError_WhenInputIsValid()
         {
             // Arrange
             var command = new ResetPasswordCommand("email@gmail.com", "token", "newPassword");
 
             // Act
-            var result = _validator.Validate(command);
+            var result = _validator.TestValidate(command);
 
             // Assert
             result.IsValid.Should().BeTrue();
+            result.ShouldNotHaveAnyValidationErrors();
         }
     }
 }

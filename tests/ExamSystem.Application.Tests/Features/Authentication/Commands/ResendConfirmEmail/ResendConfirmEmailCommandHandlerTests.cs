@@ -28,7 +28,7 @@ namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResendCo
         }
 
         [Fact]
-        public async Task Handle_UserNotFound_ReturnsOkWithoutSendAnyThing()
+        public async Task Handle_ShouldReturnsOkWithoutSendAnyThing_WhenUserNotFound()
         {
             // Arrange
             var command = new ResendConfirmEmailCommand("test@test.com");
@@ -42,7 +42,7 @@ namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResendCo
         }
 
         [Fact]
-        public async Task Handle_EmailAlreadyConfirmed_ReturnsConflict()
+        public async Task Handle_ShouldReturnsConflict_WhenEmailAlreadyConfirmed()
         {
             // Arrange
             var user = new ApplicationUser
@@ -62,7 +62,7 @@ namespace ExamSystem.Application.Tests.Features.Authentication.Commands.ResendCo
         }
 
         [Fact]
-        public async Task Handle_UserNotConfirmed_EnqueuesEmailAndReturnsOk()
+        public async Task Handle_ShouldEnqueuesEmailAndReturnsOk_WhenUserNotConfirmed()
         {
             // Arrange
             var user = new ApplicationUser

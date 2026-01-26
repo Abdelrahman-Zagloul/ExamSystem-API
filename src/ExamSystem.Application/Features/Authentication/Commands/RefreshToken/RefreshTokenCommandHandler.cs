@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ExamSystem.Application.Features.Authentication.Commands.RefreshToken
 {
-    internal class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Result<AccessWithRefreshTokenDto>>
+    public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, Result<AccessWithRefreshTokenDto>>
     {
         private readonly IRefreshTokenService _refreshTokenService;
         private readonly IAccessTokenService _accessTokenService;
