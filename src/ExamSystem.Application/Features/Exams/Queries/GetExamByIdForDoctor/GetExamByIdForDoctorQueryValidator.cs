@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace ExamSystem.Application.Features.Exams.Queries.GetExamByIdForDoctor
 {
-    internal class GetExamByIdForDoctorQueryValidator : AbstractValidator<GetExamByIdForDoctorQuery>
+    public class GetExamByIdForDoctorQueryValidator : AbstractValidator<GetExamByIdForDoctorQuery>
     {
         public GetExamByIdForDoctorQueryValidator()
         {
