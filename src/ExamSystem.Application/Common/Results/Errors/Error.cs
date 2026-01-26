@@ -2,8 +2,6 @@
 {
     public record Error(string Title, string Description, ErrorType ErrorType)
     {
-        public string Code { get; set; }
-
         public static Error BadRequest(string title = "BadRequest", string description = "The request is invalid")
             => new Error(title, description, ErrorType.BadRequest);
         public static Error Validation(string title = "Validation Error", string description = "One or more validation errors occurred")

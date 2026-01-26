@@ -20,7 +20,7 @@ namespace ExamSystem.Application.Common.Behaviors
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            string userId = _currentUserService.UserId ?? "Unknow User";
+            string userId = _currentUserService.UserId ?? "Unknown User";
             var requestName = typeof(TRequest).Name;
             var stopwatch = Stopwatch.StartNew();
 
