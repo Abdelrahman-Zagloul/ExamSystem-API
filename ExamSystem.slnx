@@ -6,7 +6,10 @@
     <Project Path="src/ExamSystem.Infrastructure/ExamSystem.Infrastructure.csproj" Id="f757604c-f624-41d3-8496-05e6f69a5229" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/ExamSystem.API.Tests/ExamSystem.API.Tests.csproj" Id="dd2cc86f-d4dc-4dbd-81c4-d579bdb7d777" />
     <Project Path="tests/ExamSystem.Application.Tests/ExamSystem.Application.Tests.csproj" Id="8daa5de5-3230-42dc-b10d-5d133f9d8391" />
-    <Project Path="tests/ExamSystem.Infrastructure.Tests/ExamSystem.Infrastructure.Tests.csproj" Id="17cc10e9-3eb0-4a82-b8b8-7832df2954b1" />
+    <Project Path="tests/ExamSystem.Infrastructure.Tests/ExamSystem.Infrastructure.Tests.csproj" Id="17cc10e9-3eb0-4a82-b8b8-7832df2954b1">
+      <Build Solution="Debug|*" Project="false" />
+    </Project>
   </Folder>
 </Solution>
