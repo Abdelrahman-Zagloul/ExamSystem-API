@@ -20,7 +20,7 @@ namespace ExamSystem.API.Extensions
             ConfigureRateLimiter(services);
             ConfigureJwtEvents(services);
             ConfigureVersioning(services);
-
+            services.AddHealthChecks(configuration);
             return services;
         }
 

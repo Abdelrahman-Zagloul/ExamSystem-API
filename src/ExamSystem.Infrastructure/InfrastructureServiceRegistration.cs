@@ -98,8 +98,15 @@ namespace ExamSystem.Infrastructure
             var redisConnection = configuration.GetConnectionString("RedisConnection") ??
                 throw new InvalidOperationException("Redis connection string 'RedisConnection' is missing.");
 
-            services.AddSingleton<IConnectionMultiplexer>(x =>
-                    ConnectionMultiplexer.Connect(redisConnection));
+            services.AddSingleton<IConnectionMultiplexer>(sp =>
+            {
+                return ConnectionMultiplexer.Connect(redisConnection, options =>
+                {
+                    options.AbortOnConnectFail = false;
+                    options.ConnectTimeout = 300;
+                    options.SyncTimeout = 300;
+                });
+            });
         }
         private static void RegisterDependencies(IServiceCollection services)
         {

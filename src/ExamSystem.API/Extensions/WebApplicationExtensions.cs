@@ -14,6 +14,7 @@ namespace ExamSystem.API.Extensions
             ConfigureEnvironmentMiddleware(app);
             ConfigureRequestPipeline(app);
             await app.InitializeAsync();
+            app.MapHealthChecks();
         }
 
 
