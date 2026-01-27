@@ -47,7 +47,7 @@ namespace ExamSystem.Infrastructure.Persistence.Repositories
 
         public Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>>? filter = null, CancellationToken cancellationToken = default, params Expression<Func<TEntity, object>>[] includes)
         {
-            IQueryable<TEntity> query = _dbSet.AsQueryable().AsNoTracking();
+            IQueryable<TEntity> query = _dbSet.AsQueryable();
             if (includes != null)
                 foreach (var include in includes)
                     query = query.Include(include);

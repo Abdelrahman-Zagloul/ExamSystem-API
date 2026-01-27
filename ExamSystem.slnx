@@ -7,5 +7,6 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/ExamSystem.Application.Tests/ExamSystem.Application.Tests.csproj" Id="8daa5de5-3230-42dc-b10d-5d133f9d8391" />
+    <Project Path="tests/ExamSystem.Infrastructure.Tests/ExamSystem.Infrastructure.Tests.csproj" Id="17cc10e9-3eb0-4a82-b8b8-7832df2954b1" />
   </Folder>
 </Solution>

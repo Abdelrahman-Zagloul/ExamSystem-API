@@ -5,7 +5,7 @@ using Moq;
 
 namespace ExamSystem.Application.Tests.Helpers
 {
-    internal static class MockHelper
+    public static class MockHelper
     {
 
         public static Mock<UserManager<TUser>> CreateUserManagerMock<TUser>() where TUser : IdentityUser
