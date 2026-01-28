@@ -14,7 +14,6 @@ namespace ExamSystem.API.Extensions
             ConfigureEnvironmentMiddleware(app);
             ConfigureRequestPipeline(app);
             await app.InitializeAsync();
-            app.MapHealthChecks();
         }
 
 
@@ -49,6 +48,7 @@ namespace ExamSystem.API.Extensions
                 .RequireRateLimiting("sliding"); ;
 
             app.UseHangfireDashboard("/hangfire");
+            app.MapHealthChecks();
         }
         private static async Task InitializeAsync(this WebApplication app)
         {

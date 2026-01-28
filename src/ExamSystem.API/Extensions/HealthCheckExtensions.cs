@@ -40,6 +40,7 @@ namespace ExamSystem.API.Extensions
 
             return services;
         }
+
         public static WebApplication MapHealthChecks(this WebApplication app)
         {
             app.MapHealthChecks("/health", new HealthCheckOptions

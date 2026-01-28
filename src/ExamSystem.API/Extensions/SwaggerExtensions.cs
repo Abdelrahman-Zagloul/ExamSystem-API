@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 
 namespace ExamSystem.API.Extensions
 {
-    public static class SwaggerRegistration
+    public static class SwaggerExtensions
     {
         public static IServiceCollection AddSwaggerDocumentation(this IServiceCollection services)
         {

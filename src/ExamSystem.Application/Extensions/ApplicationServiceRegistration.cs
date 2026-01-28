@@ -4,13 +4,13 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ExamSystem.Application
+namespace ExamSystem.Application.Extensions
 {
     public static class ApplicationServiceRegistration
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            RegisterDependencies(services);
+            RegisterPipelineBehaviors(services);
             ConfigureFluentValidation(services);
             ConfigureAutoMapper(services);
             ConfigureMediatR(services);
@@ -19,7 +19,7 @@ namespace ExamSystem.Application
         }
 
 
-        private static void RegisterDependencies(IServiceCollection services)
+        private static void RegisterPipelineBehaviors(IServiceCollection services)
         {
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
