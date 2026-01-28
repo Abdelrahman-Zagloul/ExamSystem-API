@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using ExamSystem.API.Attributes;
 using ExamSystem.API.Controllers.Common;
 using ExamSystem.Application.Features.Exams.Commands.CreateExam;
 using ExamSystem.Application.Features.Exams.Commands.DeleteExam;
@@ -31,6 +32,7 @@ namespace ExamSystem.API.Controllers.V1
         }
 
 
+        [RedisCache(60)]
         [HttpGet("{examId}")]
         [Authorize(Roles = Role.Doctor)]
         [SwaggerOperation(Summary = "Get exam by id", Description = "Retrieve full exam details by exam id. Accessible only by the exam owner (doctor).")]
@@ -41,6 +43,7 @@ namespace ExamSystem.API.Controllers.V1
         }
 
 
+        [RedisCache(60)]
         [HttpGet("doctor")]
         [Authorize(Roles = Role.Doctor)]
         [SwaggerOperation(Summary = "Get exams for doctor", Description = "Retrieve all exams created by the current doctor with optional status filter and pagination using examStatus, pageNumber and pageSize.")]
@@ -51,6 +54,7 @@ namespace ExamSystem.API.Controllers.V1
         }
 
 
+        [RedisCache(60)]
         [HttpGet("student")]
         [Authorize(Roles = Role.Student)]
         [SwaggerOperation(Summary = "Get exams for student", Description = "Retrieve all available exams for the current student with optional status filter and pagination using examStatus, pageNumber and pageSize.")]
@@ -84,6 +88,7 @@ namespace ExamSystem.API.Controllers.V1
 
 
         [HttpPost]
+        [InvalidateRedisCache]
         [Authorize(Roles = Role.Doctor)]
         [SwaggerOperation(Summary = "Create exam", Description = "Create a new exam. Only doctors are allowed to create exams.")]
         public async Task<IActionResult> CreateExam(CreateExamCommand command)
@@ -94,6 +99,7 @@ namespace ExamSystem.API.Controllers.V1
 
 
         [HttpPut("{examId}")]
+        [InvalidateRedisCache]
         [Authorize(Roles = Role.Doctor)]
         [SwaggerOperation(Summary = "Update exam", Description = "Update exam details such as title, description, dates and duration. Only the exam owner (doctor) can update the exam.")]
         public async Task<IActionResult> UpdateExam(int examId, [FromBody] UpdateExamRequest request)
@@ -103,6 +109,7 @@ namespace ExamSystem.API.Controllers.V1
         }
 
 
+        [InvalidateRedisCache]
         [HttpDelete("{examId}")]
         [Authorize(Roles = Role.Doctor)]
         [SwaggerOperation(Summary = "Delete exam", Description = "Delete a specific exam. Only the exam owner (doctor) can delete the exam.")]

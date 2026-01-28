@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using ExamSystem.API.Attributes;
 using ExamSystem.API.Controllers.Common;
 using ExamSystem.Application.Features.Questions.Commands.CreateQuestion;
 using ExamSystem.Application.Features.Questions.Commands.CreateQuestion.Requests;
@@ -27,6 +28,7 @@ namespace ExamSystem.API.Controllers.V1
         }
 
         [HttpGet]
+        [RedisCache(60)]
         [SwaggerOperation(Summary = "Get exam questions", Description = "Retrieve all questions for a specific exam with pagination support using pageNumber and pageSize query parameters. Accessible only by the exam owner (doctor).")]
         public async Task<IActionResult> GetExamQuestions(int examId, int pageNumber = 1, int pageSize = 10)
         {
@@ -34,6 +36,7 @@ namespace ExamSystem.API.Controllers.V1
             return HandleResult(result);
         }
 
+        [RedisCache(60)]
         [HttpGet("{questionId}")]
         [SwaggerOperation(Summary = "Get question by id", Description = "Retrieve question by id for a specific exam. Accessible only by the exam owner (doctor).")]
         public async Task<IActionResult> GetExamQuestions(int examId, int questionId)
@@ -44,6 +47,7 @@ namespace ExamSystem.API.Controllers.V1
 
 
         [HttpPost]
+        [InvalidateRedisCache]
         [SwaggerOperation(Summary = "Create exam question", Description = "Create a new question for a specific exam. Only the exam owner (doctor) can add questions.")]
         public async Task<IActionResult> CreateQuestion(int examId, CreateQuestionRequest request)
         {
@@ -55,6 +59,7 @@ namespace ExamSystem.API.Controllers.V1
 
 
         [HttpPut("{questionId}")]
+        [InvalidateRedisCache]
         [SwaggerOperation(Summary = "Update exam question", Description = "Update an existing question for a specific exam. Only the exam owner (doctor) can modify questions.")]
         public async Task<IActionResult> UpdateQuestion(int examId, int questionId, UpdateQuestionRequest request)
         {
@@ -65,6 +70,7 @@ namespace ExamSystem.API.Controllers.V1
 
 
 
+        [InvalidateRedisCache]
         [HttpDelete("{questionId}")]
         [SwaggerOperation(Summary = "Delete exam question", Description = "Delete a specific question from an exam. Only the exam owner (doctor) can delete questions.")]
         public async Task<IActionResult> DeleteQuestion(int examId, int questionId)
