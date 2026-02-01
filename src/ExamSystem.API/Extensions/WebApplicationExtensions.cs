@@ -19,28 +19,28 @@ namespace ExamSystem.API.Extensions
 
         private static void ConfigureEnvironmentMiddleware(WebApplication app)
         {
-            if (app.Environment.IsDevelopment())
+            //if (app.Environment.IsDevelopment())
+            //{
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(options =>
-                {
-                    options.DisplayRequestDuration();
-                    options.EnableFilter();
-                    options.DocExpansion(DocExpansion.None);
-                });
-
-                app.UseCors("DevelopmentPolicy");
-            }
-            else
-            {
-                app.UseCors("ProductionPolicy");
-            }
+                options.DisplayRequestDuration();
+                options.EnableFilter();
+                options.DocExpansion(DocExpansion.None);
+            });
+            //}
         }
         private static void ConfigureRequestPipeline(WebApplication app)
         {
             app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            //if (app.Environment.IsDevelopment())
+            app.UseCors("DevelopmentPolicy");
+            //else
+            //    app.UseCors("ProductionPolicy");
+
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseRateLimiter();
