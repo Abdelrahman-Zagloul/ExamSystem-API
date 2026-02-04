@@ -1,0 +1,20 @@
+# .NET build artifacts
+**/bin/
+**/obj/
+
+# Visual Studio
+.vs/
+*.user
+*.cache
+*.log
+**/Logs/
+
+# Git
+.git/
+.github/
+
+
+# Tests
+tests/
+**/*Tests*/
+

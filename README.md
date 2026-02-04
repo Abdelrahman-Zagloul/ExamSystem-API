@@ -2,11 +2,14 @@
 
 [![.NET 10](https://img.shields.io/badge/.NET-10.0-blueviolet?logo=dotnet)](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/apis?view=aspnetcore-8.0&WT.mc_id=dotnet-35129-website)
 [![Swagger](https://img.shields.io/badge/Swagger-API%20Docs-green?logo=swagger)](https://my-exam-system.runasp.net/swagger/index.html)
+[![Docker](https://img.shields.io/badge/Docker-Image-blue?logo=docker)](https://hub.docker.com/r/abdelrahmanzagloul/exam-system-api)
+[![Docker Pulls](https://img.shields.io/docker/pulls/abdelrahmanzagloul/exam-system-api?logo=docker)](https://hub.docker.com/r/abdelrahmanzagloul/exam-system-api)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Abdelrahman%20Zagloul-blue?logo=linkedin)](https://www.linkedin.com/in/abdelrahman-zagloul/)
 
-A **production-ready ASP.NET Core Web API** built with **Clean Architecture** and the **CQRS pattern**.  
-Designed to power **secure and scalable online examinations**, with a strong focus on **performance, reliability, and maintainability** <br>
-through background processing, Redis caching, robust health checks, and extensive automated testing.
+A **production-ready ASP.NET Core Web API** built using **Clean Architecture** and the **CQRS pattern**.  
+The system is designed to support **secure and scalable online examinations**, with a strong focus on  
+**performance**, **reliability**, and **maintainability** through background processing, Redis caching,  
+robust health checks, comprehensive automated testing, and **Docker-based deployment support**.
 
 ---
 
@@ -18,6 +21,7 @@ through background processing, Redis caching, robust health checks, and extensiv
 - **Testing:** 317+ unit tests across API, Application, and Infrastructure
 - **API Responses:** Standardized API response model across all endpoints
 - **API Documentation:** Swagger with JWT authentication support
+- **Deployment:** Docker, Docker Compose, and MonsterASP
 
 ---
 
@@ -35,8 +39,13 @@ through background processing, Redis caching, robust health checks, and extensiv
 - [Testing](#testing)
 - [API & Platform Features](#api--platform-features)
 - [Tech Stack](#tech-stack)
+- [Docker Support](#docker-support)
 - [API Endpoints](#api-endpoints)
-- [Setup Instructions](#setup-instructions)
+- [Setup & Deployment](#setup--deployment)
+  - [Run Locally](#run-locally)
+  - [Run On Docker](#run-on-docker)
+  - [Run On Server](#run-on-server)
+  - [Run Test Cases](#run-test-cases)
 - [Author](#author)
 
 ---
@@ -235,9 +244,44 @@ ExamSystem.slnx
 
 ---
 
+## Docker Support
+
+The application provides first-class support for **Docker**, **Docker Compose**, and **.dockerignore**,
+enabling containerized execution of the API along with its required infrastructure services.
+
+### Supported Services
+
+- **Exam System API** (ASP.NET Core)
+- **SQL Server** for data persistence
+- **Redis** for caching
+
+### Option 1: Pull the Docker Image
+
+You can download the pre-built image directly from Docker Hub:
+
+```bash
+docker pull abdelrahmanzagloul/exam-system-api:1.0
+```
+
+### Option 2: Run with Docker Compose (Recommended)
+
+Docker Compose orchestrates all required services automatically.
+
+```bash
+docker-compose up -d
+```
+
+After the containers start, the Swagger UI is available at:
+
+```
+http://localhost:8080/swagger
+```
+
+---
+
 ## API Endpoints
 
-**Base URL:**
+**Base URL (MonsterASP Deployment):**
 `https://my-exam-system.runasp.net`
 
 **Swagger Specification:**
@@ -299,9 +343,11 @@ ExamSystem.slnx
 
 ---
 
-##  Setup Instructions
+## Setup & Deployment
 
-### 1️ Clone the Repository
+### Run Locally
+
+#### 1️ Clone the Repository
 
 ```bash
 git clone https://github.com/Abdelrahman-Zagloul/ExamSystem-API.git
@@ -310,7 +356,7 @@ cd ExamSystem-API
 
 ---
 
-### 2️ Create `appsettings.json`
+#### 2️ Create `appsettings.json`
 
 Create a new `appsettings.json` file in the API project root and add the following configuration:
 
@@ -380,7 +426,7 @@ Create a new `appsettings.json` file in the API project root and add the followi
 
 ---
 
-### 3️ Apply Database Migrations
+#### 3️ Apply Database Migrations
 
 ```bash
 dotnet ef database update
@@ -388,7 +434,7 @@ dotnet ef database update
 
 ---
 
-### 4 Run the Application
+#### 4 Run the Application
 
 ```bash
 dotnet run
@@ -398,18 +444,34 @@ The API will start and listen on the configured ports.
 
 ---
 
-## Testing
+### Run on Docker
 
-* Unit Tests: **xUnit**
-* Mocking supported via dependency injection
+This project supports **Docker** and **Docker Compose** to run the API together with its required  
+infrastructure services (**SQL Server** and **Redis**).
 
-Run tests using:
+#### Start the application
 
 ```bash
-dotnet test
+docker-compose up -d
 ```
 
-## API Documentation
+After the containers start, the Swagger UI is available at:
+
+```
+http://localhost:8080/swagger
+```
+
+To stop the containers:
+
+```bash
+docker-compose down
+```
+
+---
+
+### Run on Server
+
+The API is deployed and hosted on **MonsterASP**.
 
 Swagger UI is available at:
 
@@ -419,6 +481,16 @@ https://my-exam-system.runasp.net/swagger/index.html
 
 You can explore and test all API endpoints directly from the browser.
 
+---
+
+### Run Test Cases
+
+* Unit Tests: **xUnit**
+Run test cases using:
+
+```bash
+dotnet test
+```
 ---
 
 ## Author
@@ -439,7 +511,7 @@ Software Engineer | Back End .NET Developer
   </a>
   &nbsp;&nbsp;
   <a href="https://wa.me/0201285168885">
-    <img height="53" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"/>
+    <img height="75" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"/>
   </a>
   &nbsp;&nbsp;
   <a href="https://www.facebook.com/bdalrhmnzghlwl.291648">

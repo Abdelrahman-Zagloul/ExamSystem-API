@@ -1,4 +1,9 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".dockerignore" />
+    <File Path="docker-compose.yml" />
+    <File Path="Dockerfile" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/ExamSystem.API/ExamSystem.API.csproj" />
     <Project Path="src/ExamSystem.Application/ExamSystem.Application.csproj" Id="6d8c3de7-aab5-4813-8c31-8135de25a3e7" />
